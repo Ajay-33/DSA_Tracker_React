@@ -2,7 +2,7 @@ import './App.css';
 import React, { useContext } from 'react'
 import Categories from './components/Categories';
 import NavBar from './components/NavBar';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Questions from './components/Questions';
 import QuestionsContext from './context/questions/QuestionsContext';
 
@@ -4485,6 +4485,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Categories data={data} />} />
           <Route exact path={`/${category.category_name}`} element={<Questions c_data={category} />} />
+          <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </>
