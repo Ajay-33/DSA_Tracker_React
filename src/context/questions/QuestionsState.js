@@ -1,11 +1,11 @@
 import { useState } from "react";
 import QuestionsContext from "./QuestionsContext";
 
-const QuestionsState=(props)=>{
+const QuestionsState = (props) => {
     const categoryInitial = []
     const [category, setCategory] = useState(categoryInitial)
 
-    const percentages={
+    const percentages = {
         "Total_values": {
             "Total_Questions": 360,
             "Questions_done": 7,
@@ -167,12 +167,67 @@ const QuestionsState=(props)=>{
             "Revisit_Questions": 1
         }
     }
+    const [Responses, setResponses] = useState(percentages)
 
-    const Category_data=async(data)=>{
+    const updateActions = async (qid, action) => {
+        const cat_name = category.category_name;
+        const updatedResponses = { ...Responses };
+        const something = updatedResponses.category_values[cat_name];
+        const modifiedQuestions = something.Modified_Questions;
+
+        const existingQuestionIndex = modifiedQuestions.findIndex((question) => question.Question_id === qid);
+
+        if (action === 'Pending' && existingQuestionIndex !== -1) {
+            // Remove question if action is 'Pending' and it exists
+            modifiedQuestions.splice(existingQuestionIndex, 1);
+        } else {
+            // Check if the question already exists
+            const existingQuestion = modifiedQuestions.find((question) => question.Question_id === qid);
+
+            if (existingQuestion) {
+                // Update status if question exists
+                existingQuestion.Question_Status = action;
+            } else {
+                // Add new question if it doesn't exist
+                modifiedQuestions.push({
+                    _id: qid,
+                    CreatedBy: '65bd57e2a05de36ffe85d64a',
+                    Question_id: qid,
+                    Question_Status: action,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    __v: 0
+                });
+            }
+        }
+
+        // Update categoryDone and categoryPercentage
+        something.categoryDone = modifiedQuestions.filter((question) => question.Question_Status !== 'Pending').length;
+        something.categoryPercentage = parseFloat((something.categoryDone / something.categoryQuestions) * 100).toFixed(2);
+        // Update the category values
+        something.Modified_Questions = modifiedQuestions;
+        updatedResponses.category_values[cat_name] = something;
+
+        let totalDone = 0;
+        let totalQuestions = 0;
+        Object.values(updatedResponses.category_values).forEach((cat) => {
+            totalDone += cat.categoryDone;
+            totalQuestions += cat.categoryQuestions;
+        });
+
+        updatedResponses.Total_values.Questions_done = totalDone;
+        updatedResponses.Total_values.Total_Questions = totalQuestions;
+        updatedResponses.Total_values.Total_percentage = parseFloat((totalDone / totalQuestions) * 100).toFixed(2);
+
+        setResponses(updatedResponses);
+    };
+
+
+    const Category_data = async (data) => {
         setCategory(data)
     }
     return (
-        <QuestionsContext.Provider value={{ category,Category_data,percentages }}>
+        <QuestionsContext.Provider value={{ category, Category_data, percentages, updateActions, Responses }}>
             {props.children}
         </QuestionsContext.Provider>
     )

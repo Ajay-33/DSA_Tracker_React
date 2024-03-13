@@ -4479,7 +4479,7 @@ function App() {
   const { category } = context;
 
   return (
-    <>
+    <div className='min-h-screen bg-gray-400'>
       <Router>
         <NavBar />
         <Routes>
@@ -4488,7 +4488,7 @@ function App() {
           <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-    </>
+    </div>
   );
 }
 

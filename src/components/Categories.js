@@ -5,9 +5,9 @@ import HorizontalProgressBar from './HorizontalProgressBar';
 
 function Categories({ data }) {
     const context = useContext(QuestionsContext);
-    const { percentages } = context;
-    const { Total_Questions, Questions_done, Total_percentage } = percentages['Total_values'];
-
+    const { Responses } = context;
+    const { Total_Questions, Questions_done, Total_percentage } = Responses['Total_values'];
+    console.log(Responses.Total_values);
     return (
         <div className='bg-gray-400'>
             <div className="container mx-auto px-4 pt-7 pb-4">

@@ -6,8 +6,8 @@ import CircularProgressBar from './CircularProgressBar';
 function Category({ category }) {
     const context = useContext(questionsContext);
     const category_name = category.category_name;
-    const { Category_data, percentages } = context;
-    const { categoryQuestions, categoryDone, categoryPercentage } = percentages.category_values[category_name];
+    const { Category_data, Responses } = context;
+    const { categoryQuestions, categoryDone, categoryPercentage } = Responses.category_values[category_name];
 
     return (
         <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
