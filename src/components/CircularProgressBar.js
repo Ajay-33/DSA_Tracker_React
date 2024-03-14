@@ -1,18 +1,20 @@
 import React from 'react';
 
 function CircularProgressBar({ percentage }) {
-  const radius = 20;
+  const normalizedPercentage = isNaN(percentage) ? 0 : percentage;
+  const radius = 23;
   const circumference = 2 * Math.PI * radius;
-  const progress = circumference - (circumference * percentage) / 100;
+  const progress = circumference - (circumference * normalizedPercentage) / 100;
 
   return (
+    <>
     <svg viewBox="0 0 50 50" width="50" height="50">
       <circle
         cx="25"
         cy="25"
         r={radius}
         fill="none"
-        strokeWidth="5"
+        strokeWidth="4"
         stroke="#e6e6e6"
       />
       <circle
@@ -20,7 +22,7 @@ function CircularProgressBar({ percentage }) {
         cy="25"
         r={radius}
         fill="none"
-        strokeWidth="5"
+        strokeWidth="4"
         stroke="#007bff"
         strokeDasharray={circumference}
         strokeDashoffset={progress}
@@ -36,9 +38,10 @@ function CircularProgressBar({ percentage }) {
         />
       </circle>
       <text x="50%" y="50%" textAnchor="middle" dy="0.3em" fontSize="12px" fill="#007bff">
-        {percentage}%
+        {normalizedPercentage}%
       </text>
     </svg>
+    </>
   );
 }
 

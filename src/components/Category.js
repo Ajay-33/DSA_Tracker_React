@@ -6,8 +6,11 @@ import CircularProgressBar from './CircularProgressBar';
 function Category({ category }) {
     const context = useContext(questionsContext);
     const category_name = category.category_name;
-    const { Category_data, Responses } = context;
-    const { categoryQuestions, categoryDone, categoryPercentage } = Responses.category_values[category_name];
+    const { Category_data, userResponses} = context;
+    const categoryValues = userResponses && userResponses.category_values;
+    const categoryData = categoryValues && categoryValues[category_name];
+    const { categoryQuestions, categoryDone, categoryPercentage } = categoryData || {};
+
 
     return (
         <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -29,6 +32,7 @@ function Category({ category }) {
                 <div>
                     <div className="flex-col items-center mb-3">
                         <CircularProgressBar percentage={categoryPercentage} />
+
                         <span className="ml-2 text-blue-400">
                             {categoryDone}/{categoryQuestions}
                         </span>

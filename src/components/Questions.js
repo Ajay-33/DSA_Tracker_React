@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext} from 'react';
 import { FaYoutube } from 'react-icons/fa';
 import Question from './Question';
 import QuestionsContext from '../context/questions/QuestionsContext';
@@ -7,9 +7,8 @@ import HorizontalProgressBar from './HorizontalProgressBar';
 function Questions({ c_data }) {
   const questions = c_data.questions;
   const context = useContext(QuestionsContext);
-  const { Responses } = context;
-  const { categoryQuestions, categoryDone, categoryPercentage, Modified_Questions } = Responses.category_values[c_data.category_name];
-
+  const { userResponses } = context;
+  const { categoryQuestions, categoryDone, categoryPercentage, Modified_Questions } = userResponses.category_values[c_data.category_name];
   return (
     <div>
       <div className="container mx-auto px-4 py-6">
@@ -29,13 +28,13 @@ function Questions({ c_data }) {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
               <tr>
-                <th className="px-6 py-3">Action</th>
+                <th className="px-6 py-3">Status</th>
                 <th className="px-6 py-3">Problem</th>
                 <th className="px-6 py-3">Difficulty</th>
                 <th className="px-6 py-3">Links</th>
                 <th className="px-6 py-3">Solution</th>
                 <th className="px-6 py-3">Notes</th>
-                <th className="px-6 py-3">BookMark</th>
+                {/* <th className="px-6 py-3">BookMark</th> */}
               </tr>
             </thead>
             <tbody>

@@ -1,13 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Category from './Category';
 import QuestionsContext from '../context/questions/QuestionsContext';
 import HorizontalProgressBar from './HorizontalProgressBar';
 
-function Categories({ data }) {
+function Categories() {
     const context = useContext(QuestionsContext);
-    const { Responses } = context;
-    const { Total_Questions, Questions_done, Total_percentage } = Responses['Total_values'];
-    console.log(Responses.Total_values);
+    const { getUserResponses,userResponses,getAllData,data,isDataLoaded,setIsDataLoaded} = context;
+    const totalValues = userResponses && userResponses['Total_values'];
+    const { Total_Questions, Questions_done, Total_percentage } = totalValues || {};
+    // console.log(Responses.Total_values);
+    useEffect(() => {
+        if (!isDataLoaded) {
+            getAllData();
+            getUserResponses();
+            setIsDataLoaded(true)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className='bg-gray-400'>
             <div className="container mx-auto px-4 pt-7 pb-4">
