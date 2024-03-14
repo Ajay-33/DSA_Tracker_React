@@ -74,7 +74,7 @@ const QuestionsState = (props) => {
             }
             getUserResponses()
 
-// updating status client side without making extra api call for get-all-responses
+            // updating status client side without making extra api call for get-all-responses
             // const json = await response.json();
             // Remove the response from Modified_Questions if json is empty
             // const updatedResponses = { ...userResponses };
@@ -117,11 +117,30 @@ const QuestionsState = (props) => {
         }
     };
 
+    const editNote = async (qid, notes) => {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWJkNTdlMmEwNWRlMzZmZmU4NWQ2NGEiLCJpYXQiOjE3MTAzNDkxNzksImV4cCI6MTcxMDQzNTU3OX0.L-eQE9y4ax5AFd6RA0sUFQ_e7pd3UgHgFN5Ysr-NAbI"
+        try {
+            const response = await fetch(`${host}/api/v1/response/notes/add/${qid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ notes })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update status');
+            }
+            getUserResponses()
+        }catch(err){
+            console.error('Error updating status:', err.message);
+        }
+    }
     const Category_data = async (data) => {
         setCategory(data)
     }
     return (
-        <QuestionsContext.Provider value={{ category, Category_data, getUserResponses, updateActions, userResponses, getAllData, data, isDataLoaded, setIsDataLoaded }}>
+        <QuestionsContext.Provider value={{ category, Category_data, getUserResponses, updateActions, userResponses, getAllData, data, isDataLoaded, setIsDataLoaded,editNote }}>
             {props.children}
         </QuestionsContext.Provider>
     )
