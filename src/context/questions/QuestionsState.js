@@ -3,7 +3,6 @@ import QuestionsContext from "./QuestionsContext";
 
 const QuestionsState = (props) => {
     const host = 'http://localhost:8080'
-    const [isDataLoaded, setIsDataLoaded] = useState(false);
     const dataInitial = []
     const [data, setData] = useState(dataInitial)
     const categoryInitial = []
@@ -11,16 +10,24 @@ const QuestionsState = (props) => {
     // percentages
     const responseInitial = []
     const [userResponses, setUserResponses] = useState(responseInitial)
+    const [mode,setMode]=useState('dark');
 
+    const updateMode=async()=>{
+        if(mode==='dark'){
+            setMode('light')
+        }
+        else{
+            setMode('dark')
+        }
+    }
     const getAllData = async () => {
         // console.log(localStorage.getItem('token'))
         try {
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWJkNTdlMmEwNWRlMzZmZmU4NWQ2NGEiLCJpYXQiOjE3MTAzNDkxNzksImV4cCI6MTcxMDQzNTU3OX0.L-eQE9y4ax5AFd6RA0sUFQ_e7pd3UgHgFN5Ysr-NAbI"
             const response = await fetch(`${host}/api/v1/data/all-data`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
             if (!response.ok) {
@@ -37,12 +44,11 @@ const QuestionsState = (props) => {
 
     const getUserResponses = async () => {
         try {
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWJkNTdlMmEwNWRlMzZmZmU4NWQ2NGEiLCJpYXQiOjE3MTAzNDkxNzksImV4cCI6MTcxMDQzNTU3OX0.L-eQE9y4ax5AFd6RA0sUFQ_e7pd3UgHgFN5Ysr-NAbI"
             const response = await fetch(`${host}/api/v1/data/get-all-responses`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
             if (!response.ok) {
@@ -58,14 +64,13 @@ const QuestionsState = (props) => {
     }
 
 
-    const updateActions = async (qid, status) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWJkNTdlMmEwNWRlMzZmZmU4NWQ2NGEiLCJpYXQiOjE3MTAzNDkxNzksImV4cCI6MTcxMDQzNTU3OX0.L-eQE9y4ax5AFd6RA0sUFQ_e7pd3UgHgFN5Ysr-NAbI"
+    const updateActions = async (qid, status) =>{
         try {
             const response = await fetch(`${host}/api/v1/response/status/add/${qid}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify({ status })
             });
@@ -118,13 +123,12 @@ const QuestionsState = (props) => {
     };
 
     const editNote = async (qid, notes) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWJkNTdlMmEwNWRlMzZmZmU4NWQ2NGEiLCJpYXQiOjE3MTAzNDkxNzksImV4cCI6MTcxMDQzNTU3OX0.L-eQE9y4ax5AFd6RA0sUFQ_e7pd3UgHgFN5Ysr-NAbI"
         try {
             const response = await fetch(`${host}/api/v1/response/notes/add/${qid}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify({ notes })
             });
@@ -140,7 +144,7 @@ const QuestionsState = (props) => {
         setCategory(data)
     }
     return (
-        <QuestionsContext.Provider value={{ category, Category_data, getUserResponses, updateActions, userResponses, getAllData, data, isDataLoaded, setIsDataLoaded,editNote }}>
+        <QuestionsContext.Provider value={{ category, Category_data, getUserResponses, updateActions, userResponses, getAllData, data,editNote,mode,updateMode }}>
             {props.children}
         </QuestionsContext.Provider>
     )

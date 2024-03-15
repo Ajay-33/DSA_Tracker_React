@@ -7,7 +7,7 @@ import HorizontalProgressBar from './HorizontalProgressBar';
 function Questions({ c_data }) {
   const questions = c_data.questions;
   const context = useContext(QuestionsContext);
-  const { userResponses,editNote } = context;
+  const { userResponses,editNote} = context;
   const { categoryQuestions, categoryDone, categoryPercentage, Modified_Questions } = userResponses.category_values[c_data.category_name];
   const [openModal, setOpenModal] = useState('hidden')
   const[note,setNote]=useState({id:"",vnotes:""})
@@ -23,7 +23,7 @@ function Questions({ c_data }) {
     setOpenModal('hidden')
     setNote({vnotes:null,id:null})
   }
-  const handleSubmission = (e) => {
+  const handleSubmission = () => {
     setOpenModal('hidden')
     if(note.vnotes){
       editNote(note.id,note.vnotes)
@@ -68,7 +68,7 @@ function Questions({ c_data }) {
         </div>
         <div className='overflow-auto' style={{ maxHeight: '430px' }}>
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+            <thead className="text-xs text-gray-700 uppercase bg-purple-400 dark:bg-gray-700 dark:text-gray-400" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
               <tr>
                 <th className="px-6 py-3">Status</th>
                 <th className="px-6 py-3">Problem</th>
@@ -76,7 +76,6 @@ function Questions({ c_data }) {
                 <th className="px-6 py-3">Links</th>
                 <th className="px-6 py-3">Solution</th>
                 <th className="px-6 py-3">Notes</th>
-                {/* <th className="px-6 py-3">BookMark</th> */}
               </tr>
             </thead>
             <tbody>

@@ -2,24 +2,28 @@ import React, { useContext, useEffect } from 'react';
 import Category from './Category';
 import QuestionsContext from '../context/questions/QuestionsContext';
 import HorizontalProgressBar from './HorizontalProgressBar';
+import { useNavigate } from 'react-router-dom';
 
 function Categories() {
+    const navigate=useNavigate();
     const context = useContext(QuestionsContext);
-    const { getUserResponses,userResponses,getAllData,data,isDataLoaded,setIsDataLoaded} = context;
+    const { getUserResponses,userResponses,getAllData,data} = context;
     const totalValues = userResponses && userResponses['Total_values'];
     const { Total_Questions, Questions_done, Total_percentage } = totalValues || {};
     // console.log(Responses.Total_values);
     useEffect(() => {
-        if (!isDataLoaded) {
+        if(localStorage.getItem('token')){
             getAllData();
             getUserResponses();
-            setIsDataLoaded(true)
+        }
+        else{
+            navigate('/login')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className='bg-gray-400'>
+        <div>
             <div className="container mx-auto px-4 pt-7 pb-4">
                 <div className='pb-6'>
                     <HorizontalProgressBar percentage={Total_percentage} done={Questions_done} total={Total_Questions} />

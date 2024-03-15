@@ -32,7 +32,7 @@ function Question({ question, Status,updateNote,notes }) {
         <td className="px-6 py-4 font-semibold">{question.question_difficulty}</td>
         <td className="px-6 py-4 flex justify-between">
           <a
-            className="text-gray-100 text-2xl"
+            className="dark:text-gray-100 text-black text-2xl"
             href={question.question_link[0]}
             target="_blank"
             rel="noopener noreferrer"
@@ -40,7 +40,7 @@ function Question({ question, Status,updateNote,notes }) {
             <Icon icon="simple-icons:leetcode" />
           </a>
           <a
-            className="text-gray-100 text-2xl"
+            className="dark:text-gray-100 text-black text-2xl"
             href='/'
             target="_blank"
             rel="noopener noreferrer"
@@ -50,7 +50,7 @@ function Question({ question, Status,updateNote,notes }) {
         </td>
         <td className="px-6 py-4">
           <a
-            className="text-gray-100 ml-2 text-2xl"
+            className="dark:text-gray-100 text-black ml-2 text-2xl"
             href={question.question_solution}
             target="_blank"
             rel="noopener noreferrer"
@@ -60,7 +60,7 @@ function Question({ question, Status,updateNote,notes }) {
         </td>
         <td className="px-6 py-4 text-2xl ">
           <button
-            className="text-gray-100 ml-2 text-2xl"
+            className="dark:text-gray-100 text-black ml-2 text-2xl"
             
           >
             <Icon onClick={()=>updateNote(notes,question._id)} icon="icon-park-outline:notes" />

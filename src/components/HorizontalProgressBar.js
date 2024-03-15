@@ -2,7 +2,7 @@ import React from 'react';
 
 function HorizontalProgressBar({ percentage, done, total }) {
   return (
-    <div className="relative h-7 bg-gray-600 rounded-full overflow-hidden">
+    <div className=' relative h-7 bg-red-300 dark:bg-gray-600 rounded-full overflow-hidden'>
       <div
         className={`h-full ${percentage === 100.00 ? 'bg-green-600' : percentage > 50 ? 'bg-blue-700' : 'bg-green-600'} transition-all duration-500`}
         style={{ width: `${percentage}%` }}
