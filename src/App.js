@@ -4482,7 +4482,7 @@ function App() {
   const { category,mode } = context;
 
   return (
-    <div className={`${mode} min-h-screen bg-zinc-200 dark:bg-gray-400`}>
+    <div className={`${mode} min-h-screen bg-gray-100 dark:bg-slate-700`}>
       <Router>
         <NavBar />
         <Routes>

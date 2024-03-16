@@ -11,7 +11,6 @@ function Category({ category }) {
     const categoryData = categoryValues && categoryValues[category_name];
     const { categoryQuestions, categoryDone, categoryPercentage } = categoryData || {};
 
-
     return (
         <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div className='flex justify-between'>
@@ -33,7 +32,7 @@ function Category({ category }) {
                     <div className="flex-col items-center mb-3">
                         <CircularProgressBar percentage={categoryPercentage} />
 
-                        <span className="ml-2 text-blue-400">
+                        <span className="ml-2 text-gray-800 dark:text-white">
                             {categoryDone}/{categoryQuestions}
                         </span>
                     </div>
@@ -42,7 +41,7 @@ function Category({ category }) {
             <Link
                 to={`/${category_name}`}
                 onClick={() => Category_data(category)}
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-orange-300 dark:bg-orange-500 dark:hover:bg-orange-600"
             >
                 Solve Now
             </Link>

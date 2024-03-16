@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Icon } from '@iconify-icon/react';
 import QuestionsContext from '../context/questions/QuestionsContext';
 
-function Question({ question, Status,updateNote,notes }) {
+function Question({ question, Status, updateNote, notes }) {
   const [status, setStatus] = useState(Status);
   const context = useContext(QuestionsContext);
   const { updateActions } = context;
@@ -12,24 +12,27 @@ function Question({ question, Status,updateNote,notes }) {
     setStatus(e.target.value);
     updateActions(question._id, e.target.value);
   };
+
   return (
     <>
-      <tr className={`border-b dark:border-gray-700 ${status === 'Pending' ? 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700' : status === 'Revisit' ? 'bg-orange-500 dark:bg-orange-700 hover:bg-orange-600 dark:hover:bg-orange-800' : 'bg-green-500 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-800'}`}>
+      <tr className={`border-b dark:border-gray-700 ${status === 'Pending' ? 'bg-yellow-100 dark:bg-yellow-700 hover:bg-yellow-200 dark:hover:bg-yellow-800' : status === 'Revisit' ? 'bg-orange-100 dark:bg-orange-700 hover:bg-orange-200 dark:hover:bg-orange-800' : 'bg-green-100 dark:bg-green-700 hover:bg-green-200 dark:hover:bg-green-800'}`}>
         <td className="px-6 py-4">
           <select
-            className="border bg-gray-900 border-gray-300 rounded px-2 py-1 mr-2"
+            className="border rounded px-2 py-1 mr-2 bg-white dark:bg-gray-200 dark:text-gray-800 dark:border-gray-400"
             defaultValue={Status}
             onChange={handleStatusChange}
           >
-            <option value="Pending">Pending</option>
-            <option value="Completed">Done</option>
+            <option value="Pending" >Pending</option>
+            <option value="Completed" >Done</option>
             <option value="Revisit">Revisit</option>
           </select>
         </td>
-        <td className="px-6 py-4 font-medium text-xl text-gray-900 whitespace-nowrap dark:text-white">
+        <td className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
           {question.question_name}
         </td>
-        <td className="px-6 py-4 font-semibold">{question.question_difficulty}</td>
+        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+          {question.question_difficulty}
+        </td>
         <td className="px-6 py-4 flex justify-between">
           <a
             className="dark:text-gray-100 text-black text-2xl"
@@ -58,12 +61,12 @@ function Question({ question, Status,updateNote,notes }) {
             <Icon icon="streamline:ecology-science-erlenmeyer-flask-experiment-lab-flask-science-chemistry-solution" />
           </a>
         </td>
-        <td className="px-6 py-4 text-2xl ">
+        <td className="px-6 py-4 text-2xl">
           <button
             className="dark:text-gray-100 text-black ml-2 text-2xl"
-            
+            onClick={() => updateNote(notes, question._id)}
           >
-            <Icon onClick={()=>updateNote(notes,question._id)} icon="icon-park-outline:notes" />
+            <Icon icon="icon-park-outline:notes" />
           </button>
         </td>
       </tr>
