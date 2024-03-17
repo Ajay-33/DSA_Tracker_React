@@ -4484,7 +4484,7 @@ function App() {
   return (
     <div className={`${mode} min-h-screen bg-gray-100 dark:bg-slate-700`}>
       <Router>
-        <NavBar />
+        <NavBar className='flex-wrap' />
         <Routes>
           <Route exact path='/signup' element={<Signup/>} />
           <Route exact path='/login' element={<Login/>} />
