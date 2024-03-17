@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -23,14 +23,13 @@ function Login() {
         if (json.success) {
             localStorage.setItem('token', json.token);
             navigate("/");
-        }
-        else{
-            alert('Incorrect Password or Email address')
+        } else {
+            alert('Incorrect Password or Email address');
         }
     }
 
     return (
-        <div className='flex flex-col justify-center items-center mt-16'>
+        <div className='flex flex-col justify-center items-center mt-16 px-4'>
             <div className='w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg'>
                 <h2 className='text-center text-3xl font-bold text-gray-800 dark:text-white mb-8'>Have an Account ?</h2>
                 <form onSubmit={handleSubmission}>

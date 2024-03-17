@@ -35,7 +35,7 @@ function Signup() {
     }
 
     return (
-        <div className='flex flex-col justify-center items-center mt-16'>
+        <div className='flex flex-col justify-center items-center mt-16 px-4'>
             <div className='w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg'>
                 <h2 className='text-center text-3xl font-bold text-gray-800 dark:text-white mb-8'>Create an account</h2>
                 <form onSubmit={handleSubmission}>

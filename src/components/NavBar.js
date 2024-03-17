@@ -13,13 +13,14 @@ function NavBar() {
   };
 
   return (
-    <nav className={`${mode} top-0 left-0 w-full bg-gray-100  border-gray-800 dark:bg-gray-800 shadow-md z-10`}>
-      <div className="flex justify-between items-center mx-auto max-w-screen-xl p-4">
+    <nav className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-10`}>
+      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-800 dark:text-white">A2Z-DSA-Tracker</span>
+          <img src="dsaTracker.png" className="h-8" alt="Flowbite Logo" />
+          <span className="self-center text-2xl font-mono font-semibold whitespace-nowrap text-gray-800 dark:text-white">A2Z-DSA-Tracker</span>
         </Link>
-        <div className="flex items-center">
+
+        <div className=" hidden sm:flex items-center">
           {!localStorage.getItem('token') ? (
             <div className="flex">
               <Link className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mx-2" to='/login'>Login</Link>
@@ -44,6 +45,7 @@ function NavBar() {
             </label>
           </div>
         </div>
+        
       </div>
     </nav>
   );

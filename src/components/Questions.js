@@ -38,12 +38,12 @@ function Questions({ c_data }) {
   };
 
   return (
-    <div>
+    <div className='container mx-auto px-4 pt-2'>
       <div className={`${openModal} fixed inset-0 z-50 h-screen w-screen bg-opacity-15 bg-transparent backdrop-filter backdrop-blur-sm flex justify-center items-center`}>
-        <div className="h-1/2 w-1/3 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col justify-around">
-          <div className='text-2xl dark:text-white flex justify-center'>Notes</div>
+        <div className="h-1/2 w-3/4 sm:w-2/3 sm:h-1/2 md:w-1/2 lg:w-1/3 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col justify-around">
+          <div className='text-xl sm:text-2xl dark:text-white flex justify-center'>Notes</div>
           <textarea
-            className="w-full h-32 p-2 border outline-none bg-gray-100 dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-700 rounded-md resize-none"
+            className="w-full h-1/2 p-2 border outline-none bg-gray-100 dark:bg-gray-700 dark:text-white border-gray-300 dark:border-gray-700 rounded-md resize-none"
             placeholder="Enter your note here..." value={note.vnotes || ''} name='vnotes' onChange={onChange}
           />
           <div className="flex justify-between mt-2">
@@ -58,16 +58,16 @@ function Questions({ c_data }) {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <div className='flex text-5xl font-bold text-black justify-between items-center pb-6'>
+        <div className='flex justify-between items-center flex-row sm:items-center font-bold text-black  pb-4'>
           <a href={c_data.category_resources[0]} target="_blank" className='text-red-500 dark:text-gray-100' rel="noopener noreferrer">
-            <FaYoutube className="mr-2" />
+            <FaYoutube className="mb-2 sm:mb-0 mr-0 sm:mr-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
-          <div className='dark:text-white text-blue-600 font-bold'>{c_data.category_name}</div>
+          <div className='dark:text-white text-blue-600 font-bold text-2xl sm:text-3xl lg:text-5xl mb-2'>{c_data.category_name}</div>
           <a href={c_data.category_resources[0]} target="_blank" className='text-red-500 dark:text-gray-100' rel="noopener noreferrer">
-            <FaYoutube className="ml-2" />
+            <FaYoutube className="mb-2 sm:mb-0 ml-0 sm:ml-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
         </div>
-        <div className='pb-6'>
+        <div className='pb-4'>
           <HorizontalProgressBar percentage={categoryPercentage} done={categoryDone} total={categoryQuestions} />
         </div>
         <div className='overflow-auto' style={{ maxHeight: '430px' }}>
