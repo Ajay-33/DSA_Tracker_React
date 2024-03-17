@@ -15,7 +15,7 @@ function Question({ question, Status, updateNote, notes }) {
 
   return (
     <>
-      <tr className={`border-b dark:border-gray-700 ${status === 'Pending' ? 'bg-yellow-100 dark:bg-yellow-700 hover:bg-yellow-200 dark:hover:bg-yellow-800' : status === 'Revisit' ? 'bg-orange-100 dark:bg-orange-700 hover:bg-orange-200 dark:hover:bg-orange-800' : 'bg-green-100 dark:bg-green-700 hover:bg-green-200 dark:hover:bg-green-800'}`}>
+      <tr className={`border-b dark:border-gray-700 ${status === 'Pending' ? 'bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700' : status === 'Revisit' ? 'bg-yellow-100 dark:bg-orange-700 hover:bg-yellow-200 dark:hover:bg-orange-800' : 'bg-green-200 dark:bg-green-700 hover:bg-green-300 dark:hover:bg-green-800'}`}>
       <td className="px-4 sm:px-6 py-4">
         <select
           className="border rounded px-2 py-1 mr-2 bg-white dark:bg-gray-200 dark:text-gray-800 dark:border-gray-400"

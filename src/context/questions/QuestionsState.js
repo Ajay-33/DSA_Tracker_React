@@ -20,10 +20,10 @@ const QuestionsState = (props) => {
             setMode('dark')
         }
     }
+
     const getAllData = async () => {
-        // console.log(localStorage.getItem('token'))
         try {
-            const response = await fetch(`${host}/api/v1/data/all-data`, {
+            const response = await fetch(`${host}/api/v1/data/get-all-data`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,20 +31,21 @@ const QuestionsState = (props) => {
                 }
             });
             if (!response.ok) {
-                throw new Error('Failed to fetch data');
+                throw new Error('Failed to fetch responses');
             }
             const json = await response.json();
             console.log(json);
-            setData(json)
+            setUserResponses(json['responses'])
+            setData(json['data'])
         }
         catch (error) {
-            console.error('Error fetching data', error.message)
+            console.error('Error fetching responses', error.message)
         }
     }
 
-    const getUserResponses = async () => {
+    const getUserResponses=async()=>{
         try {
-            const response = await fetch(`${host}/api/v1/data/get-all-responses`, {
+            const response = await fetch(`${host}/api/v1/data/get-user-responses`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +79,6 @@ const QuestionsState = (props) => {
                 throw new Error('Failed to update status');
             }
             getUserResponses()
-
             // updating status client side without making extra api call for get-all-responses
             // const json = await response.json();
             // Remove the response from Modified_Questions if json is empty
@@ -144,7 +144,7 @@ const QuestionsState = (props) => {
         setCategory(data)
     }
     return (
-        <QuestionsContext.Provider value={{ category, Category_data, getUserResponses, updateActions, userResponses, getAllData, data,editNote,mode,updateMode }}>
+        <QuestionsContext.Provider value={{ category, Category_data, getAllData, updateActions, userResponses,data,editNote,mode,updateMode }}>
             {props.children}
         </QuestionsContext.Provider>
     )
