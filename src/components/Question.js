@@ -44,7 +44,7 @@ function Question({ question, Status, updateNote, notes }) {
           </a>
           <a
             className="dark:text-gray-100 text-black sm:text-2xl text-xl"
-            href='/'
+            href={question.question_link[0]}
             target="_blank"
             rel="noopener noreferrer"
           >
