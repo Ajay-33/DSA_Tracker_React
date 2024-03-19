@@ -1,25 +1,38 @@
-# A2Z DSA Tracker
+<h1 align="center">Welcome to A2Z DSA Tracker 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+</p>
 
-## 🚀 Aim
-The A2Z DSA Tracker project is on a mission to revolutionize the way you prepare for technical interviews! Our platform offers a comprehensive solution for organizing, tracking, and managing data structures and algorithms (DSA) practice questions.
+> It is a dsa tracker sheet which has questions on various categories like arrays,graphs,etc. it also provides you the question and solution link of each question in every category..you can add notes for each question for every unique user..you can also update status of each question from done pending revisit which then is reflected in percentages of each category..It also has user authentication to have only unique users with unique email id's as a factor
 
-## 📝 Introduction
-Say goodbye to scattered notes and disorganized study materials! The A2Z DSA Tracker is a user-friendly web application designed to help you efficiently prepare for technical interviews. With our centralized platform, you can easily track your progress on DSA questions and stay on top of your preparation.
+## Install
 
-## 💻 Methodology
-Built on the powerful MERN (MongoDB, Express.js, React, Node.js) stack, our project utilizes cutting-edge technologies to provide a seamless user experience. From creating an account to marking your progress on questions, our application makes DSA practice a breeze.
+```sh
+npm install
+```
 
-## 🛠️ Implementation
-[Insert details about the implementation, including any specific technologies or libraries used.]
+## Usage
 
-## 📊 Results
-The A2Z DSA Tracker has been successfully implemented and has garnered positive feedback from users. Our platform offers a user-friendly interface, intuitive navigation, and insightful progress tracking, making it a valuable tool for technical interview preparation.
+```sh
+npm run both
+```
 
-## 🎉 Conclusion
-Join the thousands of users who have already benefited from the A2Z DSA Tracker! Our platform is designed to help you ace your technical interviews and land your dream job. Say hello to organized study materials and efficient preparation with the A2Z DSA Tracker.
+## Run tests
 
-## 📚 References
-[Insert any references or resources used in the project.]
+```sh
+npm run test
+```
 
-## 👩‍💼 Mentors and Mentees
-[Insert the names or roles of mentors and mentees involved in the project.]
+## Author
+
+👤 **Dornala Ajay**
+
+* Github: [@Ajay-33](https://github.com/Ajay-33)
+* LinkedIn: [@Ajay Dornala](https://linkedin.com/in/Ajay Dornala)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
