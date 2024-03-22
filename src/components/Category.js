@@ -11,12 +11,13 @@ function Category({ category }) {
     const categoryData = categoryValues && categoryValues[category_name];
     const { categoryQuestions, categoryDone, categoryPercentage } = categoryData || {};
 
+    
     return (
         <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div className='flex justify-between'>
                 <div>
                     <Link
-                        to={`/${category_name}`}
+                        to={`/${category.category_name}`}
                         onClick={() => Category_data(category)}
                         className="text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-600"
                     >

@@ -6,7 +6,7 @@ The A2Z DSA Tracker project aims to revolutionize the way you prepare for techni
 ## 📝 Introduction
 Say goodbye to scattered notes and disorganized study materials! The A2Z DSA Tracker is a user-friendly web application designed to help you efficiently prepare for technical interviews. With our centralized platform, you can easily track your progress on DSA questions and stay on top of your preparation.
 
-## Features
+## ✨ Features
 - **User Authentication**: Users can create an account and log in to track their DSA practice progress.
 - **Browse Questions**: Users can browse through a collection of DSA questions categorized by topics.
 - **Mark Progress**: Users can mark the status of each question (Done, Revisit, Pending) to track their progress.
@@ -31,7 +31,7 @@ npm run both
 npm run test
 ```
 
-## Technologies Used
+## 🛠️ Technologies Used
 - **MongoDB**: Database for storing DSA questions and user data.
 - **Express.js**: Backend framework for handling API requests.
 - **React**: Frontend library for building user interfaces.

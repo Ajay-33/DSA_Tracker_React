@@ -53,6 +53,7 @@ const getCategoryResponses = async (userId) => {
         const categoryDone=Modified_Questions.filter(question => question.Question_Status === 'Completed').length;
         const categoryPercentage=parseFloat(((categoryDone/categoryQuestions)*100).toFixed(2))
         const categoryValue = {
+            cid:category._id,
             categoryQuestions:categoryQuestions,
             categoryDone:categoryDone,
             Modified_Questions:Modified_Questions,

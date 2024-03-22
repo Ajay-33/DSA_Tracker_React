@@ -5,6 +5,7 @@ import HorizontalProgressBar from './HorizontalProgressBar';
 import { useNavigate } from 'react-router-dom';
 
 function Categories() {
+    
     const navigate=useNavigate();
     const context = useContext(QuestionsContext);
     const { getAllData,userResponses,data} = context;
