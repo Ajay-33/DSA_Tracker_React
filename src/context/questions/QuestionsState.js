@@ -1,14 +1,10 @@
 import { useState } from "react";
 import QuestionsContext from "./QuestionsContext";
-import { useEffect } from "react";
 
 const QuestionsState = (props) => {
     const host = 'http://localhost:8080'
     const dataInitial = []
     const [data, setData] = useState(dataInitial)
-    const categoryInitial = []
-    const [category, setCategory] = useState(categoryInitial)
-    // percentages
     const responseInitial = []
     const [userResponses, setUserResponses] = useState(responseInitial)
     const [mode,setMode]=useState('dark');
@@ -141,15 +137,9 @@ const QuestionsState = (props) => {
             console.error('Error updating status:', err.message);
         }
     }
-    const Category_data = async (data) => {
-        setCategory(data)
-    }
-    useEffect(() => {
-      console.log(category)
-    }, [Category_data])
     
     return (
-        <QuestionsContext.Provider value={{ category, Category_data, getAllData, updateActions, userResponses,data,editNote,mode,updateMode }}>
+        <QuestionsContext.Provider value={{ getAllData, updateActions, userResponses,data,editNote,mode,updateMode }}>
             {props.children}
         </QuestionsContext.Provider>
     )

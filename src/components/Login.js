@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const [credentials, setCredentials] = useState({ email: "", password: "" });
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(token){
+            navigate("/")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const [credentials, setCredentials] = useState({ email: "", password: "" });
 
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });

@@ -22,7 +22,7 @@ function NavBar() {
       <nav>
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
           <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="dsaTracker.png" className="h-8" alt="Flowbite Logo" />
+            <img src={process.env.PUBLIC_URL + '/dsaTracker.png'} className="h-8" alt="Flowbite Logo" />
             <span className="self-center text-2xl font-mono font-semibold whitespace-nowrap text-gray-800 dark:text-white">A2Z-DSA-Tracker</span>
           </Link>
 
