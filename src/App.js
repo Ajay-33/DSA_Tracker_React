@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import Categories from './components/Categories';
 import NavBar from './components/NavBar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
@@ -20,7 +20,7 @@ function App() {
           <Route exact path='/signup' element={<Signup/>} />
           <Route exact path='/login' element={<Login/>} />
           <Route exact path='/' element={<Categories/>} />
-          <Route exact path={`/${category.category_name}`} element={<Questions c_data={category} />} />
+          <Route exact path={`category/${category._id}`} element={<Questions c_data={category} />} />
           <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
