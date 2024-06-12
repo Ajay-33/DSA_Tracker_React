@@ -9,9 +9,10 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data, editNote } = context;
+  const { getAllData, userResponses, data,getUserResponses } = context;
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
+  const host="http://localhost:8080";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,15 +26,9 @@ function Questions() {
 
   if (!data.length) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        
-      </div>
+      <div className="flex justify-center items-center h-screen">Loading</div>
     );
   }
-  
-  
-  
-  
 
   const c_data = data.find((obj) => obj._id === id) || {};
   const questions = c_data ? c_data.questions : [];
@@ -43,6 +38,25 @@ function Questions() {
     categoryPercentage,
     Modified_Questions,
   } = userResponses.category_values[c_data.category_name];
+
+  const editNote = async (qid, notes) => {
+    try {
+      const response = await fetch(`${host}/api/v1/response/notes/add/${qid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ notes }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update status");
+      }
+      getUserResponses();
+    } catch (err) {
+      console.error("Error updating status:", err.message);
+    }
+  };
 
   const updateNote = (currentNote, qid) => {
     setOpenModal("block");
