@@ -6,32 +6,53 @@ import HorizontalProgressBar from "./HorizontalProgressBar";
 import { useNavigate, useParams } from "react-router-dom";
 
 function Questions() {
+  const host = "http://localhost:8080";
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data,getUserResponses } = context;
+  const { getAllData, userResponses, data, getUserResponses, setError } =
+    context;
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
-  const host="http://localhost:8080";
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      getAllData();
+      getAllData().finally(() => setIsLoading(false));
     } else {
       navigate("/login");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!data.length) {
+  useEffect(() => {
+    if (!isLoading) {
+      const c_data = data.find((obj) => obj._id === id);
+      if (!c_data) {
+        setError("Category not found");
+        navigate("/");
+      }
+    }
+  }, [data, id, isLoading, setError, navigate]);
+
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">Loading</div>
     );
   }
 
-  const c_data = data.find((obj) => obj._id === id) || {};
-  const questions = c_data ? c_data.questions : [];
+  const c_data = data.find((obj) => obj._id === id);
+
+  if (!c_data) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Category not found
+      </div>
+    );
+  }
+
+  const questions = c_data.questions || [];
   const {
     categoryQuestions,
     categoryDone,

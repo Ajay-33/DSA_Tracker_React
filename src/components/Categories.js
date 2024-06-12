@@ -1,16 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Category from "./Category";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import HorizontalProgressBar from "./HorizontalProgressBar";
 import { useNavigate } from "react-router-dom";
 
 function Categories() {
+
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data } = context;
+  const { getAllData, userResponses, data,error,setError} = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
+
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -21,8 +24,26 @@ function Categories() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
+      const timer = setTimeout(() => {
+        setShowError(false);
+        setError(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [setError,error,navigate]);
+
   return (
-    <div className="container mx-auto px-4 pt-7 pb-4 w-full">
+    <div className="container mx-auto px-4 pt-7 pb-4 w-full relative">
+      <div className="error-container flex justify-center items-center absolute top-0 left-0 w-full z-50 pointer-events-none">
+        {showError && (
+          <div className="bg-slate-700 border border-orange-500 text-gray-300 w-2/3 md:w-1/2 rounded-md p-4 mb-4 text-center shadow-md transition-opacity duration-500">
+            {error}
+          </div>
+        )}
+      </div>
       <div className="pb-6">
         <HorizontalProgressBar
           percentage={Total_percentage}

@@ -9,6 +9,7 @@ const QuestionsState = (props) => {
   const [userResponses, setUserResponses] = useState(responseInitial);
   const [mode, setMode] = useState("dark");
   const [progress, setProgress] = useState(0);
+  const [error,setError]=useState(null);
 
   const updateMode = async () => {
     if (mode === "dark") {
@@ -73,6 +74,8 @@ const QuestionsState = (props) => {
         data,
         mode,
         updateMode,
+        setError,
+        error
       }}
     >
       {props.children}
