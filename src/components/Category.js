@@ -1,12 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import questionsContext from "../context/questions/QuestionsContext";
 import CircularProgressBar from "./CircularProgressBar";
 
-function Category({ category }) {
-  const context = useContext(questionsContext);
+function Category({ category,userResponses }) {
   const category_name = category.category_name;
-  const { userResponses } = context;
   const categoryValues = userResponses && userResponses.category_values;
   const categoryData = categoryValues && categoryValues[category_name];
   const { categoryQuestions, categoryDone, categoryPercentage } =

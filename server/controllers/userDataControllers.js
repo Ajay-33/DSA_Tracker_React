@@ -22,7 +22,8 @@ export const getAllData = async (req, res, next) => {
         }
         const category_values = await getCategoryResponses(User_info);
         const revisitedQuestionsInfo = await getRevisitedQuestionInfo(User_info);
-        const data = await categorymodel.find().populate('questions');
+        const unsorted_data = await categorymodel.find();
+        const data=unsorted_data.sort((a, b) => a.category_name.localeCompare(b.category_name));
         const responses={
             Total_values:Total_values,
             category_values:category_values,
@@ -106,4 +107,72 @@ export const getUserResponses = async (req, res, next) => {
         next(error);
     }
     
+}
+
+export const CategoriesData=async(req,res,next)=>{
+    const User_info = req.user && req.user.userId;
+    if (!User_info) {
+        next('User ID not available');
+        return;
+    }
+    const { id } = req.params;
+    try {
+        const category = await categorymodel.findById(id).populate('questions');
+        if (!category) {
+            next('No category is found with this ID')
+        }
+        const categoryQuestions = category.questions.length;
+        const Modified_Questions = await responsemodel.find({
+            CreatedBy: User_info,
+            // Question_Status: 'Completed',
+            Question_id: { $in: category.questions }
+        });
+        const categoryDone=Modified_Questions.filter(question => question.Question_Status === 'Completed').length;
+        const categoryPercentage=parseFloat(((categoryDone/categoryQuestions)*100).toFixed(2))
+        const categoryValue = {
+            cid:category._id,
+            categoryQuestions:categoryQuestions,
+            categoryDone:categoryDone,
+            Modified_Questions:Modified_Questions,
+            categoryPercentage:categoryPercentage
+        }
+        res.status(200).json({ responses:categoryValue,c_data:category});
+    }
+    catch (error) {
+        return next(error)
+    }
+}
+
+export const catResponses=async(req,res,next)=>{
+    const User_info = req.user && req.user.userId;
+    if (!User_info) {
+        next('User ID not available');
+        return;
+    }
+    const { id } = req.params;
+    try {
+        const category = await categorymodel.findById(id).populate('questions');
+        if (!category) {
+            next('No category is found with this ID')
+        }
+        const categoryQuestions = category.questions.length;
+        const Modified_Questions = await responsemodel.find({
+            CreatedBy: User_info,
+            // Question_Status: 'Completed',
+            Question_id: { $in: category.questions }
+        });
+        const categoryDone=Modified_Questions.filter(question => question.Question_Status === 'Completed').length;
+        const categoryPercentage=parseFloat(((categoryDone/categoryQuestions)*100).toFixed(2))
+        const categoryValue = {
+            cid:category._id,
+            categoryQuestions:categoryQuestions,
+            categoryDone:categoryDone,
+            Modified_Questions:Modified_Questions,
+            categoryPercentage:categoryPercentage
+        }
+        res.status(200).json(categoryValue);
+    }
+    catch (error) {
+        return next(error)
+    }
 }

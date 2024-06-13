@@ -11,56 +11,92 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data, getUserResponses, setError,isLoading} =
-    context;
+  const {setError,setProgress} = context;
+  const [isLoading, setIsLoading] = useState(true);
+  const [catData, setCatData] = useState({});
+  const [catRes, setCatRes] = useState({});
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
+
+  const getCategoryData = async (id) => {
+    try {
+      setIsLoading(true);
+      setProgress(25);
+      const response = await fetch(
+        `${host}/api/v1/data/get-categories-data/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      setProgress(50);
+      if (!response.ok) {
+        setError("Category not found");
+        navigate("/");
+        throw new Error("Failed to fetch Category");
+      }
+      const json = await response.json();
+      setProgress(75);
+      setCatData(json.c_data);
+      setCatRes(json.responses);
+    } catch (error) {
+      setError("Category not found");
+      setIsLoading(false);
+      navigate("/");
+    } finally {
+      setIsLoading(false);
+      setProgress(100);
+    }
+  };
+
+  const getCategoryResponses = async (id) => {
+    try {
+      const response = await fetch(`${host}/api/v1/data/get-category-responses/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch responses");
+      }
+      const json = await response.json();
+      console.log(json);
+      setCatRes(json);
+    } catch (error) {
+      console.error("Error fetching responses", error.message);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      getAllData();
+      getCategoryData(id);
     } else {
       navigate("/login");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const c_data = data.find((obj) => obj._id === id);
-      if (!c_data) {
-        setError("Category not found");
-        navigate("/");
-      }
-    }
-  }, [data, id, isLoading, setError, navigate]);
-
   if (isLoading) {
     return (
-        <div className="text-center py-2">
-          <Spinner/>
-        </div>
-    );
-  }
-
-  const c_data = data.find((obj) => obj._id === id);
-
-  if (!c_data) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Category not found
+      <div className="text-center py-2">
+        <Spinner />
       </div>
     );
   }
 
-  const questions = c_data.questions || [];
+  const questions = catData.questions || [];
   const {
     categoryQuestions,
     categoryDone,
     categoryPercentage,
     Modified_Questions,
-  } = userResponses.category_values[c_data.category_name];
+  } = catRes;
 
   const editNote = async (qid, notes) => {
     try {
@@ -75,7 +111,7 @@ function Questions() {
       if (!response.ok) {
         throw new Error("Failed to update status");
       }
-      getUserResponses();
+      getCategoryResponses(id);
     } catch (err) {
       console.error("Error updating status:", err.message);
     }
@@ -142,7 +178,7 @@ function Questions() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center flex-row sm:items-center font-bold text-black  pb-4">
           <a
-            href={c_data.category_resources[0]}
+            href={catData.category_resources[0]}
             target="_blank"
             className="text-red-500 dark:text-gray-100"
             rel="noopener noreferrer"
@@ -150,10 +186,10 @@ function Questions() {
             <FaYoutube className="mb-2 sm:mb-0 mr-0 sm:mr-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
           <div className="dark:text-white text-blue-600 font-bold text-2xl sm:text-3xl lg:text-5xl mb-2">
-            {c_data.category_name}
+            {catData.category_name}
           </div>
           <a
-            href={c_data.category_resources[0]}
+            href={catData.category_resources[0]}
             target="_blank"
             className="text-red-500 dark:text-gray-100"
             rel="noopener noreferrer"
@@ -200,6 +236,8 @@ function Questions() {
                     updateNote={updateNote}
                     notes={notes}
                     Status={status}
+                    cid={id}
+                    getCategoryResponses={getCategoryResponses}
                   />
                 );
               })}
