@@ -12,13 +12,17 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:[true,'Email is Required'],
         unique:true,
-        validate:validator.isEmail
+        validate: [validator.isEmail, 'Please provide a valid email']
     },
     password:{
         type:String,
         required:[true,'Please enter password'],
         minlength:[6,"Password should be atleast 6 charachters long"],
         select:true
+    },
+    userType:{
+        type:String,
+        required:[true],
     }
 },{timestamps:true})
 

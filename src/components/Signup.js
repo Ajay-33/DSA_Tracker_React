@@ -21,26 +21,41 @@ function Signup() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     const { name, email, password, cpassword } = credentials;
+  
     if (cpassword !== password) {
       alert("Passwords do not match");
       return;
     }
-    const response = await fetch("http://localhost:8080/api/v1/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-    const json = await response.json();
-    if (json.success) {
-      localStorage.setItem("token", json.token);
-      navigate("/");
-      alert("Account created Successfully");
-    } else {
-      alert("Invalid Details");
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+  
+      const json = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(json.message || 'Network response was not ok');
+      }
+  
+      if (json.success) {
+        localStorage.setItem("token", json.token);
+        navigate("/");
+        alert("Account created Successfully");
+      } else {
+        alert(json.message || "An error occurred");
+      }
+    } catch (error) {
+      console.error("There was an error with the registration:", error);
+      alert(error.message || "There was an error creating your account.Please try again")
     }
-  };
+  }
+  
+  
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });

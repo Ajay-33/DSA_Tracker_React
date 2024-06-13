@@ -20,25 +20,33 @@ function Login() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: credentials.email,
-        password: credentials.password,
-      }),
-    });
-    const json = await response.json();
-    console.log(json);
-    if (json.success) {
-      localStorage.setItem("token", json.token);
-      navigate("/");
-    } else {
-      alert("Incorrect Password or Email address");
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
+  
+      const json = await response.json();
+  
+      if (response.ok && json.success) {
+        localStorage.setItem("token", json.token);
+        navigate("/");
+      } else {
+        throw new Error(json.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert(error.message || "An error occurred during login");
     }
   };
+  
 
   return (
     <div className="flex flex-col justify-center items-center mt-16 px-4">
