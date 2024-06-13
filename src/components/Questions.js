@@ -11,7 +11,7 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const {setError,setProgress} = context;
+  const { setError, setProgress } = context;
   const [isLoading, setIsLoading] = useState(true);
   const [catData, setCatData] = useState({});
   const [catRes, setCatRes] = useState({});
@@ -54,13 +54,16 @@ function Questions() {
 
   const getCategoryResponses = async (id) => {
     try {
-      const response = await fetch(`${host}/api/v1/data/get-category-responses/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `${host}/api/v1/data/get-category-responses/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch responses");
       }

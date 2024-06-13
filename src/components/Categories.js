@@ -14,7 +14,7 @@ function Categories() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const {setProgress,error,setError} = context;
+  const { setProgress, error, setError } = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
@@ -39,7 +39,7 @@ function Categories() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [setError,error,navigate]);
+  }, [setError, error, navigate]);
 
   const getAllData = async () => {
     try {
@@ -70,9 +70,9 @@ function Categories() {
 
   if (isLoading) {
     return (
-        <div className="text-center py-2">
-          <Spinner/>
-        </div>
+      <div className="text-center py-2">
+        <Spinner />
+      </div>
     );
   }
 

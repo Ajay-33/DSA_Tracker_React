@@ -18,7 +18,7 @@ function NavBar() {
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
-  
+
   const updateMode = async () => {
     if (mode === "dark") {
       localStorage.setItem("mode", "light");
