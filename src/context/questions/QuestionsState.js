@@ -7,18 +7,12 @@ const QuestionsState = (props) => {
   const [data, setData] = useState(dataInitial);
   const responseInitial = [];
   const [userResponses, setUserResponses] = useState(responseInitial);
-  const [mode, setMode] = useState("dark");
+  const defaultMode=localStorage.getItem("mode")||"dark";
+  const [mode, setMode] = useState(defaultMode);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateMode = async () => {
-    if (mode === "dark") {
-      setMode("light");
-    } else {
-      setMode("dark");
-    }
-  };
 
   const getAllData = async () => {
     try {
@@ -77,7 +71,7 @@ const QuestionsState = (props) => {
         getUserResponses,
         data,
         mode,
-        updateMode,
+        setMode,
         setError,
         error,
       }}
