@@ -3,12 +3,13 @@ import Category from "./Category";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import HorizontalProgressBar from "./HorizontalProgressBar";
 import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 function Categories() {
 
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data,error,setError} = context;
+  const { getAllData, userResponses, data,error,setError,isLoading} = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
@@ -34,6 +35,14 @@ function Categories() {
       return () => clearTimeout(timer);
     }
   }, [setError,error,navigate]);
+
+  if (isLoading) {
+    return (
+        <div className="text-center py-2">
+          <Spinner/>
+        </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 pt-7 pb-4 w-full relative">

@@ -9,7 +9,8 @@ const QuestionsState = (props) => {
   const [userResponses, setUserResponses] = useState(responseInitial);
   const [mode, setMode] = useState("dark");
   const [progress, setProgress] = useState(0);
-  const [error,setError]=useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const updateMode = async () => {
     if (mode === "dark") {
@@ -21,6 +22,7 @@ const QuestionsState = (props) => {
 
   const getAllData = async () => {
     try {
+      setIsLoading(true);
       setProgress(25);
       const response = await fetch(`${host}/api/v1/data/get-all-data`, {
         method: "GET",
@@ -38,6 +40,7 @@ const QuestionsState = (props) => {
       console.log(json);
       setUserResponses(json["responses"]);
       setData(json["data"]);
+      setIsLoading(false);
       setProgress(100);
     } catch (error) {
       console.error("Error fetching responses", error.message);
@@ -68,6 +71,7 @@ const QuestionsState = (props) => {
     <QuestionsContext.Provider
       value={{
         progress,
+        isLoading,
         getAllData,
         userResponses,
         getUserResponses,
@@ -75,7 +79,7 @@ const QuestionsState = (props) => {
         mode,
         updateMode,
         setError,
-        error
+        error,
       }}
     >
       {props.children}

@@ -4,22 +4,22 @@ import Question from "./Question";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import HorizontalProgressBar from "./HorizontalProgressBar";
 import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "./Spinner";
 
 function Questions() {
   const host = "http://localhost:8080";
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { getAllData, userResponses, data, getUserResponses, setError } =
+  const { getAllData, userResponses, data, getUserResponses, setError,isLoading} =
     context;
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      getAllData().finally(() => setIsLoading(false));
+      getAllData();
     } else {
       navigate("/login");
     }
@@ -38,7 +38,9 @@ function Questions() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">Loading</div>
+        <div className="text-center py-2">
+          <Spinner/>
+        </div>
     );
   }
 
