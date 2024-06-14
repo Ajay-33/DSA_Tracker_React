@@ -50,7 +50,7 @@ export const addCategory = async (req, res, next) => {
 
 export const getCategories = async (req, res, next) => {
     try {
-        const categories = await categorymodel.find();
+        const categories = await categorymodel.find().populate('questions');
         res.status(200).json(categories);
     } catch (error) {
         return next(error);

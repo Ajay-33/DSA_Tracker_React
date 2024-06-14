@@ -28,7 +28,7 @@ const loadPredefinedAdminEmails = () => {
   }
 };
 
-export const addPredefinedEmailsController = async(req, res) => {
+export const addPredefinedEmailsController = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -37,14 +37,13 @@ export const addPredefinedEmailsController = async(req, res) => {
     // Add new emails
     if (!predefinedAdminEmails.includes(email)) {
       predefinedAdminEmails.push(email);
-    }
-    else{
-        res.status(200).json({ success: true, message: "Email Already exists" })
+    } else {
+      res.status(200).json({ success: true, message: "Email Already exists" });
     }
 
     const user = await usermodel.findOne({ email });
 
-    if (user && user.userType ==="User") {
+    if (user && user.userType === "User") {
       user.userType = "Admin";
       await user.save();
     }
@@ -55,7 +54,10 @@ export const addPredefinedEmailsController = async(req, res) => {
 
     res
       .status(200)
-      .json({ success: true, message: "Predefined emails updated successfully" });
+      .json({
+        success: true,
+        message: "Predefined emails updated successfully",
+      });
   } catch (error) {
     console.error("Error adding predefined emails:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -63,38 +65,44 @@ export const addPredefinedEmailsController = async(req, res) => {
 };
 
 export const removePredefinedEmailsController = async (req, res) => {
-    const { email } = req.body;
-  
-    try {
-      const predefinedAdminEmails = loadPredefinedAdminEmails();
-  
-      // Check if the email exists in the predefined list
-      const index = predefinedAdminEmails.indexOf(email);
-      if (index !== -1) {
-        // Remove the email from the list
-        predefinedAdminEmails.splice(index, 1);
-  
-        // Check if the email exists in the usermodel and if userType is "Admin"
-        const user = await usermodel.findOne({ email });
-        if (user && user.userType === "Admin") {
-          user.userType = "User";
-          await user.save();
-        }
-  
-        // Write updated emails to file
-        const configFile = getConfigFile();
-        fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
-  
-        res.status(200).json({ success: true, message: "Email removed successfully" });
-      } else {
-        res.status(400).json({ success: false, message: "Email not found in the predefined list" });
+  const { email } = req.body;
+
+  try {
+    const predefinedAdminEmails = loadPredefinedAdminEmails();
+
+    // Check if the email exists in the predefined list
+    const index = predefinedAdminEmails.indexOf(email);
+    if (index !== -1) {
+      // Remove the email from the list
+      predefinedAdminEmails.splice(index, 1);
+
+      // Check if the email exists in the usermodel and if userType is "Admin"
+      const user = await usermodel.findOne({ email });
+      if (user && user.userType === "Admin") {
+        user.userType = "User";
+        await user.save();
       }
-    } catch (error) {
-      console.error("Error removing predefined email:", error);
-      res.status(500).json({ success: false, message: "Internal server error" });
+
+      // Write updated emails to file
+      const configFile = getConfigFile();
+      fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
+
+      res
+        .status(200)
+        .json({ success: true, message: "Email removed successfully" });
+    } else {
+      res
+        .status(400)
+        .json({
+          success: false,
+          message: "Email not found in the predefined list",
+        });
     }
-  };
-  
+  } catch (error) {
+    console.error("Error removing predefined email:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 export const registerController = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -170,3 +178,12 @@ export const loginController = async (req, res, next) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getUsers=async(req,res,next)=>{
+  try {
+    const users = await usermodel.find();
+    res.status(200).json(users);
+} catch (error) {
+    return next(error);
+}
+}

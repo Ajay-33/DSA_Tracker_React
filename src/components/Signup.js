@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import QuestionsContext from "../context/questions/QuestionsContext";
 
 function Signup() {
   const [credentials, setCredentials] = useState({
@@ -9,6 +10,8 @@ function Signup() {
     cpassword: "",
   });
   const navigate = useNavigate();
+  const context=useContext(QuestionsContext);
+  const {setUserType}=context;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -44,7 +47,16 @@ function Signup() {
   
       if (json.success) {
         localStorage.setItem("token", json.token);
-        navigate("/");
+          if(json.user.userType==='Admin'){
+          localStorage.setItem("userType",'Admin');
+          setUserType('Admin');
+          navigate("/admin");
+        }
+        else{
+          localStorage.setItem("userType",'User');
+          setUserType('User');
+          navigate("/");
+        }
         alert("Account created Successfully");
       } else {
         alert(json.message || "An error occurred");

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext,useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import QuestionsContext from "../context/questions/QuestionsContext";
 function Login() {
   const navigate = useNavigate();
-
+  const context = useContext(QuestionsContext);
+  const { setUserType } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -34,10 +35,19 @@ function Login() {
       });
   
       const json = await response.json();
-  
       if (response.ok && json.success) {
         localStorage.setItem("token", json.token);
-        navigate("/");
+        if(json.user.userType==='Admin'){
+          localStorage.setItem("userType",'Admin');
+          setUserType('Admin');
+          navigate("/admin");
+        }
+        else{
+          localStorage.setItem("userType",'User');
+          setUserType('User');
+          navigate("/");
+        }
+
       } else {
         throw new Error(json.message || "Login failed");
       }

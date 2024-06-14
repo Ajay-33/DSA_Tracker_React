@@ -13,6 +13,7 @@ import Questions from "./components/Questions";
 import QuestionsContext from "./context/questions/QuestionsContext";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import AdminPanel from "./components/AdminPanel";
 
 function App() {
   const context = useContext(QuestionsContext);
@@ -29,7 +30,8 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Categories />} />
-          <Route exact path="category/:id" element={<Questions />} />
+          <Route exact path="/admin" element={<AdminPanel/>}/>
+          <Route exact path="/:id" element={<Questions />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

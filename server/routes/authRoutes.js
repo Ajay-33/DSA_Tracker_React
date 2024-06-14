@@ -1,5 +1,6 @@
 import express from "express";
-import { addPredefinedEmailsController, loginController, registerController, removePredefinedEmailsController } from "../controllers/authControllers.js";
+import userAuth from "../middlewares/authmiddleware.js";
+import { addPredefinedEmailsController, getUsers, loginController, registerController, removePredefinedEmailsController } from "../controllers/authControllers.js";
 const router=express.Router();
 
 // routes
@@ -9,7 +10,11 @@ router.post('/register',registerController)
 // LOGIN
 router.post('/login',loginController)
 
+// Get Users
+router.get('/users',userAuth,getUsers)
+
 // Admin Emails
-router.post('/adminEmails/add',addPredefinedEmailsController);
-router.delete('/adminEmails/delete',removePredefinedEmailsController);
+router.post('/adminEmails/add',userAuth,addPredefinedEmailsController);
+router.delete('/adminEmails/delete',userAuth,removePredefinedEmailsController);
+
 export default router;

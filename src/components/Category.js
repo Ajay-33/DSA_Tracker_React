@@ -9,7 +9,7 @@ function Category({ category, userResponses }) {
   const { categoryQuestions, categoryDone, categoryPercentage } = categoryData || {};
 
   return (
-    <Link to={`category/${category._id}`}>
+    <Link to={`/${category._id}`}>
       <div className="relative p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 transform transition-transform hover:scale-105 hover:z-50 hover:dark:border-gray-300 hover:border-gray-300 hover:shadow-lg hover:cursor-pointer">
         <div className="flex justify-between">
           <div>
