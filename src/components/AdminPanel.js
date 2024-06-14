@@ -21,7 +21,6 @@ function AdminPanel() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userPage, setUserPage] = useState(0);
   const [adminPage, setAdminPage] = useState(0);
-  const [pauseMovement, setPauseMovement] = useState(false);
   const itemsPerPage = 4; // Number of items per page
 
   const context = useContext(QuestionsContext);
@@ -77,35 +76,6 @@ function AdminPanel() {
     }
   }, [userType, navigate, fetchCategories, fetchUsers]);
 
-  useEffect(() => {
-    let intervalId;
-    if (!pauseMovement) {
-      intervalId = setInterval(() => {
-        if ((userPage + 1) * itemsPerPage < users.length) {
-          setUserPage(userPage + 1);
-        } else {
-          setUserPage(0);
-        }
-      }, 2000);
-    }
-
-    return () => clearInterval(intervalId);
-  }, [userPage, users.length, itemsPerPage, pauseMovement]);
-
-  useEffect(() => {
-    let intervalId;
-    if (!pauseMovement) {
-      intervalId = setInterval(() => {
-        if ((adminPage + 1) * itemsPerPage < admins.length) {
-          setAdminPage(adminPage + 1);
-        } else {
-          setAdminPage(0);
-        }
-      }, 1000);
-    }
-    return () => clearInterval(intervalId);
-  }, [adminPage, admins.length, itemsPerPage, pauseMovement]);
-
   const toggleDropdown = useCallback((categoryId) => {
     setDropdowns((prevState) => ({
       ...prevState,
@@ -117,11 +87,6 @@ function AdminPanel() {
     setSearchQuery(e.target.value.toLowerCase());
     setUserPage(0);
     setAdminPage(0);
-    if (searchQuery === "") {
-      setPauseMovement(false);
-    } else {
-      setPauseMovement(true);
-    }
   };
 
   const filteredUsers = users.filter((user) =>
@@ -242,63 +207,7 @@ function AdminPanel() {
             </div>
           </div>
 
-          <div
-            className="space-y-4"
-            onMouseEnter={() => setPauseMovement(true)}
-            onMouseLeave={() => setPauseMovement(false)}
-            style={{ height: `${itemsPerPage * 75}px` }}
-          >
-            <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100">
-              Users ({users.length})
-            </span>
-            {paginatedUsers.map((user) => (
-              <div
-                key={user._id}
-                className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-3 rounded-lg shadow-md transition duration-500 hover:shadow-xl"
-              >
-                <div className="relative group">
-                  <div className="text-gray-900 dark:text-gray-100 group-hover:underline hover:cursor-pointer">
-                    {user.name}
-                  </div>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 p-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
-                    <span className="block">Email:</span>
-                    <span className="block text-gray-300">{user.email}</span>
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  <button className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 transition duration-300">
-                    <FaEdit />
-                  </button>
-                  <button className="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-500 transition duration-300">
-                    <FaTrash />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between items-center">
-            <button
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
-              onClick={prevUserPage}
-              disabled={userPage === 0}
-            >
-              <FaArrowLeft />
-            </button>
-            <button
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
-              onClick={nextUserPage}
-              disabled={(userPage + 1) * itemsPerPage >= filteredUsers.length}
-            >
-              <FaArrowRight />
-            </button>
-          </div>
-
-          <div
-            className="mt-6 space-y-4"
-            onMouseEnter={() => setPauseMovement(true)}
-            onMouseLeave={() => setPauseMovement(false)}
-            style={{ height: `${itemsPerPage * 75}px` }}
-          >
+          <div className="space-y-4">
             <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100">
               Admins ({admins.length})
             </span>
@@ -326,22 +235,70 @@ function AdminPanel() {
                 </div>
               </div>
             ))}
+            <div className="flex justify-between items-center">
+              <button
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
+                onClick={prevAdminPage}
+                disabled={adminPage === 0}
+              >
+                <FaArrowLeft />
+              </button>
+              <button
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
+                onClick={nextAdminPage}
+                disabled={
+                  (adminPage + 1) * itemsPerPage >= filteredAdmins.length
+                }
+              >
+                <FaArrowRight />
+              </button>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <button
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
-              onClick={prevAdminPage}
-              disabled={adminPage === 0}
-            >
-              <FaArrowLeft />
-            </button>
-            <button
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
-              onClick={nextAdminPage}
-              disabled={(adminPage + 1) * itemsPerPage >= filteredAdmins.length}
-            >
-              <FaArrowRight />
-            </button>
+
+          <div className="space-y-4 mt-5">
+            <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100">
+              Users ({users.length})
+            </span>
+            {paginatedUsers.map((user) => (
+              <div
+                key={user._id}
+                className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-3 rounded-lg shadow-md transition duration-500 hover:shadow-xl"
+              >
+                <div className="relative group">
+                  <div className="text-gray-900 dark:text-gray-100 group-hover:underline hover:cursor-pointer">
+                    {user.name}
+                  </div>
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 p-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+                    <span className="block">Email:</span>
+                    <span className="block text-gray-300">{user.email}</span>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <button className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 transition duration-300">
+                    <FaEdit />
+                  </button>
+                  <button className="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-500 transition duration-300">
+                    <FaTrash />
+                  </button>
+                </div>
+              </div>
+            ))}
+            <div className="flex justify-between items-center">
+              <button
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
+                onClick={prevUserPage}
+                disabled={userPage === 0}
+              >
+                <FaArrowLeft />
+              </button>
+              <button
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-500 transition duration-300"
+                onClick={nextUserPage}
+                disabled={(userPage + 1) * itemsPerPage >= filteredUsers.length}
+              >
+                <FaArrowRight />
+              </button>
+            </div>
           </div>
         </div>
       </div>
