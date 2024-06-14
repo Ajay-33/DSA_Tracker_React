@@ -11,7 +11,7 @@ function Signup() {
   });
   const navigate = useNavigate();
   const context=useContext(QuestionsContext);
-  const {setUserType}=context;
+  const {setUserType,setError}=context;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,7 +26,7 @@ function Signup() {
     const { name, email, password, cpassword } = credentials;
   
     if (cpassword !== password) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
   
@@ -47,8 +47,8 @@ function Signup() {
   
       if (json.success) {
         localStorage.setItem("token", json.token);
-          if(json.user.userType==='Admin'){
-          localStorage.setItem("userType",'Admin');
+          if(json.user.userType==='Admin'||json.user.userType==='Super Admin'){
+          localStorage.setItem("userType",json.user.userType);
           setUserType('Admin');
           navigate("/admin");
         }
@@ -57,13 +57,10 @@ function Signup() {
           setUserType('User');
           navigate("/");
         }
-        alert("Account created Successfully");
-      } else {
-        alert(json.message || "An error occurred");
+        setError("Account created Successfully");
       }
     } catch (error) {
-      console.error("There was an error with the registration:", error);
-      alert(error.message || "There was an error creating your account.Please try again")
+      setError(error.message || "There was an error creating your account.Please try again")
     }
   }
   
@@ -126,7 +123,7 @@ function Signup() {
               id="password"
               name="password"
               required
-              minLength={5}
+              minLength={6}
               onChange={onChange}
             />
           </div>

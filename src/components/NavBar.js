@@ -31,7 +31,7 @@ function NavBar() {
 
   return (
     <div
-      className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-10`}
+      className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-10 transition duration-500`}
     >
       <nav>
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
@@ -53,13 +53,13 @@ function NavBar() {
             {!localStorage.getItem("token") ? (
               <div className="flex">
                 <Link
-                  className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mx-2"
+                  className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold text-sm py-1.5 px-3 rounded mx-2"
                   to="/login"
                 >
                   Login
                 </Link>
                 <Link
-                  className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mx-2"
+                  className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold text-sm py-1.5 px-3 ml-2 rounded mr-4"
                   to="/signup"
                 >
                   Signup
@@ -68,7 +68,7 @@ function NavBar() {
             ) : (
               <Link
                 onClick={handleLogout}
-                className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded mx-2"
+                className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold text-sm py-1.5 px-3 rounded mx-2"
                 to="/login"
               >
                 Logout

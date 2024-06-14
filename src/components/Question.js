@@ -41,7 +41,7 @@ function Question({
   return (
     <>
       <tr
-        className={`border-b dark:border-gray-700 ${
+        className={`border-b transition duration-500 dark:border-gray-700 ${
           status === "Pending"
             ? "bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
             : status === "Revisit"

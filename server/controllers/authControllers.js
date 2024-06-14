@@ -52,12 +52,10 @@ export const addPredefinedEmailsController = async (req, res) => {
     const configFile = getConfigFile();
     fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Predefined emails updated successfully",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Predefined emails updated successfully",
+    });
   } catch (error) {
     console.error("Error adding predefined emails:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -91,12 +89,10 @@ export const removePredefinedEmailsController = async (req, res) => {
         .status(200)
         .json({ success: true, message: "Email removed successfully" });
     } else {
-      res
-        .status(400)
-        .json({
-          success: false,
-          message: "Email not found in the predefined list",
-        });
+      res.status(400).json({
+        success: false,
+        message: "Email not found in the predefined list",
+      });
     }
   } catch (error) {
     console.error("Error removing predefined email:", error);
@@ -109,13 +105,13 @@ export const registerController = async (req, res, next) => {
 
   try {
     if (!name || !email || !password) {
-      throw new Error("Please fill all fields");
+      res.status(400).json({message:'Please fill out all the fields'})
     }
 
     const existingUser = await usermodel.findOne({ email });
 
     if (existingUser) {
-      throw new Error("Email already registered");
+      res.status(400).json({message:'User Already Exists'})
     }
 
     const predefinedAdminEmails = loadPredefinedAdminEmails();
@@ -139,7 +135,6 @@ export const registerController = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    console.error("Error with user registration:", error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -149,13 +144,13 @@ export const loginController = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new Error("Please enter all fields");
+      res.status(400).json({message:'Please fill out all the fields'})
     }
 
     const user = await usermodel.findOne({ email }).select("+password");
 
     if (!user) {
-      throw new Error("Invalid Username or Password");
+      res.status(400).json({message:'Invalid Email or Password'})
     }
 
     const isMatch = await user.comparePassword(password);
@@ -174,16 +169,15 @@ export const loginController = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    console.error("Error in loginController:", error.message);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-export const getUsers=async(req,res,next)=>{
+export const getUsers = async (req, res, next) => {
   try {
     const users = await usermodel.find();
     res.status(200).json(users);
-} catch (error) {
+  } catch (error) {
     return next(error);
-}
-}
+  }
+};

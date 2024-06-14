@@ -23,7 +23,6 @@ export const updateStatus=async(req,res,next)=>{
     let Response= await responsemodel.findOne({CreatedBy:User_info,Question_id:qid});
     if(Response && status==='Pending'   &&!Response.Question_Notes){
         await responsemodel.findOneAndDelete({CreatedBy:User_info,Question_id:qid})
-        console.log('Dusted')
         res.status(200).json({})
         return;
     }
@@ -31,7 +30,6 @@ export const updateStatus=async(req,res,next)=>{
         Response=await responsemodel.create({CreatedBy:User_info,Question_id:qid,Question_Status:status});
     }
     else if(!Response && status==='Pending'){
-        // console.log('Bye')
         res.status(200).json({})
         return;
     }
@@ -136,7 +134,6 @@ export const updateNotes=async(req,res,next)=>{
     if(Response && !notes && (!Response.Question_Status||Response.Question_Status==='Pending')){
         await responsemodel.findOneAndDelete({CreatedBy:User_info,Question_id:qid})
         res.status(200).json()
-        console.log('Dusted')
         return;
     }
     if(!Response&&notes){

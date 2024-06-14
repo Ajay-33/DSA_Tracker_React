@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useContext } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import Categories from "./components/Categories";
 import NavBar from "./components/NavBar";
 import LoadingBar from "react-top-loading-bar";
@@ -17,20 +17,40 @@ import AdminPanel from "./components/AdminPanel";
 
 function App() {
   const context = useContext(QuestionsContext);
-  const { mode, progress } = context;
+  const { mode, progress, error, setError } = context;
+  const [showError, setShowError] = useState(false);
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
+      const timer = setTimeout(() => {
+        setShowError(false);
+        setError(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [setError, error, setShowError]);
   return (
-    <div className={`${mode} min-h-screen bg-gray-100 dark:bg-slate-700`}>
+    <div
+      className={`${mode} min-h-screen bg-gray-100 dark:bg-slate-700 transition duration-500`}
+    >
       <Router>
         <NavBar className="flex-wrap" />
         <LoadingBar
           color={mode === "dark" ? "#FF7518" : "#f11946"}
           progress={progress}
         />
+        <div className="error-container flex justify-center items-center absolute w-full z-50 pointer-events-none">
+          {showError && (
+            <div className="bg-slate-700 border border-orange-500 text-gray-300 w-2/3 md:w-1/2 rounded-md p-4 mb-4 text-center shadow-md transition-opacity duration-500">
+              {error}
+            </div>
+          )}
+        </div>
         <Routes>
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Categories />} />
-          <Route exact path="/admin" element={<AdminPanel/>}/>
+          <Route exact path="/admin" element={<AdminPanel />} />
           <Route exact path="/:id" element={<Questions />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

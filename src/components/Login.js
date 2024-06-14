@@ -4,7 +4,7 @@ import QuestionsContext from "../context/questions/QuestionsContext";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType } = context;
+  const { setUserType,setError } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -35,10 +35,13 @@ function Login() {
       });
   
       const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
       if (response.ok && json.success) {
         localStorage.setItem("token", json.token);
-        if(json.user.userType==='Admin'){
-          localStorage.setItem("userType",'Admin');
+        if(json.user.userType==='Admin'||json.user.userType==='Super Admin'){
+          localStorage.setItem("userType",json.user.userType);
           setUserType('Admin');
           navigate("/admin");
         }
@@ -48,19 +51,16 @@ function Login() {
           navigate("/");
         }
 
-      } else {
-        throw new Error(json.message || "Login failed");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert(error.message || "An error occurred during login");
+      setError(error.message || "An error occurred during login. Please try again");
     }
   };
   
 
   return (
     <div className="flex flex-col justify-center items-center mt-16 px-4">
-      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Have an Account ?
         </h2>

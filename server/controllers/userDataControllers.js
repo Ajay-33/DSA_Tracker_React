@@ -1,6 +1,7 @@
 import responsemodel from "../models/responsemodel.js";
 import questionsmodel from "../models/questionsmodel.js";
 import categorymodel from "../models/categorymodel.js";
+import mongoose from "mongoose";
 
 export const getAllData = async (req, res, next) => {
     const User_info = req.user && req.user.userId;
@@ -35,7 +36,7 @@ export const getAllData = async (req, res, next) => {
         });
     }
     catch(error){
-        next(error);
+        next(error.message);
     }
     
 }
@@ -104,7 +105,7 @@ export const getUserResponses = async (req, res, next) => {
         });
     }
     catch(error){
-        next(error);
+        next(error.message);
     }
     
 }
@@ -117,10 +118,10 @@ export const CategoriesData=async(req,res,next)=>{
     }
     const { id } = req.params;
     try {
-        const category = await categorymodel.findById(id).populate('questions');
-        if (!category) {
-            next('No category is found with this ID')
+        if(!mongoose.isValidObjectId(id)){
+            res.status(400).json({message:"Category not Found"})
         }
+        const category = await categorymodel.findById(id).populate('questions');
         const categoryQuestions = category.questions.length;
         const Modified_Questions = await responsemodel.find({
             CreatedBy: User_info,
@@ -139,7 +140,7 @@ export const CategoriesData=async(req,res,next)=>{
         res.status(200).json({ responses:categoryValue,c_data:category});
     }
     catch (error) {
-        return next(error)
+        return next(error.message)
     }
 }
 
@@ -151,10 +152,10 @@ export const catResponses=async(req,res,next)=>{
     }
     const { id } = req.params;
     try {
-        const category = await categorymodel.findById(id).populate('questions');
-        if (!category) {
-            next('No category is found with this ID')
+        if(!mongoose.isValidObjectId(id)){
+            res.status(400).json({message:"Category not Found"})
         }
+        const category = await categorymodel.findById(id).populate('questions');
         const categoryQuestions = category.questions.length;
         const Modified_Questions = await responsemodel.find({
             CreatedBy: User_info,
@@ -173,6 +174,6 @@ export const catResponses=async(req,res,next)=>{
         res.status(200).json(categoryValue);
     }
     catch (error) {
-        return next(error)
+        return next(error.message)
     }
 }

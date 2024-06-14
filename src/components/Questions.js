@@ -33,17 +33,16 @@ function Questions() {
         }
       );
       setProgress(50);
-      if (!response.ok) {
-        setError("Category not found");
-        navigate("/");
-        throw new Error("Failed to fetch Category");
-      }
       const json = await response.json();
+      if (!response.ok) {
+        navigate("/");
+        throw new Error(json.message);
+      }
       setProgress(75);
       setCatData(json.c_data);
       setCatRes(json.responses);
     } catch (error) {
-      setError("Category not found");
+      setError(error.message);
       setIsLoading(false);
       navigate("/");
     } finally {
@@ -64,11 +63,10 @@ function Questions() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch responses");
-      }
       const json = await response.json();
-      console.log(json);
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
       setCatRes(json);
     } catch (error) {
       console.error("Error fetching responses", error.message);
@@ -112,7 +110,7 @@ function Questions() {
         body: JSON.stringify({ notes }),
       });
       if (!response.ok) {
-        throw new Error("Failed to update status");
+        throw new Error("Failed to update note");
       }
       getCategoryResponses(id);
     } catch (err) {

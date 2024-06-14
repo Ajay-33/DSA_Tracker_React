@@ -18,7 +18,7 @@ const QuestionsState = (props) => {
         setError,
         error,
         userType,
-        setUserType
+        setUserType,
       }}
     >
       {props.children}
