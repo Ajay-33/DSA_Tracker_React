@@ -79,7 +79,7 @@ function AdminPanel() {
       </div>
 
       <div className="flex flex-col lg:flex-row mt-8 space-y-8 lg:space-y-0 lg:space-x-8">
-        <CategoriesAccordion categories={categories} />
+        <CategoriesAccordion categories={categories} fetchCategories={fetchCategories} />
         <RolesMenu users={users} admins={admins} superAdmins={superAdmins} />
       </div>
     </div>

@@ -39,13 +39,18 @@ function App() {
           color={mode === "dark" ? "#FF7518" : "#f11946"}
           progress={progress}
         />
-        <div className="error-container flex justify-center items-center absolute w-full z-50 pointer-events-none">
-          {showError && (
-            <div className="bg-slate-700 border border-orange-500 text-gray-300 w-2/3 md:w-1/2 rounded-md p-4 mb-4 text-center shadow-md transition-opacity duration-500">
-              {error}
-            </div>
-          )}
-        </div>
+<div className="error-container flex justify-center items-center absolute w-full z-50 pointer-events-none">
+  {showError && (
+    <div className="bg-gray-50 border-sky-400 text-red-600 dark:bg-slate-700 border dark:border-orange-500 dark:text-gray-300 w-2/3 md:w-1/2 rounded-md p-4 mb-4 text-center shadow-md transition-opacity duration-500">
+      {error}
+    </div>
+  )}
+</div>
+
+
+
+
+
         <Routes>
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
