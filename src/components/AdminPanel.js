@@ -13,7 +13,7 @@ function AdminPanel() {
   const [categories, setCategories] = useState([]);
 
   const context = useContext(QuestionsContext);
-  const { userType } = context;
+  const { userType, setError } = context;
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -24,10 +24,11 @@ function AdminPanel() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      if (!response.ok) {
-        throw new Error("Failed to fetch responses");
-      }
       const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
+
       const usersData = json.filter((user) => user.userType === "User");
       const adminsData = json.filter((user) => user.userType === "Admin");
       const superAdminsData = json.filter(
@@ -37,9 +38,9 @@ function AdminPanel() {
       setAdmins(adminsData);
       setSuperAdmins(superAdminsData);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      setError(error.message || "Error fetching users:");
     }
-  }, []);
+  }, [setError]);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -50,16 +51,16 @@ function AdminPanel() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
       const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
       console.log(json);
       setCategories(json);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      setError(error.message || "Error fetching categories:");
     }
-  }, []);
+  }, [setError]);
 
   useEffect(() => {
     if (userType === "User") {
@@ -79,7 +80,10 @@ function AdminPanel() {
       </div>
 
       <div className="flex flex-col lg:flex-row mt-8 space-y-8 lg:space-y-0 lg:space-x-8">
-        <CategoriesAccordion categories={categories} fetchCategories={fetchCategories} />
+        <CategoriesAccordion
+          categories={categories}
+          fetchCategories={fetchCategories}
+        />
         <RolesMenu users={users} admins={admins} superAdmins={superAdmins} />
       </div>
     </div>

@@ -105,13 +105,13 @@ export const registerController = async (req, res, next) => {
 
   try {
     if (!name || !email || !password) {
-      res.status(400).json({message:'Please fill out all the fields'})
+      res.status(400).json({ message: "Please fill out all the fields" });
     }
 
     const existingUser = await usermodel.findOne({ email });
 
     if (existingUser) {
-      res.status(400).json({message:'User Already Exists'})
+      res.status(400).json({ message: "User Already Exists" });
     }
 
     const predefinedAdminEmails = loadPredefinedAdminEmails();
@@ -144,13 +144,13 @@ export const loginController = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({message:'Please fill out all the fields'})
+      res.status(400).json({ message: "Please fill out all the fields" });
     }
 
     const user = await usermodel.findOne({ email }).select("+password");
 
     if (!user) {
-      res.status(400).json({message:'Invalid Email or Password'})
+      res.status(400).json({ message: "Invalid Email or Password" });
     }
 
     const isMatch = await user.comparePassword(password);

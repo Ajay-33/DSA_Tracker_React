@@ -1,9 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import QuestionsContext from "../context/questions/QuestionsContext";
 
-function EditCategoryModal({ category, onClose, onSave }) {
+function EditCategoryModal({ category, onClose, fetchCategories }) {
+  const context = useContext(QuestionsContext);
+  const { host, setError } = context;
   const [categoryName, setCategoryName] = useState("");
   const [categoryResource, setCategoryResource] = useState("");
 
+  const saveCategory = async (updatedCategory) => {
+    try {
+      const response = await fetch(
+        `${host}/api/v1/category/update/${updatedCategory._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            category_name: updatedCategory.category_name,
+            category_resources: updatedCategory.category_resources,
+          }),
+        }
+      );
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
+      onClose();
+      fetchCategories();
+    } catch (error) {
+      setError(error.message || "Failed to Edit Category");
+    }
+  };
   useEffect(() => {
     if (category) {
       setCategoryName(category.category_name);
@@ -18,7 +47,7 @@ function EditCategoryModal({ category, onClose, onSave }) {
       category_name: categoryName,
       category_resources: [categoryResource],
     };
-    onSave(updatedCategory);
+    saveCategory(updatedCategory);
   };
 
   return (

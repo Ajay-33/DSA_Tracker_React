@@ -1,12 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import QuestionsContext from "../context/questions/QuestionsContext";
 
-function EditQuestionModal({ question, onClose, onSave }) {
+function EditQuestionModal({ question, onClose, fetchCategories }) {
+  const context = useContext(QuestionsContext);
+  const { host, setError } = context;
   const [questionName, setQuestionName] = useState("");
   const [questionLink1, setQuestionLink1] = useState("");
   const [questionLink2, setQuestionLink2] = useState("");
   const [questionDifficulty, setQuestionDifficulty] = useState("");
   const [questionSolutionLink, setQuestionSolutionLink] = useState("");
 
+  const saveQuestion = async (updatedQuestion) => {
+    console.log("Saving question", updatedQuestion);
+    try {
+      const response = await fetch(
+        `${host}/api/v1/question/update/${updatedQuestion._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            question_name: updatedQuestion.question_name,
+            question_difficulty: updatedQuestion.question_difficulty,
+            question_solution: updatedQuestion.question_solution,
+            question_link: updatedQuestion.question_link,
+          }),
+        }
+      );
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
+      onClose();
+      fetchCategories();
+    } catch (error) {
+      setError(error.message || "Fail to Edit Question");
+    }
+  };
   useEffect(() => {
     if (question) {
       setQuestionName(question.question_name);
@@ -22,11 +54,11 @@ function EditQuestionModal({ question, onClose, onSave }) {
     const updatedQuestion = {
       ...question,
       question_name: questionName,
-      question_link: [questionLink1,questionLink2],
+      question_link: [questionLink1, questionLink2],
       question_difficulty: questionDifficulty,
       question_solution: questionSolutionLink,
     };
-    onSave(updatedQuestion);
+    saveQuestion(updatedQuestion);
   };
 
   return (
@@ -87,7 +119,6 @@ function EditQuestionModal({ question, onClose, onSave }) {
               onChange={(e) => setQuestionLink2(e.target.value)}
               className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Coding Ninjas Link "
-              required
             />
           </div>
           <div className="mb-6">

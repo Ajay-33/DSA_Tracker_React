@@ -13,7 +13,9 @@ export const addCategory = async (req, res, next) => {
           !categoryData.category_resources ||
           categoryData.category_resources.length === 0
         ) {
-          next("Category name and resources are required");
+          res
+            .status(400)
+            .json({ message: "Category name and resources are required" });
           return;
         }
 
@@ -29,12 +31,11 @@ export const addCategory = async (req, res, next) => {
       }
 
       if (duplicateCategoryNames.length > 0) {
-        res
-          .status(400)
-          .json({
-            message: "Duplicate category names found",
-            duplicateCategoryNames,
-          });
+        res.status(400).json({
+          message: "Duplicate category names found",
+          duplicateCategoryNames,
+        });
+        return;
       } else {
         const addedCategories = await categorymodel.create(categoriesToAdd);
         res
@@ -47,22 +48,20 @@ export const addCategory = async (req, res, next) => {
         !req.body.category_resources ||
         req.body.category_resources.length === 0
       ) {
-        next("Category name and resources are required");
+        res
+          .status(400)
+          .json({ message: "Category name and resources are required" });
         return;
       }
-      try {
-        const category = await categorymodel.create(req.body);
-        res
-          .status(201)
-          .json({ message: "Category added successfully", category });
-      } catch (error) {
-        next(error);
-      }
+      const category = await categorymodel.create(req.body);
+      res
+        .status(201)
+        .json({ message: "Category added successfully", category });
     } else {
-      next("Invalid request body");
+      res.status(400).json({ message: "Invalid request body" });
     }
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -70,11 +69,21 @@ export const getCategories = async (req, res, next) => {
   try {
     const categories = await categorymodel.find().populate("questions");
     categories.sort((a, b) => a.category_name.localeCompare(b.category_name));
+    categories.forEach(category => {
+      category.questions.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return dateB - dateA;
+      });
+    });
     res.status(200).json(categories);
   } catch (error) {
+    console.error(error);
     return next(error);
   }
 };
+
+
 
 export const getCategory = async (req, res, next) => {
   const { id } = req.params;
@@ -108,7 +117,7 @@ export const DeleteCategory = async (req, res, next) => {
   try {
     const category = await categorymodel.findOne({ _id: id });
     if (!category) {
-      next("No Category is found with this ID");
+      res.status(400).json({ message: "No Category is found with this ID" });
     }
     const idsArray = category.questions;
     await questionsmodel.deleteMany({ _id: { $in: idsArray } });

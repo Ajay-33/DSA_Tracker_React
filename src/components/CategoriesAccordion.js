@@ -11,21 +11,23 @@ import EditCategoryModal from "./EditCategoryModal";
 import EditQuestionModal from "./EditQuestionModal";
 import ConfirmationModal from "./ConfirmationModal";
 import AddModal from "./AddModal";
-import AddQuestionModal from "./AddQuestionModal";
 
 function CategoriesAccordion({ categories, fetchCategories }) {
-  const host = "http://localhost:8080";
   const [dropdowns, setDropdowns] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [editCategory, setEditCategory] = useState(false);
+  const [editQuestion, setEditQuestion] = useState(false);
+
+  const [deleteQuestion, setDeleteQuestion] = useState(false);
+  const [deleteCategory, setDeleteCategory] = useState(false);
+
+  const [addModal, setAddModal] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [deleteCategoryId, setDeleteCategoryId] = useState(null);
-  const [deleteQuestionId, setDeleteQuestionId] = useState(null);
-  const [refCategoryId, setRefCategoryId] = useState(null);
-  const [addModal, setAddModal] = useState(false);
-  const [addQuestion, setAddQuestion] = useState(false);
+
   const toggleDropdown = useCallback((categoryId) => {
-    console.log("op");
     setDropdowns((prevState) => ({
       ...prevState,
       [categoryId]: !prevState[categoryId],
@@ -34,125 +36,6 @@ function CategoriesAccordion({ categories, fetchCategories }) {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-  };
-
-  const saveCategory = async (updatedCategory) => {
-    try {
-      const response = await fetch(
-        `${host}/api/v1/category/update/${updatedCategory._id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            category_name: updatedCategory.category_name,
-            category_resources: updatedCategory.category_resources,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to Edit Category");
-      }
-      setSelectedCategory(null);
-      fetchCategories();
-    } catch (error) {
-      console.error("Error updating status:", error.message);
-      setSelectedCategory(null);
-    }
-  };
-
-  const saveQuestion = async (updatedQuestion) => {
-    console.log("Saving question", updatedQuestion);
-    try {
-      const response = await fetch(
-        `${host}/api/v1/question/update/${updatedQuestion._id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            question_name: updatedQuestion.question_name,
-            question_difficulty: updatedQuestion.question_difficulty,
-            question_solution: updatedQuestion.question_solution,
-            question_link: updatedQuestion.question_link,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to Edit Category");
-      }
-      setSelectedQuestion(null);
-      fetchCategories();
-    } catch (error) {
-      console.error("Error updating Question:", error.message);
-      setSelectedCategory(null);
-    }
-  };
-
-  const onDeleteCategory = async (cid) => {
-    try {
-      const response = await fetch(`${host}/api/v1/category/delete/${cid}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Failed to Delete Category");
-      }
-      setDeleteCategoryId(null);
-      fetchCategories();
-    } catch (error) {
-      console.error("Error deleting Question:", error.message);
-      setDeleteQuestionId(null);
-    }
-  };
-
-  const onDeleteQuestion = async (qid) => {
-    try {
-      const response = await fetch(
-        `${host}/api/v1/question/delete/${qid}/${refCategoryId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to Delete Question");
-      }
-      setDeleteQuestionId(null);
-      setRefCategoryId(null);
-      fetchCategories();
-    } catch (error) {
-      console.error("Error deleting Question:", error.message);
-      setRefCategoryId(null);
-      setDeleteQuestionId(null);
-    }
-  };
-
-  const openCategoryModal = (category) => {
-    toggleDropdown(category._id);
-    setSelectedCategory(category);
-  };
-
-  const openQuestionModal = (question) => {
-    setSelectedQuestion(question);
-  };
-
-  const handleDeleteCategory = () => {
-    onDeleteCategory(deleteCategoryId);
-  };
-
-  const handleDeleteQuestion = () => {
-    onDeleteQuestion(deleteQuestionId);
   };
 
   const filteredCategories = categories.filter(
@@ -210,15 +93,20 @@ function CategoriesAccordion({ categories, fetchCategories }) {
             </div>
             <div className="flex space-x-4">
               <button
-                onClick={() => openCategoryModal(category)}
+                onClick={() => {
+                  setEditCategory(true);
+                  setSelectedCategory(category);
+                  toggleDropdown(category._id);
+                }}
                 className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 focus:outline-none"
               >
                 <FaEdit />
               </button>
               <button
                 onClick={() => {
-                  setAddQuestion(true);
-                  setRefCategoryId(category._id);
+                  setSelectedCategory(category);
+                  setAddModal(true);
+                  toggleDropdown(category._id);
                 }}
                 className="text-green-500 hover:text-green-700 dark:text-green-300 dark:hover:text-green-500 focus:outline-none "
               >
@@ -226,7 +114,8 @@ function CategoriesAccordion({ categories, fetchCategories }) {
               </button>
               <button
                 onClick={() => {
-                  setDeleteCategoryId(category._id);
+                  setSelectedCategory(category);
+                  setDeleteCategory(true);
                   toggleDropdown(category._id);
                 }}
                 className="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-500 focus:outline-none"
@@ -254,16 +143,19 @@ function CategoriesAccordion({ categories, fetchCategories }) {
                     </div>
                     <div className="flex space-x-4">
                       <button
-                        onClick={() => openQuestionModal(question)}
+                        onClick={() => {
+                          setEditQuestion(true);
+                          setSelectedQuestion(question);
+                        }}
                         className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 focus:outline-none"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => {
-                          setDeleteQuestionId(question._id);
-                          setRefCategoryId(category._id);
-                          toggleDropdown(category._id);
+                          setSelectedCategory(category);
+                          setSelectedQuestion(question);
+                          setDeleteQuestion(true);
                         }}
                         className="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-500 focus:outline-none"
                       >
@@ -276,42 +168,59 @@ function CategoriesAccordion({ categories, fetchCategories }) {
           )}
         </div>
       ))}
-      {selectedCategory && (
+      {editCategory && (
         <EditCategoryModal
           category={selectedCategory}
-          onSave={saveCategory}
-          onClose={() => setSelectedCategory(null)}
+          fetchCategories={fetchCategories}
+          onClose={() => {
+            setEditCategory(false);
+            setSelectedCategory(null);
+          }}
         />
       )}
-      {selectedQuestion && (
+      {editQuestion && (
         <EditQuestionModal
           question={selectedQuestion}
-          onSave={saveQuestion}
-          onClose={() => setSelectedQuestion(null)}
+          fetchCategories={fetchCategories}
+          onClose={() => {
+            setEditQuestion(false);
+            setSelectedQuestion(null);
+          }}
         />
       )}
-      {deleteCategoryId && (
+      {deleteCategory && (
         <ConfirmationModal
           message="Are you sure you want to delete this category?"
-          onConfirm={handleDeleteCategory}
-          onCancel={() => setDeleteCategoryId(null)}
+          fetchCategories={fetchCategories}
+          selectedCategory={selectedCategory}
+          selectedQuestion={null}
+          onCancel={() => {
+            setDeleteCategory(false);
+            setSelectedCategory(null);
+          }}
         />
       )}
-      {deleteQuestionId && (
+      {deleteQuestion && (
         <ConfirmationModal
           message="Are you sure you want to delete this question?"
-          onConfirm={handleDeleteQuestion}
-          onCancel={() => setDeleteQuestionId(null)}
+          fetchCategories={fetchCategories}
+          selectedCategory={selectedCategory}
+          selectedQuestion={selectedQuestion}
+          onCancel={() => {
+            setDeleteQuestion(false);
+            setSelectedCategory(null);
+            setSelectedQuestion(null);
+          }}
         />
       )}
       {addModal && (
-        <AddModal categories={categories} onClose={() => setAddModal(false)} />
-      )}
-      {addQuestion && (
-        <AddQuestionModal
+        <AddModal
+          categories={categories}
+          selectedCategory={selectedCategory}
+          fetchCategories={fetchCategories}
           onClose={() => {
-            setAddQuestion(false);
-            setRefCategoryId(null);
+            setAddModal(false);
+            setSelectedCategory(null);
           }}
         />
       )}

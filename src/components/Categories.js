@@ -14,12 +14,10 @@ function Categories() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setProgress,setError } = context;
+  const { setProgress, setError } = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
-
-
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -29,8 +27,6 @@ function Categories() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
 
   const getAllData = async () => {
     try {
@@ -55,7 +51,7 @@ function Categories() {
       setIsLoading(false);
       setProgress(100);
     } catch (error) {
-      setError(error.message||"Error fetching responses");
+      setError(error.message || "Error fetching responses");
     }
   };
 
@@ -69,7 +65,6 @@ function Categories() {
 
   return (
     <div className="container mx-auto px-4 pt-7 pb-5 w-full relative">
-
       <div className="pb-6">
         <HorizontalProgressBar
           percentage={Total_percentage}

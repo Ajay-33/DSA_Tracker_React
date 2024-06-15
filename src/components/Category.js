@@ -6,7 +6,8 @@ function Category({ category, userResponses }) {
   const category_name = category.category_name;
   const categoryValues = userResponses && userResponses.category_values;
   const categoryData = categoryValues && categoryValues[category_name];
-  const { categoryQuestions, categoryDone, categoryPercentage } = categoryData || {};
+  const { categoryQuestions, categoryDone, categoryPercentage } =
+    categoryData || {};
 
   return (
     <Link to={`/${category._id}`}>
