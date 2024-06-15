@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import CategoriesAccordion from "./CategoriesAccordion";
 import RolesMenu from "./RolesMenu";
 
-
 function AdminPanel() {
   const navigate = useNavigate();
   const host = "http://localhost:8080";
   const [users, setUsers] = useState([]);
   const [admins, setAdmins] = useState([]);
-  const[superAdmins,setSuperAdmins]=useState([]);
+  const [superAdmins, setSuperAdmins] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const context = useContext(QuestionsContext);
@@ -31,7 +30,9 @@ function AdminPanel() {
       const json = await response.json();
       const usersData = json.filter((user) => user.userType === "User");
       const adminsData = json.filter((user) => user.userType === "Admin");
-      const superAdminsData = json.filter((user) => user.userType === "Super Admin");
+      const superAdminsData = json.filter(
+        (user) => user.userType === "Super Admin"
+      );
       setUsers(usersData);
       setAdmins(adminsData);
       setSuperAdmins(superAdminsData);
