@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 
@@ -10,8 +10,8 @@ function Signup() {
     cpassword: "",
   });
   const navigate = useNavigate();
-  const context=useContext(QuestionsContext);
-  const {setUserType,setError}=context;
+  const context = useContext(QuestionsContext);
+  const { setUserType, setError } = context;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -24,47 +24,53 @@ function Signup() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     const { name, email, password, cpassword } = credentials;
-  
+
     if (cpassword !== password) {
       setError("Passwords do not match");
       return;
     }
-  
+
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:8080/api/v1/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password }),
+        }
+      );
+
       const json = await response.json();
-  
+
       if (!response.ok) {
-        throw new Error(json.message || 'Network response was not ok');
+        throw new Error(json.message || "Network response was not ok");
       }
-  
+
       if (json.success) {
         localStorage.setItem("token", json.token);
-          if(json.user.userType==='Admin'||json.user.userType==='Super Admin'){
-          localStorage.setItem("userType",json.user.userType);
-          setUserType('Admin');
+        if (
+          json.user.userType === "Admin" ||
+          json.user.userType === "Super Admin"
+        ) {
+          localStorage.setItem("userType", json.user.userType);
+          setUserType("Admin");
           navigate("/admin");
-        }
-        else{
-          localStorage.setItem("userType",'User');
-          setUserType('User');
+        } else {
+          localStorage.setItem("userType", "User");
+          setUserType("User");
           navigate("/");
         }
         setError("Account created Successfully");
       }
     } catch (error) {
-      setError(error.message || "There was an error creating your account.Please try again")
+      setError(
+        error.message ||
+          "There was an error creating your account.Please try again"
+      );
     }
-  }
-  
-  
+  };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -82,7 +88,7 @@ function Signup() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Name
+              Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -99,7 +105,7 @@ function Signup() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Email
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -115,7 +121,7 @@ function Signup() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Password
+              Password <span className="text-red-500">*</span>
             </label>
             <input
               type="password"
@@ -132,7 +138,7 @@ function Signup() {
               htmlFor="cpassword"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Confirm Password
+              Confirm Password <span className="text-red-500">*</span>
             </label>
             <input
               type="password"

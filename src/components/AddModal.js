@@ -73,8 +73,8 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
           }
         );
         if (response.ok) {
-          fetchCategories();
           onClose();
+          fetchCategories();
         } else {
           const json = await response.json();
           console.log(json);
@@ -89,7 +89,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
   const renderCategoryFields = () => (
     <>
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Category Name
+        Category Name <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
@@ -100,7 +100,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         required
       />
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Category Resource
+        Category Resource <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
@@ -118,7 +118,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
       {!selectedCategory && (
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-            Select Category
+            Select Category <span className="text-red-500">*</span>
           </label>
           <select
             className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -137,7 +137,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
       )}
 
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Question Name
+        Question Name <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
@@ -148,7 +148,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         required
       />
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Question Difficulty
+        Question Difficulty <span className="text-red-500">*</span>
       </label>
       <select
         className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -161,12 +161,12 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         <option value="Hard">Hard</option>
       </select>
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Question Link 1
+        Question Link 1 <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
         className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Question Link 1"
+        placeholder="LeetCode Link"
         value={questionLink1}
         onChange={(e) => setQuestionLink1(e.target.value)}
         required
@@ -177,12 +177,13 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
       <input
         type="text"
         className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Question Link 2"
+        placeholder="Coding Ninjas Link"
         value={questionLink2}
         onChange={(e) => setQuestionLink2(e.target.value)}
+        required
       />
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 my-2">
-        Solution Link
+        Solution Link <span className="text-red-500">*</span>
       </label>
       <input
         type="text"

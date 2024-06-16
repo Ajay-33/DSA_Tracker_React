@@ -70,7 +70,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Question Name
+              Question Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -83,7 +83,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Question Difficulty
+              Question Difficulty <span className="text-red-500">*</span>
             </label>
             <select
               value={questionDifficulty}
@@ -98,7 +98,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Question Link 1
+              Question Link 1 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -118,12 +118,12 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
               value={questionLink2}
               onChange={(e) => setQuestionLink2(e.target.value)}
               className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Coding Ninjas Link "
+              placeholder="Coding Ninjas Link"
             />
           </div>
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Solution Link
+              Solution Link <span className="text-red-500">*</span>
             </label>
             <input
               type="text"

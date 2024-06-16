@@ -70,7 +70,7 @@ function Login() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Email address
+              Email address <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -80,6 +80,7 @@ function Login() {
               id="email"
               name="email"
               aria-describedby="emailHelp"
+              required
             />
           </div>
           <div className="mb-6">
@@ -87,7 +88,7 @@ function Login() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Password
+              Password <span className="text-red-500">*</span>
             </label>
             <input
               type="password"
@@ -96,6 +97,7 @@ function Login() {
               value={credentials.password}
               onChange={onChange}
               id="password"
+              required
             />
           </div>
           <div className="flex items-center justify-between">

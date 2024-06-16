@@ -7,8 +7,9 @@ const isValidID = (_id) => mongoose.Types.ObjectId.isValid(_id);
 const isValidQuestionData = (questionData) => {
   return (
     questionData.question_name &&
-    questionData.question_link &&
-    questionData.question_link.length > 0
+    questionData.question_link[0] &&
+    questionData.question_link.length > 0&&
+    questionData.question_solution
   );
 };
 
@@ -43,7 +44,7 @@ const addMultipleQuestions = async (req, res, category, allQuestions, next) => {
 
   for (const questionData of req.body) {
     if (!isValidQuestionData(questionData)) {
-      return next("Question name and at least one question_link is required");
+      return next("Question name and at least one Question link is required");
     }
     const existingQuestion = allQuestions.find(
       (que) => que.question_name === questionData.question_name
@@ -80,7 +81,7 @@ const addSingleQuestion = async (req, res, category, allQuestions, next) => {
   if (!isValidQuestionData(req.body)) {
     return res
       .status(400)
-      .json({ message: "Question name and question_link are required" });
+      .json({ message: "Please fill out all the required fields" });
   }
 
   const existingQuestion = allQuestions.find(
