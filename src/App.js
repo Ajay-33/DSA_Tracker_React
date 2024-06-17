@@ -14,7 +14,7 @@ import QuestionsContext from "./context/questions/QuestionsContext";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
-import UserTable from "./components/UserTable";
+import RolesTable from "./components/RolesTable";
 
 function App() {
   const context = useContext(QuestionsContext);
@@ -53,7 +53,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Categories />} />
           <Route exact path="/admin" element={<AdminPanel />} />
-          <Route exact path="/roles" element={<UserTable/>}/>
+          <Route exact path="/roles" element={<RolesTable/>}/>
           <Route exact path="/:id" element={<Questions />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
