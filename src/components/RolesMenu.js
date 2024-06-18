@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import RoleCard from "./RoleCard";
 import PaginatedRoleList from "./PaginatedRoleList";
 
-function RolesMenu({ superAdmins, admins, users }) {
+function RolesMenu({ superAdmins, admins, users,fetchUsers }) {
   const [userPage, setUserPage] = useState(0);
   const [adminPage, setAdminPage] = useState(0);
   const itemsPerPage = 4;
@@ -24,7 +24,7 @@ function RolesMenu({ superAdmins, admins, users }) {
           SuperAdmins ({superAdmins.length})
         </span>
         {superAdmins.map((superAdmin) => (
-          <RoleCard key={superAdmin._id} role={superAdmin} />
+          <RoleCard key={superAdmin._id} role={superAdmin} fetchUsers={fetchUsers} />
         ))}
       </div>
 
@@ -34,6 +34,7 @@ function RolesMenu({ superAdmins, admins, users }) {
         currentPage={adminPage}
         onPageChange={setAdminPage}
         itemsPerPage={itemsPerPage}
+        fetchUsers={fetchUsers}
       />
 
       <PaginatedRoleList
@@ -42,6 +43,7 @@ function RolesMenu({ superAdmins, admins, users }) {
         currentPage={userPage}
         onPageChange={setUserPage}
         itemsPerPage={itemsPerPage}
+        fetchUsers={fetchUsers}
       />
     </div>
   );

@@ -4,9 +4,11 @@ import QuestionsContext from "../context/questions/QuestionsContext";
 function ConfirmationModal({
   message,
   selectedCategory,
+  selectedUser,
   selectedQuestion,
   fetchCategories,
   onCancel,
+  fetchUsers,
 }) {
   const context = useContext(QuestionsContext);
   const { host, setError } = context;
@@ -59,6 +61,30 @@ function ConfirmationModal({
     }
   };
 
+  const onDeleteUser = async () => {
+    try {
+      const response = await fetch(
+        `${host}/api/v1/auth/users/delete/${selectedUser._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.message);
+      }
+      onCancel();
+      fetchUsers();
+    } catch (error) {
+      setError(error.message || "Error deleting Question");
+      onCancel();
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm">
@@ -79,7 +105,13 @@ function ConfirmationModal({
             Cancel
           </button>
           <button
-            onClick={selectedQuestion ? onDeleteQuestion : onDeleteCategory}
+            onClick={
+              selectedQuestion
+                ? onDeleteQuestion
+                : selectedUser
+                ? onDeleteUser
+                : onDeleteCategory
+            }
             className="px-3 py-1 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             Confirm

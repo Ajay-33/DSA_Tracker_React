@@ -5,10 +5,19 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { FaSortDown, FaSortUp, FaSearch } from "react-icons/fa";
+import {
+  FaSortDown,
+  FaSortUp,
+  FaSearch,
+  FaTrash,
+  FaEdit,
+} from "react-icons/fa";
 import { useGlobalFilter, useSortBy, useTable } from "react-table";
 import { useNavigate } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import EditUserModal from "./EditUserModal";
+import ConfirmationModal from "./ConfirmationModal";
+import AdminHeader from "./AdminHeader";
 
 function RolesTable() {
   const navigate = useNavigate();
@@ -20,7 +29,10 @@ function RolesTable() {
   const [showUsers, setShowUsers] = useState(true);
   const [showAdmins, setShowAdmins] = useState(true);
   const [showSuperAdmins, setShowSuperAdmins] = useState(true);
-  
+  const [editUser, setEditUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [deleteUser, setDeleteUser] = useState(false);
+
   const fetchUsers = useCallback(async () => {
     try {
       const response = await fetch(`${host}/api/v1/auth/users`, {
@@ -34,7 +46,29 @@ function RolesTable() {
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setData(json);
+
+      let userCount = 0;
+      let adminCount = 0;
+      let superAdminCount = 0;
+
+      const users = json.map((user) => {
+        let prefix;
+        let count;
+        if (user.userType === "User") {
+          prefix = "U-";
+          count = ++userCount;
+        } else if (user.userType === "Admin") {
+          prefix = "A-";
+          count = ++adminCount;
+        } else if (user.userType === "Super Admin") {
+          prefix = "S-";
+          count = ++superAdminCount;
+        }
+        const serialId = `${prefix}${count.toString().padStart(3, "0")}`;
+        return { ...user, serialId };
+      });
+
+      setData(users);
     } catch (error) {
       console.error(error.message || "Error fetching users:");
     }
@@ -75,7 +109,7 @@ function RolesTable() {
       },
       {
         Header: "ID",
-        accessor: "_id",
+        accessor: "serialId",
       },
       {
         Header: "Name",
@@ -110,8 +144,34 @@ function RolesTable() {
           );
         },
       },
+      ...(userType === "Super Admin"
+        ? [
+            {
+              Header: "Actions",
+              accessor: "actions",
+              Cell: ({ row }) => (
+                <div className="flex space-x-6">
+                  <FaEdit
+                    className="text-blue-600 hover:text-blue-900 cursor-pointer"
+                    onClick={() => {
+                      setEditUser(true);
+                      setSelectedUser(row.original);
+                    }}
+                  />
+                  <FaTrash
+                    className="text-red-600 hover:text-red-900 cursor-pointer"
+                    onClick={() => {
+                      setDeleteUser(true);
+                      setSelectedUser(row.original);
+                    }}
+                  />
+                </div>
+              ),
+            },
+          ]
+        : []),
     ],
-    []
+    [userType]
   );
 
   const {
@@ -128,19 +188,15 @@ function RolesTable() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
-      <div className="w-full h-15 p-4 flex justify-between items-center bg-blue-600 dark:bg-blue-800 shadow-md rounded">
-        <div className="w-1/4"></div>
-        <div className="text-2xl text-white font-bold">User Info</div>
-        <div className="w-1/4 flex justify-end"></div>
-      </div>
-      <div className="container mt-8 space-y-2 py-4 pb-6 min-h-screen p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
+    <AdminHeader userType={userType} text="User Info" fetchUsers={fetchUsers}/>
+      <div className="mt-8 space-y-2 py-4 pb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
         <div className="search-container flex items-center justify-between mb-4 relative">
           <div className="relative w-1/3">
             <input
               type="text"
               value={globalFilter || ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
-              className="pl-10 p-1 py-2.5 w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-md transition duration-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="pl-9 py-1.5 w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-md transition duration-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
               placeholder="Global Search"
             />
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400" />
@@ -165,93 +221,108 @@ function RolesTable() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <label className="flex items-center text-white">
+            <label className="flex items-center text-gray-800 dark:text-gray-100">
               <input
                 type="checkbox"
                 checked={showUsers}
                 onChange={() => setShowUsers(!showUsers)}
                 className="mr-2"
               />
-              Users({userCount})
+              Users ({userCount})
             </label>
-            <label className="flex items-center text-white">
+            <label className="flex items-center text-gray-800 dark:text-gray-100">
               <input
                 type="checkbox"
                 checked={showAdmins}
                 onChange={() => setShowAdmins(!showAdmins)}
                 className="mr-2"
               />
-              Admins({adminCount})
+              Admins ({adminCount})
             </label>
-            <label className="flex items-center text-white">
+            <label className="flex items-center text-gray-800 dark:text-gray-100">
               <input
                 type="checkbox"
                 checked={showSuperAdmins}
                 onChange={() => setShowSuperAdmins(!showSuperAdmins)}
                 className="mr-2"
               />
-              Super Admins({superAdminCount})
+              Super Admins ({superAdminCount})
             </label>
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-lg">
-          <table
-            {...getTableProps()}
-            className="w-full bg-white shadow-md rounded"
-          >
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className="py-3 px-6 bg-blue-600 dark:bg-blue-800 text-left text-sm font-semibold text-white uppercase cursor-pointer"
-                    >
-                      <div className="flex items-center">
-                        <span>{column.render("Header")}</span>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <FaSortDown className="ml-1 text-gray-400" />
-                          ) : (
-                            <FaSortUp className="ml-1 text-gray-400" />
-                          )
+        <table
+          {...getTableProps()}
+          className="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md transition duration-500"
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className="p-3 text-left text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 font-semibold text-sm tracking-wide border-b border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300"
+                  >
+                    <div className="flex items-center">
+                      {column.render("Header")}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <FaSortDown className="ml-2" />
                         ) : (
-                          ""
-                        )}
-                      </div>
-                    </th>
+                          <FaSortUp className="ml-2" />
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="border-b border-gray-300 dark:border-gray-700 transition duration-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className="p-3 text-gray-800 dark:text-gray-100 text-sm transition duration-300"
+                    >
+                      {cell.render("Cell")}
+                    </td>
                   ))}
                 </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row, rowIndex) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className={`${
-                      rowIndex % 2 === 0
-                        ? "bg-gray-50 dark:bg-gray-200"
-                        : "bg-white dark:bg-gray-300"
-                    } transition-all duration-300 ease-in-out hover:bg-gray-100 dark:hover:bg-stone-300`}
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="py-4 px-6 border-b border-zinc-300 dark:border-gray-500 whitespace-nowrap"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+      {editUser && (
+        <EditUserModal
+          fetchUsers={fetchUsers}
+          user={selectedUser}
+          onClose={() => {
+            setEditUser(false);
+            setSelectedUser(null);
+          }}
+        />
+      )}
+      {deleteUser && (
+        <ConfirmationModal
+          fetchUsers={fetchUsers}
+          selectedUser={selectedUser}
+          message={`Are you sure you want to delete ${selectedUser.name} (${selectedUser.userType}) ?`}
+          onCancel={() => {
+            setDeleteUser(false);
+            setSelectedUser(false);
+          }}
+        />
+      )}
     </div>
   );
 }

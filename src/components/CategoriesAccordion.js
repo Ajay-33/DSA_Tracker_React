@@ -94,7 +94,7 @@ function CategoriesAccordion({ categories, fetchCategories }) {
           />
           <div className="group relative">
             <button
-              className="text-base rounded-sm p-2 dark:bg-green-600 dark:text-white bg-green-700 ml-2 text-white flex items-center justify-center transition-transform transform hover:scale-110"
+              className="text-base rounded-sm p-2 bg-green-500 hover:bg-green-600 text-white ml-2 flex items-center justify-center transition-transform transform hover:scale-110"
               onClick={() => setAddModal(true)}
             >
               <FaPlus />

@@ -55,7 +55,7 @@ function Signup() {
           json.user.userType === "Super Admin"
         ) {
           localStorage.setItem("userType", json.user.userType);
-          setUserType("Admin");
+          setUserType(json.user.userType);
           navigate("/admin");
         } else {
           localStorage.setItem("userType", "User");

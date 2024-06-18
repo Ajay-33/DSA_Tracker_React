@@ -1,5 +1,6 @@
 import usermodel from "../models/usermodel.js";
 import fs from "fs";
+import mongoose from "mongoose";
 import path from "path";
 
 const getConfigFile = () => {
@@ -148,7 +149,7 @@ export const loginController = async (req, res, next) => {
     }
 
     const user = await usermodel.findOne({ email }).select("+password");
-
+    console.log(user);
     if (!user) {
       res.status(400).json({ message: "Invalid Email or Password" });
     }
@@ -159,7 +160,6 @@ export const loginController = async (req, res, next) => {
       throw new Error("Invalid Email or Password");
     }
 
-    user.password = undefined;
     const token = user.createJWT();
 
     res.status(200).json({
@@ -175,9 +175,80 @@ export const loginController = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await usermodel.find();
+    const users = await usermodel.find().select("-password");
     res.status(200).json(users);
   } catch (error) {
     return next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid User ID" });
+  }
+
+  try {
+    const user = await usermodel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.userType === "Admin" || user.userType === "Super Admin") {
+      const predefinedAdminEmails = loadPredefinedAdminEmails();
+      const index = predefinedAdminEmails.indexOf(user.email);
+
+      if (index !== -1) {
+        predefinedAdminEmails.splice(index, 1);
+        const configFile = getConfigFile();
+        fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
+      }
+    }
+
+    await usermodel.findByIdAndDelete(id);
+    res.status(200).json({ message: "User successfully deleted" });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const editRole = async (req, res) => {
+  const { id } = req.params;
+  const { userType } = req.body;
+
+  try {
+    const user = await usermodel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const predefinedAdminEmails = loadPredefinedAdminEmails();
+
+    if (userType === "Admin" || userType === "Super Admin") {
+      if (!predefinedAdminEmails.includes(user.email)) {
+        predefinedAdminEmails.push(user.email);
+        const configFile = getConfigFile();
+        fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
+      }
+    } else if (userType === "User") {
+      const index = predefinedAdminEmails.indexOf(user.email);
+      if (index !== -1) {
+        predefinedAdminEmails.splice(index, 1);
+        const configFile = getConfigFile();
+        fs.writeFileSync(configFile, JSON.stringify(predefinedAdminEmails));
+      }
+    }
+
+    user.userType = userType;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "User role updated successfully" });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

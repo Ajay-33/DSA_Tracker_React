@@ -42,7 +42,7 @@ function Login() {
         localStorage.setItem("token", json.token);
         if(json.user.userType==='Admin'||json.user.userType==='Super Admin'){
           localStorage.setItem("userType",json.user.userType);
-          setUserType('Admin');
+          setUserType(json.user.userType);
           navigate("/admin");
         }
         else{

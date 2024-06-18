@@ -3,6 +3,7 @@ import QuestionsContext from "../context/questions/QuestionsContext";
 import { useNavigate } from "react-router-dom";
 import CategoriesAccordion from "./CategoriesAccordion";
 import RolesMenu from "./RolesMenu";
+import AdminHeader from "./AdminHeader";
 
 function AdminPanel() {
   const navigate = useNavigate();
@@ -68,23 +69,24 @@ function AdminPanel() {
     } else {
       fetchCategories();
       fetchUsers();
+      console.log(userType);
     }
   }, [userType, navigate, fetchCategories, fetchUsers]);
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
-      <div className="w-full h-15 p-4 flex justify-between items-center bg-blue-600 dark:bg-blue-800 shadow-md rounded">
-        <div className="w-1/4"></div>
-        <div className="text-2xl text-white font-bold">Admin Panel</div>
-        <div className="w-1/4"></div>
-      </div>
-
+      <AdminHeader userType={userType} text="Admin Panel" fetchUsers={fetchUsers}/>
       <div className="flex flex-col lg:flex-row mt-8 space-y-8 lg:space-y-0 lg:space-x-8">
         <CategoriesAccordion
           categories={categories}
           fetchCategories={fetchCategories}
         />
-        <RolesMenu users={users} admins={admins} superAdmins={superAdmins} />
+        <RolesMenu
+          users={users}
+          admins={admins}
+          superAdmins={superAdmins}
+          fetchUsers={fetchUsers}
+        />
       </div>
     </div>
   );

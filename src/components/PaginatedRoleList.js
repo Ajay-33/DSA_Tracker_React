@@ -2,7 +2,7 @@ import React from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import RoleCard from "./RoleCard";
 
-function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPage }) {
+function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPage,fetchUsers }) {
   const paginatedRoles = roles.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
@@ -26,7 +26,7 @@ function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPa
         {title} ({roles.length})
       </span>
       {paginatedRoles.map((role) => (
-        <RoleCard key={role._id} role={role} />
+        <RoleCard key={role._id} role={role} fetchUsers={fetchUsers} />
       ))}
       <div className="flex justify-between items-center">
         <button
