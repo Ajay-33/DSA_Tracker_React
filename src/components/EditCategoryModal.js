@@ -27,6 +27,7 @@ function EditCategoryModal({ category, onClose, fetchCategories }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError(`Succesfully updated category ${updatedCategory.category_name}`)
       onClose();
       fetchCategories();
     } catch (error) {

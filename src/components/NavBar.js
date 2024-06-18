@@ -1,16 +1,18 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRightLeft } from "lucide-react";
 
 function NavBar() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { mode, setMode } = context;
+  const { mode, setMode, userType } = context;
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("mode");
+    localStorage.removeItem("userType");
     navigate("/login");
   };
 
@@ -20,14 +22,12 @@ function NavBar() {
   };
 
   const updateMode = async () => {
-    if (mode === "dark") {
-      localStorage.setItem("mode", "light");
-      setMode("light");
-    } else {
-      localStorage.setItem("mode", "dark");
-      setMode("dark");
-    }
+    const newMode = mode === "dark" ? "light" : "dark";
+    localStorage.setItem("mode", newMode);
+    setMode(newMode);
   };
+
+  const isHome = location.pathname === "/";
 
   return (
     <div
@@ -49,7 +49,16 @@ function NavBar() {
             </span>
           </Link>
 
-          <div className=" hidden sm:flex items-center">
+          <div className="hidden sm:flex items-center">
+            {["Admin", "Super Admin"].includes(userType) && (
+              <Link
+                to={isHome ? "/admin" : "/"}
+                className="mx-2 transition-transform transform"
+              >
+                <ArrowRightLeft className="dark:text-white text-gray-400"/>
+              </Link>
+            )}
+
             {!localStorage.getItem("token") ? (
               <div className="flex">
                 <Link

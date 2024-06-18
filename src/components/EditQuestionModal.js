@@ -33,6 +33,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError('Succesfully updated question');
       onClose();
       fetchCategories();
     } catch (error) {

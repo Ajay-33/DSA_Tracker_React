@@ -112,8 +112,12 @@ function RolesTable() {
         accessor: "serialId",
       },
       {
-        Header: "Name",
-        accessor: "name",
+        Header: "First Name",
+        accessor: "firstName",
+      },
+      {
+        Header: "Last Name",
+        accessor: "lastName",
       },
       {
         Header: "Email",
@@ -188,7 +192,11 @@ function RolesTable() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
-    <AdminHeader userType={userType} text="User Info" fetchUsers={fetchUsers}/>
+      <AdminHeader
+        userType={userType}
+        text="User Info"
+        fetchUsers={fetchUsers}
+      />
       <div className="mt-8 space-y-2 py-4 pb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
         <div className="search-container flex items-center justify-between mb-4 relative">
           <div className="relative w-1/3">
@@ -316,7 +324,7 @@ function RolesTable() {
         <ConfirmationModal
           fetchUsers={fetchUsers}
           selectedUser={selectedUser}
-          message={`Are you sure you want to delete ${selectedUser.name} (${selectedUser.userType}) ?`}
+          message={`Are you sure you want to delete ${selectedUser.firstName} (${selectedUser.userType}) ?`}
           onCancel={() => {
             setDeleteUser(false);
             setSelectedUser(false);

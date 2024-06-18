@@ -4,7 +4,8 @@ import QuestionsContext from "../context/questions/QuestionsContext";
 
 function Signup() {
   const [credentials, setCredentials] = useState({
-    name: "",
+    fname: "",
+    lname:"",
     email: "",
     password: "",
     cpassword: "",
@@ -23,10 +24,16 @@ function Signup() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-    const { name, email, password, cpassword } = credentials;
+    const { fname,lname, email, password, cpassword } = credentials;
 
     if (cpassword !== password) {
       setError("Passwords do not match");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
       return;
     }
 
@@ -38,7 +45,7 @@ function Signup() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({ fname:fname,lname:lname, email, password }),
         }
       );
 
@@ -85,16 +92,33 @@ function Signup() {
         <form onSubmit={handleSubmission}>
           <div className="mb-4">
             <label
-              htmlFor="name"
+              htmlFor="fname"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Name <span className="text-red-500">*</span>
+              First Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400  sm:text-sm"
-              id="name"
-              name="name"
+              id="fname"
+              name="fname"
+              required
+              minLength={3}
+              onChange={onChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="lname"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400  sm:text-sm"
+              id="lname"
+              name="lname"
               required
               minLength={3}
               onChange={onChange}
@@ -129,7 +153,7 @@ function Signup() {
               id="password"
               name="password"
               required
-              minLength={6}
+              minLength={8}
               onChange={onChange}
             />
           </div>

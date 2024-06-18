@@ -75,7 +75,11 @@ function AdminPanel() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
-      <AdminHeader userType={userType} text="Admin Panel" fetchUsers={fetchUsers}/>
+      <AdminHeader
+        userType={userType}
+        text="Admin Panel"
+        fetchUsers={fetchUsers}
+      />
       <div className="flex flex-col lg:flex-row mt-8 space-y-8 lg:space-y-0 lg:space-x-8">
         <CategoriesAccordion
           categories={categories}

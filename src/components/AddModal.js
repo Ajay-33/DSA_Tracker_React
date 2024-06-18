@@ -30,7 +30,6 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         category_name: categoryName,
         category_resources: categoryResource,
       };
-      console.log(categoryData);
       try {
         const response = await fetch(`${host}/api/v1/category/add`, {
           method: "POST",
@@ -42,6 +41,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         });
         if (response.ok) {
           onClose();
+          setError(`Added Category ${categoryName}`)
           fetchCategories();
         } else {
           const json = await response.json();
@@ -74,6 +74,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         );
         if (response.ok) {
           onClose();
+          setError(`Succesfully Added Question`)
           fetchCategories();
         } else {
           const json = await response.json();

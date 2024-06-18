@@ -1,10 +1,10 @@
-import React, { useContext,useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType,setError } = context;
+  const { setUserType, setError } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -21,7 +21,7 @@ function Login() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch("http://localhost:8080/api/v1/auth/login", {
         method: "POST",
@@ -33,30 +33,32 @@ function Login() {
           password: credentials.password,
         }),
       });
-  
+
       const json = await response.json();
       if (!response.ok) {
         throw new Error(json.message);
       }
       if (response.ok && json.success) {
         localStorage.setItem("token", json.token);
-        if(json.user.userType==='Admin'||json.user.userType==='Super Admin'){
-          localStorage.setItem("userType",json.user.userType);
+        if (
+          json.user.userType === "Admin" ||
+          json.user.userType === "Super Admin"
+        ) {
+          localStorage.setItem("userType", json.user.userType);
           setUserType(json.user.userType);
           navigate("/admin");
-        }
-        else{
-          localStorage.setItem("userType",'User');
-          setUserType('User');
+        } else {
+          localStorage.setItem("userType", "User");
+          setUserType("User");
           navigate("/");
         }
-
       }
     } catch (error) {
-      setError(error.message || "An error occurred during login. Please try again");
+      setError(
+        error.message || "An error occurred during login. Please try again"
+      );
     }
   };
-  
 
   return (
     <div className="flex flex-col justify-center items-center mt-16 px-4">

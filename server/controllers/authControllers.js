@@ -102,10 +102,10 @@ export const removePredefinedEmailsController = async (req, res) => {
 };
 
 export const registerController = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { fname,lname, email, password } = req.body;
 
   try {
-    if (!name || !email || !password) {
+    if (!fname ||!lname|| !email || !password) {
       res.status(400).json({ message: "Please fill out all the fields" });
     }
 
@@ -119,7 +119,8 @@ export const registerController = async (req, res, next) => {
     const userType = predefinedAdminEmails.includes(email) ? "Admin" : "User";
 
     const user = await usermodel.create({
-      name,
+      firstName:fname,
+      lastName:lname,
       email,
       password,
       userType,
@@ -149,7 +150,7 @@ export const loginController = async (req, res, next) => {
     }
 
     const user = await usermodel.findOne({ email }).select("+password");
-    console.log(user);
+
     if (!user) {
       res.status(400).json({ message: "Invalid Email or Password" });
     }

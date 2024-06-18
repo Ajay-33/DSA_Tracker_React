@@ -32,7 +32,7 @@ function AdminHeader({ userType, text,fetchUsers }) {
         }
         fetchUsers();
         setAddEmail("");
-        setError(null);
+        setError('Succesfully added admin email');
       } catch (error) {
         setError(error.message || "Error adding admin email");
       }
@@ -56,7 +56,7 @@ function AdminHeader({ userType, text,fetchUsers }) {
         }
         fetchUsers();
         setDeleteEmail("");
-        setError(null);
+        setError('Succesfully deleted admin email');
       } catch (error) {
         setError(error.message || "Error removing admin email");
       }

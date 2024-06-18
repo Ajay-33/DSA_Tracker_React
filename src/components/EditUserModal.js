@@ -32,6 +32,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError(`Updated role of ${user.firstName} ${user.lastName} to ${user.userType}`)
       fetchUsers();
       onClose();
     } catch (error) {
@@ -59,11 +60,22 @@ function EditUserModal({ user, onClose, fetchUsers }) {
           </div>
           <div className="flex flex-col">
             <label className="text-sm text-gray-700 dark:text-gray-300 mb-1.5">
-              Name
+              First Name
             </label>
             <input
               type="text"
-              value={user.name}
+              value={user.firstName}
+              readOnly
+              className="rounded-md p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 outline-none"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-700 dark:text-gray-300 mb-1.5">
+              Last Name
+            </label>
+            <input
+              type="text"
+              value={user.lastName}
               readOnly
               className="rounded-md p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 outline-none"
             />

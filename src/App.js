@@ -26,7 +26,7 @@ function App() {
       const timer = setTimeout(() => {
         setShowError(false);
         setError(false);
-      }, 1000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [setError, error, setShowError]);

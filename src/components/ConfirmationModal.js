@@ -29,6 +29,7 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError(`Deleted Category ${selectedCategory.category_name}`);
       onCancel();
       fetchCategories();
     } catch (error) {
@@ -53,6 +54,7 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError(`Deleted Question ${selectedQuestion.question_name}`)
       onCancel();
       fetchCategories();
     } catch (error) {
@@ -77,10 +79,11 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
+      setError(`Succesfully deleted User`)
       onCancel();
       fetchUsers();
     } catch (error) {
-      setError(error.message || "Error deleting Question");
+      setError(error.message || "Error deleting User");
       onCancel();
     }
   };

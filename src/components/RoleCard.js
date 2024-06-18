@@ -7,7 +7,7 @@ function RoleCard({ role, fetchUsers }) {
   return (
     <div className="flex items-center justify-between bg-white dark:bg-gray-600 p-3 rounded-lg shadow-md transition duration-500 hover:shadow-xl">
       <div className="relative group">
-        <div className="text-gray-900 dark:text-gray-100">{role.name}</div>
+        <div className="text-gray-900 dark:text-gray-100">{role.firstName}</div>
       </div>
       <div className="flex space-x-2">
         <button
@@ -23,7 +23,7 @@ function RoleCard({ role, fetchUsers }) {
         <ConfirmationModal
           fetchUsers={fetchUsers}
           selectedUser={role}
-          message={`Are you sure you want to delete ${role.name} (${role.userType}) ?`}
+          message={`Are you sure you want to delete ${role.firstName} (${role.userType}) ?`}
           onCancel={() => {
             setDeleteUser(false);
           }}
