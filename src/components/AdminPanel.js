@@ -14,12 +14,12 @@ function AdminPanel() {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const context = useContext(QuestionsContext);
-  const { userType, setError, host } = context;
+  const { userType, setError } = context;
 
   const fetchUsers = useCallback(async () => {
     try {
       setLoadingUsers(true);
-      const response = await fetch(`${host}/api/v1/auth/users`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -44,12 +44,12 @@ function AdminPanel() {
       setError(error.message || "Error fetching users:");
       setLoadingUsers(false);
     }
-  }, [setError, host]);
+  }, [setError]);
 
   const fetchCategories = useCallback(async () => {
     try {
       setLoadingCategories(true);
-      const response = await fetch(`${host}/api/v1/category/show`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/category/show`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ function AdminPanel() {
       setError(error.message || "Error fetching categories:");
       setLoadingCategories(false);
     }
-  }, [setError, host]);
+  }, [setError]);
 
   useEffect(() => {
     if (userType === "User") {

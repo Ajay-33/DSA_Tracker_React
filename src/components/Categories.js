@@ -13,7 +13,7 @@ function Categories() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setProgress, setError,host } = context;
+  const { setProgress, setError } = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
@@ -31,7 +31,7 @@ function Categories() {
     try {
       setIsLoading(true);
       setProgress(25);
-      const response = await fetch(`${host}/api/v1/data/get-all-data`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/data/get-all-data`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

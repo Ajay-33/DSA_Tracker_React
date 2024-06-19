@@ -15,7 +15,6 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
 import RolesTable from "./components/RolesTable";
-
 function App() {
   const context = useContext(QuestionsContext);
   const { mode, progress, error, setError } = context;

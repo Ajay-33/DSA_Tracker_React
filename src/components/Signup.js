@@ -13,7 +13,7 @@ function Signup() {
   });
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError,host } = context;
+  const { setUserType, setError } = context;
   const[isLoading,setIsLoading]=useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function Signup() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${host}/api/v1/auth/register`,
+        `${process.env.REACT_APP_HOST}/api/v1/auth/register`,
         {
           method: "POST",
           headers: {

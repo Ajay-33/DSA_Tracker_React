@@ -6,7 +6,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
   const [addEmail, setAddEmail] = useState("");
   const [deleteEmail, setDeleteEmail] = useState("");
   const context = useContext(QuestionsContext);
-  const { setError, host } = context;
+  const { setError} = context;
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingDel, setIsLoadingDel] = useState(false);
 
@@ -22,7 +22,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
     if (addEmail && addEmail.trim() !== "") {
       try {
         setIsLoadingAdd(true);
-        const response = await fetch(`${host}/api/v1/auth/adminEmails/add`, {
+        const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/adminEmails/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
     if (deleteEmail.trim() !== "") {
       try {
         setIsLoadingDel(true);
-        const response = await fetch(`${host}/api/v1/auth/adminEmails/delete`, {
+        const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/adminEmails/delete`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

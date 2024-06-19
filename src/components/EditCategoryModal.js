@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 
 function EditCategoryModal({ category, onClose, fetchCategories }) {
   const context = useContext(QuestionsContext);
-  const { host, setError } = context;
+  const { setError } = context;
   const [categoryName, setCategoryName] = useState("");
   const [categoryResource, setCategoryResource] = useState("");
   const [isLoading,setIsLoading]=useState(false);
@@ -13,7 +13,7 @@ function EditCategoryModal({ category, onClose, fetchCategories }) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${host}/api/v1/category/update/${updatedCategory._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/category/update/${updatedCategory._id}`,
         {
           method: "PATCH",
           headers: {

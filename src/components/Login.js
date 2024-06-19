@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError, host } = context;
+  const { setUserType, setError } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -25,7 +25,7 @@ function Login() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${host}/api/v1/auth/login`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,6 +41,7 @@ function Login() {
         throw new Error(json.message);
       }
       if (response.ok && json.success) {
+        console.log(process.env.REACT_APP_API_KEY);
         setIsLoading(false);
         localStorage.setItem("token", json.token);
         if (

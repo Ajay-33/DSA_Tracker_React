@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify-icon/react";
-import QuestionsContext from "../context/questions/QuestionsContext";
 
 function Question({
   question,
@@ -10,15 +9,13 @@ function Question({
   setCategoryDone,
   categoryDone,
 }) {
-  const context = useContext(QuestionsContext);
-  const { host } = context;
   const [status, setStatus] = useState(Status);
   const [prevStatus, setPrevStatus] = useState(Status);
 
   const updateActions = async (qid, status) => {
     try {
       const response = await fetch(
-        `${host}/api/v1/response/status/add/${qid}`,
+        `${process.env.REACT_APP_HOST}/api/v1/response/status/add/${qid}`,
         {
           method: "POST",
           headers: {

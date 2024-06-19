@@ -26,7 +26,7 @@ function RolesTable() {
   const [userCount, setUserCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
   const [superAdminCount, setSuperAdminCount] = useState(0);
-  const { host, userType } = useContext(QuestionsContext);
+  const { userType } = useContext(QuestionsContext);
   const [showUsers, setShowUsers] = useState(true);
   const [showAdmins, setShowAdmins] = useState(true);
   const [showSuperAdmins, setShowSuperAdmins] = useState(true);
@@ -38,7 +38,7 @@ function RolesTable() {
   const fetchUsers = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${host}/api/v1/auth/users`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ function RolesTable() {
       console.error(error.message || "Error fetching users:");
       setIsLoading(false);
     }
-  }, [host]);
+  }, []);
 
   useEffect(() => {
     if (userType === "User") {

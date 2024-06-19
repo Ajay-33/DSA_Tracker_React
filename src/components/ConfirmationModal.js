@@ -12,14 +12,14 @@ function ConfirmationModal({
   fetchUsers,
 }) {
   const context = useContext(QuestionsContext);
-  const { host, setError } = context;
+  const { setError } = context;
   const [isLoading,setIsLoading]=useState(false);
 
   const onDeleteCategory = async () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${host}/api/v1/category/delete/${selectedCategory._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/category/delete/${selectedCategory._id}`,
         {
           method: "DELETE",
           headers: {
@@ -47,7 +47,7 @@ function ConfirmationModal({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${host}/api/v1/question/delete/${selectedQuestion._id}/${selectedCategory._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/question/delete/${selectedQuestion._id}/${selectedCategory._id}`,
         {
           method: "DELETE",
           headers: {
@@ -75,7 +75,7 @@ function ConfirmationModal({
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${host}/api/v1/auth/users/delete/${selectedUser._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/auth/users/delete/${selectedUser._id}`,
         {
           method: "DELETE",
           headers: {

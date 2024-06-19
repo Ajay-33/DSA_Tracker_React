@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 
 function EditQuestionModal({ question, onClose, fetchCategories }) {
   const context = useContext(QuestionsContext);
-  const { host, setError } = context;
+  const { setError } = context;
   const [questionName, setQuestionName] = useState("");
   const [questionLink1, setQuestionLink1] = useState("");
   const [questionLink2, setQuestionLink2] = useState("");
@@ -15,7 +15,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${host}/api/v1/question/update/${updatedQuestion._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/question/update/${updatedQuestion._id}`,
         {
           method: "PATCH",
           headers: {

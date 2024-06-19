@@ -3,7 +3,7 @@ import QuestionsContext from "../context/questions/QuestionsContext";
 
 function EditUserModal({ user, onClose, fetchUsers }) {
   const context = useContext(QuestionsContext);
-  const { host, setError } = context;
+  const { setError } = context;
   const [role, setRole] = useState("");
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${host}/api/v1/auth/users/update/${user._id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/auth/users/update/${user._id}`,
         {
           method: "PATCH",
           headers: {

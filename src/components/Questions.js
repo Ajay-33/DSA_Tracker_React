@@ -10,7 +10,7 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setError, setProgress, host } = context;
+  const { setError, setProgress } = context;
   const [isLoading, setIsLoading] = useState(true);
   const [catData, setCatData] = useState({});
   const [catRes, setCatRes] = useState({});
@@ -22,7 +22,7 @@ function Questions() {
       setIsLoading(true);
       setProgress(25);
       const response = await fetch(
-        `${host}/api/v1/data/get-categories-data/${id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/data/get-categories-data/${id}`,
         {
           method: "GET",
           headers: {
@@ -53,7 +53,7 @@ function Questions() {
   const getCategoryResponses = async (id) => {
     try {
       const response = await fetch(
-        `${host}/api/v1/data/get-category-responses/${id}`,
+        `${process.env.REACT_APP_HOST}/api/v1/data/get-category-responses/${id}`,
         {
           method: "GET",
           headers: {
@@ -101,7 +101,7 @@ function Questions() {
 
   const editNote = async (qid, notes) => {
     try {
-      const response = await fetch(`${host}/api/v1/response/notes/add/${qid}`, {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/response/notes/add/${qid}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
