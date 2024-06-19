@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function EditCategoryModal({ category, onClose, fetchCategories }) {
   const context = useContext(QuestionsContext);
   const { host, setError } = context;
   const [categoryName, setCategoryName] = useState("");
   const [categoryResource, setCategoryResource] = useState("");
+  const [isLoading,setIsLoading]=useState(false);
 
   const saveCategory = async (updatedCategory) => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${host}/api/v1/category/update/${updatedCategory._id}`,
         {
@@ -27,11 +30,13 @@ function EditCategoryModal({ category, onClose, fetchCategories }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Succesfully updated category ${updatedCategory.category_name}`);
-      onClose();
       fetchCategories();
+      setIsLoading(false);
+      onClose();
+      setError(`Succesfully updated category ${updatedCategory.category_name}`);
     } catch (error) {
       setError(error.message || "Failed to Edit Category");
+      setIsLoading(false)
     }
   };
   useEffect(() => {
@@ -52,8 +57,9 @@ function EditCategoryModal({ category, onClose, fetchCategories }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
+    {isLoading&&<Spinner/>}
+      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg mt-2 w-full max-w-md">
         <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-center text-gray-900 dark:text-gray-100">
           Edit Category
         </h2>

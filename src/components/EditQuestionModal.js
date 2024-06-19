@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function EditQuestionModal({ question, onClose, fetchCategories }) {
   const context = useContext(QuestionsContext);
@@ -9,9 +10,9 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
   const [questionLink2, setQuestionLink2] = useState("");
   const [questionDifficulty, setQuestionDifficulty] = useState("");
   const [questionSolutionLink, setQuestionSolutionLink] = useState("");
-
+  const[isLoading,setIsLoading]=useState(false);
   const saveQuestion = async (updatedQuestion) => {
-    console.log("Saving question", updatedQuestion);
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${host}/api/v1/question/update/${updatedQuestion._id}`,
@@ -33,11 +34,13 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError("Succesfully updated question");
-      onClose();
       fetchCategories();
+      onClose();
+      setError("Succesfully updated question");
+      setIsLoading(false);
     } catch (error) {
       setError(error.message || "Fail to Edit Question");
+      setIsLoading(false)
     }
   };
   useEffect(() => {
@@ -63,8 +66,9 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
-      <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
+    {isLoading&&<Spinner/>}
+      <div className="bg-white dark:bg-gray-800 p-4 mt-2 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center text-gray-900 dark:text-gray-100">
           Edit Question
         </h2>

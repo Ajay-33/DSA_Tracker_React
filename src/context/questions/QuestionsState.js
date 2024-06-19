@@ -2,7 +2,7 @@ import { useState } from "react";
 import QuestionsContext from "./QuestionsContext";
 
 const QuestionsState = (props) => {
-  const host = "http://localhost:8080";
+  const host = "https://dsa-tracker-backend-g03w.onrender.com";
   const defaultMode = localStorage.getItem("mode") || "dark";
   const [mode, setMode] = useState(defaultMode);
   const [progress, setProgress] = useState(0);

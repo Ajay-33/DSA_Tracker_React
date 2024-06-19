@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
   const context = useContext(QuestionsContext);
@@ -15,6 +16,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
   const [questionLink1, setQuestionLink1] = useState("");
   const [questionLink2, setQuestionLink2] = useState("");
   const [solutionLink, setSolutionLink] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -31,6 +33,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         category_resources: categoryResource,
       };
       try {
+        setIsLoading(true);
         const response = await fetch(`${host}/api/v1/category/add`, {
           method: "POST",
           headers: {
@@ -40,14 +43,16 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
           body: JSON.stringify(categoryData),
         });
         if (response.ok) {
-          onClose();
-          setError(`Added Category ${categoryName}`);
           fetchCategories();
+          onClose();
+          setIsLoading(false);
+          setError(`Added Category ${categoryName}`);
         } else {
           const json = await response.json();
           throw new Error(json.message);
         }
       } catch (error) {
+        setIsLoading(false);
         setError(error.message || "Failed to add category");
       }
     } else if (selectedOption === "question" || selectedCategory) {
@@ -59,6 +64,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
       };
       console.log(questionData);
       try {
+        setIsLoading(true);
         const response = await fetch(
           `${host}/api/v1/question/add/${
             optedCategory || selectedCategory._id
@@ -73,15 +79,16 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
           }
         );
         if (response.ok) {
+          fetchCategories();
+          setIsLoading(false);
           onClose();
           setError(`Succesfully Added Question`);
-          fetchCategories();
         } else {
           const json = await response.json();
-          console.log(json);
           throw new Error(json.message);
         }
       } catch (error) {
+        setIsLoading(false);
         setError(error.message || "Error saving question");
       }
     }
@@ -198,9 +205,10 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
   );
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-11/12 max-w-lg ">
-        <h2 className="text-lg font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50">
+      {isLoading&&<Spinner/>}
+      <div className="bg-white dark:bg-gray-800 mt-2 p-4 rounded-lg shadow-lg w-11/12 max-w-lg ">
+        <h2 className="text-lg font-semibold my-2 text-center text-gray-900 dark:text-gray-100">
           Add New
         </h2>
         {!selectedCategory && (
@@ -237,7 +245,6 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
             </label>
           </div>
         )}
-
         {selectedOption === "category" && renderCategoryFields()}
         {selectedOption === "question" && renderQuestionFields()}
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0  justify-end mt-4">

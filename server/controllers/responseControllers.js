@@ -65,7 +65,7 @@ export const showStatus = async (req, res, next) => {
     Question_id: qid,
   });
   if (!Response.Question_Status || Response.Question_Status === "Pending") {
-    console.log("Empty");
+    // console.log("Empty");
     res.status(200).json({
       Question_id: Response.Question_id,
       status: "Pending",
@@ -119,7 +119,7 @@ export const showStatusQuery = async (req, res, next) => {
         );
         queryResults = [...pendingQuestions, ...responseQuestions];
       }
-      console.log(queryResults);
+      // console.log(queryResults);
     }
 
     const extractedData = queryResults.map((result) => ({
@@ -196,7 +196,6 @@ export const showNotes = async (req, res, next) => {
   if (!Response) {
     res.status(200).json("No Notes");
   } else {
-    console.log(Response);
     res.json({
       Question_id: Response.Question_id,
       Notes: Response.Question_Notes || "No Notes",

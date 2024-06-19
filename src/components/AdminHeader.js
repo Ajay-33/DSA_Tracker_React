@@ -1,11 +1,14 @@
 import React, { useContext, useState } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function AdminHeader({ userType, text, fetchUsers }) {
   const [addEmail, setAddEmail] = useState("");
   const [deleteEmail, setDeleteEmail] = useState("");
   const context = useContext(QuestionsContext);
   const { setError, host } = context;
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+  const [isLoadingDel, setIsLoadingDel] = useState(false);
 
   const handleAddEmailChange = (e) => {
     setAddEmail(e.target.value);
@@ -18,6 +21,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
   const handleAddAdmin = async () => {
     if (addEmail && addEmail.trim() !== "") {
       try {
+        setIsLoadingAdd(true);
         const response = await fetch(`${host}/api/v1/auth/adminEmails/add`, {
           method: "POST",
           headers: {
@@ -33,8 +37,10 @@ function AdminHeader({ userType, text, fetchUsers }) {
         fetchUsers();
         setAddEmail("");
         setError("Successfully added admin email");
+        setIsLoadingAdd(false);
       } catch (error) {
         setError(error.message || "Error adding admin email");
+        setIsLoadingAdd(false);
       }
     }
   };
@@ -42,6 +48,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
   const handleDeleteAdmin = async () => {
     if (deleteEmail.trim() !== "") {
       try {
+        setIsLoadingDel(true);
         const response = await fetch(`${host}/api/v1/auth/adminEmails/delete`, {
           method: "DELETE",
           headers: {
@@ -57,8 +64,10 @@ function AdminHeader({ userType, text, fetchUsers }) {
         fetchUsers();
         setDeleteEmail("");
         setError("Successfully deleted admin email");
+        setIsLoadingDel(false);
       } catch (error) {
         setError(error.message || "Error removing admin email");
+        setIsLoadingDel(false);
       }
     }
   };
@@ -81,6 +90,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
               onChange={handleDeleteEmailChange}
               className="border border-gray-300 rounded-md py-0.5 px-1.5 md:px-2 md:py-1 mr-2 focus:outline-none focus:border-blue-500 transition duration-300"
             />
+            {isLoadingDel && <Spinner />}
           </div>
 
           <div className="text-lg text-gray-900 mb-2 md:mb-0 dark:text-white font-bold transition duration-300">
@@ -88,12 +98,13 @@ function AdminHeader({ userType, text, fetchUsers }) {
           </div>
 
           <div className="flex items-center">
+            {isLoadingAdd && <Spinner />}
             <input
               type="email"
               placeholder="Admin Email"
               value={addEmail}
               onChange={handleAddEmailChange}
-              className="border border-gray-300 rounded-md py-0.5 px-1.5 md:px-2 md:py-1 mr-2 focus:outline-none focus:border-blue-500 transition duration-300"
+              className="border border-gray-300 rounded-md py-0.5 px-1.5 md:px-2 md:py-1 mx-2 focus:outline-none focus:border-blue-500 transition duration-300"
             />
             <button
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-0.5 px-1.5 md:py-1 md:px-2 rounded mr-2 transition duration-300"

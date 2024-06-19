@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError } = context;
+  const { setUserType, setError,host } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -14,7 +15,7 @@ function Login() {
   }, []);
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-
+  const [isLoading,setIsLoading]=useState(false);
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -23,7 +24,8 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
+      setIsLoading(true);
+      const response = await fetch(`${host}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +41,7 @@ function Login() {
         throw new Error(json.message);
       }
       if (response.ok && json.success) {
+        setIsLoading(false);
         localStorage.setItem("token", json.token);
         if (
           json.user.userType === "Admin" ||
@@ -57,12 +60,16 @@ function Login() {
       setError(
         error.message || "An error occurred during login. Please try again"
       );
+      setIsLoading(false);
+
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-16 px-4">
-      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
+    
+    <div className="flex flex-col justify-center items-center mt-9 px-4">
+    {isLoading&&<Spinner/>}
+      <div className="w-full max-w-md p-8 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Have an Account ?
         </h2>

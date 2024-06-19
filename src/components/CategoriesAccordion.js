@@ -12,8 +12,13 @@ import EditCategoryModal from "./EditCategoryModal";
 import EditQuestionModal from "./EditQuestionModal";
 import ConfirmationModal from "./ConfirmationModal";
 import AddModal from "./AddModal";
+import Spinner from "./Spinner";
 
-const CategoriesAccordion = ({ categories, fetchCategories }) => {
+const CategoriesAccordion = ({
+  categories,
+  fetchCategories,
+  loadingCategories,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [subDropdowns, setSubDropdowns] = useState(false);
   const [dropdowns, setDropdowns] = useState(false);
@@ -108,9 +113,13 @@ const CategoriesAccordion = ({ categories, fetchCategories }) => {
         </div>
       </div>
       {filteredCategories.length === 0 ? (
-        <div className="text-gray-500 dark:text-gray-400 text-lg">
-          No Categories or Questions to display
-        </div>
+        loadingCategories ? (
+          <Spinner />
+        ) : (
+          <div className="text-gray-500 dark:text-gray-400 text-lg">
+            No Categories or Questions to display
+          </div>
+        )
       ) : (
         filteredCategories.map((category) => (
           <div key={category._id} className="mb-4 outline-none">

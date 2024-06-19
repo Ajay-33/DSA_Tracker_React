@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function Signup() {
   const [credentials, setCredentials] = useState({
@@ -12,7 +13,8 @@ function Signup() {
   });
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError } = context;
+  const { setUserType, setError,host } = context;
+  const[isLoading,setIsLoading]=useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,8 +43,9 @@ function Signup() {
     }
 
     try {
+      setIsLoading(true);
       const response = await fetch(
-        "http://localhost:8080/api/v1/auth/register",
+        `${host}/api/v1/auth/register`,
         {
           method: "POST",
           headers: {
@@ -59,6 +62,7 @@ function Signup() {
       }
 
       if (json.success) {
+        setIsLoading(false);
         localStorage.setItem("token", json.token);
         if (
           json.user.userType === "Admin" ||
@@ -79,6 +83,7 @@ function Signup() {
         error.message ||
           "There was an error creating your account.Please try again"
       );
+      setIsLoading(false);
     }
   };
 
@@ -87,8 +92,9 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-16 px-4">
-      <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
+    <div className="flex flex-col justify-center items-center mt-9 px-4">
+    {isLoading&&<Spinner/>}
+      <div className="w-full max-w-md mt-2 p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Create an account
         </h2>

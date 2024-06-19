@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Icon } from "@iconify-icon/react";
+import QuestionsContext from "../context/questions/QuestionsContext";
 
 function Question({
   question,
@@ -9,7 +10,8 @@ function Question({
   cid,
   getCategoryResponses,
 }) {
-  const host = "http://localhost:8080";
+  const context=useContext(QuestionsContext);
+  const {host}=context;
   const [status, setStatus] = useState(Status);
   const updateActions = async (qid, status) => {
     try {

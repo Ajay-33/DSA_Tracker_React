@@ -7,11 +7,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
 
 function Questions() {
-  const host = "http://localhost:8080";
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setError, setProgress } = context;
+  const { setError, setProgress,host } = context;
   const [isLoading, setIsLoading] = useState(true);
   const [catData, setCatData] = useState({});
   const [catRes, setCatRes] = useState({});

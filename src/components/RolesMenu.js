@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import RoleCard from "./RoleCard";
 import PaginatedRoleList from "./PaginatedRoleList";
+import Spinner from "./Spinner";
 
-function RolesMenu({ superAdmins, admins, users, fetchUsers }) {
+function RolesMenu({ superAdmins, admins, users, fetchUsers, loadingUsers }) {
   const [userPage, setUserPage] = useState(0);
   const [adminPage, setAdminPage] = useState(0);
   const itemsPerPage = 4;
@@ -18,37 +19,42 @@ function RolesMenu({ superAdmins, admins, users, fetchUsers }) {
           User & Admin Roles
         </Link>
       </div>
+      {loadingUsers ? (
+        <Spinner/>
+      ) : (
+        <>
+          <div className="space-y-4 p-3 pb-5 rounded-md bg-gray-100 dark:bg-gray-700 mt-5">
+            <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100 hover:underline hover:cursor-default">
+              SuperAdmins ({superAdmins.length})
+            </span>
+            {superAdmins.map((superAdmin) => (
+              <RoleCard
+                key={superAdmin._id}
+                role={superAdmin}
+                fetchUsers={fetchUsers}
+              />
+            ))}
+          </div>
 
-      <div className="space-y-4 p-3 pb-5 rounded-md bg-gray-100 dark:bg-gray-700 mt-5">
-        <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100 hover:underline hover:cursor-default">
-          SuperAdmins ({superAdmins.length})
-        </span>
-        {superAdmins.map((superAdmin) => (
-          <RoleCard
-            key={superAdmin._id}
-            role={superAdmin}
+          <PaginatedRoleList
+            roles={admins}
+            title="Admins"
+            currentPage={adminPage}
+            onPageChange={setAdminPage}
+            itemsPerPage={itemsPerPage}
             fetchUsers={fetchUsers}
           />
-        ))}
-      </div>
 
-      <PaginatedRoleList
-        roles={admins}
-        title="Admins"
-        currentPage={adminPage}
-        onPageChange={setAdminPage}
-        itemsPerPage={itemsPerPage}
-        fetchUsers={fetchUsers}
-      />
-
-      <PaginatedRoleList
-        roles={users}
-        title="Users"
-        currentPage={userPage}
-        onPageChange={setUserPage}
-        itemsPerPage={itemsPerPage}
-        fetchUsers={fetchUsers}
-      />
+          <PaginatedRoleList
+            roles={users}
+            title="Users"
+            currentPage={userPage}
+            onPageChange={setUserPage}
+            itemsPerPage={itemsPerPage}
+            fetchUsers={fetchUsers}
+          />
+        </>
+      )}
     </div>
   );
 }

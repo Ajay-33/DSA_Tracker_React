@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 
 function Categories() {
-  const host = "http://localhost:8080";
   const dataInitial = [];
   const [data, setData] = useState(dataInitial);
   const responseInitial = [];
@@ -14,7 +13,7 @@ function Categories() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setProgress, setError } = context;
+  const { setProgress, setError,host } = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};

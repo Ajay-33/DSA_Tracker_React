@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function ConfirmationModal({
   message,
@@ -12,9 +13,11 @@ function ConfirmationModal({
 }) {
   const context = useContext(QuestionsContext);
   const { host, setError } = context;
+  const [isLoading,setIsLoading]=useState(false);
 
   const onDeleteCategory = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${host}/api/v1/category/delete/${selectedCategory._id}`,
         {
@@ -29,16 +32,19 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Deleted Category ${selectedCategory.category_name}`);
-      onCancel();
       fetchCategories();
+      setError(`Deleted Category ${selectedCategory.category_name}`);
+      setIsLoading(false);
+      onCancel();
     } catch (error) {
+      setIsLoading(false);
       setError(error.message || "Error deleting Category");
       onCancel();
     }
   };
 
   const onDeleteQuestion = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${host}/api/v1/question/delete/${selectedQuestion._id}/${selectedCategory._id}`,
@@ -54,17 +60,20 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Deleted Question ${selectedQuestion.question_name}`);
-      onCancel();
       fetchCategories();
+      setError(`Deleted Question ${selectedQuestion.question_name}`);
+      setIsLoading(false);
+      onCancel();
     } catch (error) {
       setError(error.message || "Error deleting Question");
+      setIsLoading(false);
       onCancel();
     }
   };
 
   const onDeleteUser = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${host}/api/v1/auth/users/delete/${selectedUser._id}`,
         {
@@ -79,18 +88,21 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Succesfully deleted User`);
-      onCancel();
       fetchUsers();
+      setError(`Succesfully deleted User`);
+      setIsLoading(false);
+      onCancel();
     } catch (error) {
       setError(error.message || "Error deleting User");
+      setIsLoading(false);
       onCancel();
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4">
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm w-full">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4">
+    {isLoading&&<Spinner/>}
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm mt-2 w-full">
         <h2 className="text-lg font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
           Confirm Deletion
         </h2>
