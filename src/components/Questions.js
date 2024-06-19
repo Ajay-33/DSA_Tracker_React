@@ -10,13 +10,13 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setError, setProgress,host } = context;
+  const { setError, setProgress, host } = context;
   const [isLoading, setIsLoading] = useState(true);
   const [catData, setCatData] = useState({});
   const [catRes, setCatRes] = useState({});
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
-
+  const [categoryDone, setCategoryDone] = useState(" ");
   const getCategoryData = async (id) => {
     try {
       setIsLoading(true);
@@ -82,6 +82,12 @@ function Questions() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (catRes && catRes.categoryDone) {
+      setCategoryDone(catRes.categoryDone);
+    }
+  }, [catRes]);
+
   if (isLoading) {
     return (
       <div className="text-center py-2">
@@ -91,12 +97,7 @@ function Questions() {
   }
 
   const questions = catData.questions || [];
-  const {
-    categoryQuestions,
-    categoryDone,
-    categoryPercentage,
-    Modified_Questions,
-  } = catRes;
+  const { categoryQuestions, Modified_Questions } = catRes;
 
   const editNote = async (qid, notes) => {
     try {
@@ -199,7 +200,6 @@ function Questions() {
         </div>
         <div className="pb-4">
           <HorizontalProgressBar
-            percentage={categoryPercentage}
             done={categoryDone}
             total={categoryQuestions}
           />
@@ -238,6 +238,8 @@ function Questions() {
                     Status={status}
                     cid={id}
                     getCategoryResponses={getCategoryResponses}
+                    setCategoryDone={setCategoryDone}
+                    categoryDone={categoryDone}
                   />
                 );
               })}

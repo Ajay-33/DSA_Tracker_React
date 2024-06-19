@@ -1,6 +1,7 @@
 import React from "react";
 
-function HorizontalProgressBar({ percentage, done, total }) {
+function HorizontalProgressBar({ done, total }) {
+  const percentage=((done/total)*100).toFixed(2)
   return (
     <div className="relative h-7 bg-sky-400 dark:bg-yellow-700 rounded-full overflow-hidden">
       <div

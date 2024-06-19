@@ -93,7 +93,7 @@ function Signup() {
 
   return (
     <div className="flex flex-col justify-center items-center mt-9 px-4">
-    {isLoading&&<Spinner/>}
+    <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md mt-2 p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Create an account

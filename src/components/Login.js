@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError,host } = context;
+  const { setUserType, setError, host } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -15,7 +15,7 @@ function Login() {
   }, []);
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const [isLoading,setIsLoading]=useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -61,14 +61,12 @@ function Login() {
         error.message || "An error occurred during login. Please try again"
       );
       setIsLoading(false);
-
     }
   };
 
   return (
-    
     <div className="flex flex-col justify-center items-center mt-9 px-4">
-    {isLoading&&<Spinner/>}
+      <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md p-8 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Have an Account ?
