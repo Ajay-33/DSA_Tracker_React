@@ -53,7 +53,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Categories />} />
           <Route exact path="/admin" element={<AdminPanel />} />
-          <Route exact path="/roles" element={<RolesTable/>}/>
+          <Route exact path="/roles" element={<RolesTable />} />
           <Route exact path="/:id" element={<Questions />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

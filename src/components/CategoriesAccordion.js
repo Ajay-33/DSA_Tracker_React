@@ -101,7 +101,7 @@ const CategoriesAccordion = ({ categories, fetchCategories }) => {
             >
               <FaPlus />
             </button>
-            <span className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-10 w-max px-2 py-1 text-sm text-blue-100 bg-blue-500 rounded-md shadow-md opacity-0 group-hover:opacity-90 hidden group-hover:block transition-transform duration-300 z-50 hover:scale-105">
+            <span className="absolute -translate-x-1/2 mt-1 lg:top-0 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-10 w-max px-2 py-1 text-sm text-blue-100 bg-blue-500 rounded-md shadow-md opacity-0 group-hover:opacity-90 hidden group-hover:block transition-transform duration-300 z-50 hover:scale-105">
               Add Category or Question
             </span>
           </div>

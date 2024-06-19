@@ -77,7 +77,7 @@ function Question({
           </a>
           <a
             className="dark:text-gray-100 hover:text-black text-gray-600 sm:text-2xl text-xl"
-            href={question.question_link[1]||question.question_link[0]}
+            href={question.question_link[1] || question.question_link[0]}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -103,7 +103,6 @@ function Question({
           </button>
         </td>
       </tr>
-      
     </>
   );
 }

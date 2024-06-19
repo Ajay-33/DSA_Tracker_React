@@ -8,7 +8,7 @@ const isValidQuestionData = (questionData) => {
   return (
     questionData.question_name &&
     questionData.question_link[0] &&
-    questionData.question_link.length > 0&&
+    questionData.question_link.length > 0 &&
     questionData.question_solution
   );
 };
@@ -57,12 +57,10 @@ const addMultipleQuestions = async (req, res, category, allQuestions, next) => {
   }
 
   if (duplicateQuestions.length > 0) {
-    return res
-      .status(400)
-      .json({
-        message: "Duplicate Question names are found",
-        duplicateQuestions,
-      });
+    return res.status(400).json({
+      message: "Duplicate Question names are found",
+      duplicateQuestions,
+    });
   }
 
   try {

@@ -102,10 +102,10 @@ export const removePredefinedEmailsController = async (req, res) => {
 };
 
 export const registerController = async (req, res, next) => {
-  const { fname,lname, email, password } = req.body;
+  const { fname, lname, email, password } = req.body;
 
   try {
-    if (!fname ||!lname|| !email || !password) {
+    if (!fname || !lname || !email || !password) {
       res.status(400).json({ message: "Please fill out all the fields" });
     }
 
@@ -119,8 +119,8 @@ export const registerController = async (req, res, next) => {
     const userType = predefinedAdminEmails.includes(email) ? "Admin" : "User";
 
     const user = await usermodel.create({
-      firstName:fname,
-      lastName:lname,
+      firstName: fname,
+      lastName: lname,
       email,
       password,
       userType,

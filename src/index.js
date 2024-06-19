@@ -1,18 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import QuestionsState from './context/questions/QuestionsState';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import QuestionsState from "./context/questions/QuestionsState";
 // import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-  <QuestionsState>
-    <App />
-  </QuestionsState>
+    <QuestionsState>
+      <App />
+    </QuestionsState>
   </React.StrictMode>
-  
 );
 
 // // If you want to start measuring performance in your app, pass a function

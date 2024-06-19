@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 function Login() {
   const navigate = useNavigate();
@@ -111,6 +111,15 @@ function Login() {
             </button>
           </div>
         </form>
+        <p className="text-sm text-gray-700 dark:text-gray-300 mt-4">
+          Don't have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-blue-500 dark:text-orange-400 hover:underline"
+          >
+            Create one
+          </Link>
+        </p>
       </div>
     </div>
   );

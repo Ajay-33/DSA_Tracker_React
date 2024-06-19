@@ -129,9 +129,12 @@ export const CategoriesData = async (req, res, next) => {
     }
     const category = await categorymodel.findById(id).populate("questions");
     category.questions.sort((a, b) => {
-        const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
-        return difficultyOrder[a.question_difficulty] - difficultyOrder[b.question_difficulty];
-      });
+      const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
+      return (
+        difficultyOrder[a.question_difficulty] -
+        difficultyOrder[b.question_difficulty]
+      );
+    });
     const categoryQuestions = category.questions.length;
     const Modified_Questions = await responsemodel.find({
       CreatedBy: User_info,

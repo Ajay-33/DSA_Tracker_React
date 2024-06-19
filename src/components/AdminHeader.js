@@ -82,11 +82,11 @@ function AdminHeader({ userType, text, fetchUsers }) {
               className="border border-gray-300 rounded-md py-0.5 px-1.5 md:px-2 md:py-1 mr-2 focus:outline-none focus:border-blue-500 transition duration-300"
             />
           </div>
-  
+
           <div className="text-lg text-gray-900 mb-2 md:mb-0 dark:text-white font-bold transition duration-300">
             {text}
           </div>
-  
+
           <div className="flex items-center">
             <input
               type="email"
@@ -113,9 +113,6 @@ function AdminHeader({ userType, text, fetchUsers }) {
       )}
     </>
   );
-  
-
-  
 }
 
 export default AdminHeader;

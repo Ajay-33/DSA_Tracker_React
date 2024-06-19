@@ -69,7 +69,7 @@ export const getCategories = async (req, res, next) => {
   try {
     const categories = await categorymodel.find().populate("questions");
     categories.sort((a, b) => a.category_name.localeCompare(b.category_name));
-    categories.forEach(category => {
+    categories.forEach((category) => {
       category.questions.sort((a, b) => {
         const dateA = new Date(a.createdAt).getTime();
         const dateB = new Date(b.createdAt).getTime();
@@ -82,8 +82,6 @@ export const getCategories = async (req, res, next) => {
     return next(error);
   }
 };
-
-
 
 export const getCategory = async (req, res, next) => {
   const { id } = req.params;

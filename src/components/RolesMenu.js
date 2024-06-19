@@ -13,7 +13,7 @@ function RolesMenu({ superAdmins, admins, users, fetchUsers }) {
       <div className="mb-4 flex justify-center">
         <Link
           to="/roles"
-          className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 transition duration-300"
+          className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 transition duration-300 hover:underline"
         >
           User & Admin Roles
         </Link>
@@ -24,7 +24,11 @@ function RolesMenu({ superAdmins, admins, users, fetchUsers }) {
           SuperAdmins ({superAdmins.length})
         </span>
         {superAdmins.map((superAdmin) => (
-          <RoleCard key={superAdmin._id} role={superAdmin} fetchUsers={fetchUsers} />
+          <RoleCard
+            key={superAdmin._id}
+            role={superAdmin}
+            fetchUsers={fetchUsers}
+          />
         ))}
       </div>
 

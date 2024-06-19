@@ -17,7 +17,7 @@ function NavBar() {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isAdminRoute, setIsAdminRoute] = useState(false);
+  const [isAdminRoute, setIsAdminRoute] = useState(true);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -47,7 +47,7 @@ function NavBar() {
             <img
               src={process.env.PUBLIC_URL + "/dsaTracker.png"}
               className="h-8"
-              alt="Flowbite Logo"
+              alt="Website Logo"
             />
             <span className="self-center text-2xl font-mono font-semibold whitespace-nowrap text-gray-800 dark:text-white">
               A2Z-DSA-Tracker
@@ -141,34 +141,51 @@ function NavBar() {
                 </div>
               </label>
             </div>
-            <button onClick={toggleNavbar}>{isOpen ? <X /> : <Menu />}</button>
+            <button onClick={toggleNavbar}>
+              {isOpen ? (
+                <X className="dark:text-white " />
+              ) : (
+                <Menu className="dark:text-white" />
+              )}
+            </button>
           </div>
         </div>
       </nav>
       {isOpen && (
-        <div className="flex basis-full flex-col items-center w-full dark:text-white text-gray-800 hover:underline font-semibold font-mono">
+        <div className="flex basis-full flex-col items-center w-full dark:text-white text-gray-800 font-semibold font-mono">
           {!localStorage.getItem("token") ? (
             <>
               <Link
-                className=" flex justify-center py-2 px-4  mx-2"
+                className="flex justify-center py-2 px-4 border-blue-400 dark:border-white border-b-2 hover:underline mx-2"
                 to="/login"
               >
                 Login
               </Link>
               <Link
-                className=" flex justify-center py-2 px-4  mx-2"
+                className="flex justify-center py-2 px-4 hover:underline mx-2"
                 to="/signup"
               >
                 Signup
               </Link>
             </>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="flex justify-center py-2 px-4 rounded mx-2"
-            >
-              Logout
-            </button>
+            <>
+              {["Admin", "Super Admin"].includes(userType) && (
+                <button
+                  className="flex justify-center py-2 px-4 hover:underline mx-2 border-blue-400 dark:border-white border-b-2"
+                  onClick={toggleRoute}
+                  to="/login"
+                >
+                  Switch to {isAdminRoute ? "User" : "Admin"}
+                </button>
+              )}
+              <button
+                onClick={handleLogout}
+                className="flex justify-center py-2 px-4 rounded mx-2 hover:underline"
+              >
+                Logout
+              </button>
+            </>
           )}
         </div>
       )}

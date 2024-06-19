@@ -246,7 +246,6 @@ function Questions() {
           </table>
         </div>
       </div>
-      
     </div>
   );
 }

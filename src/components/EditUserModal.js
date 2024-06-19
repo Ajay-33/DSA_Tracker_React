@@ -32,7 +32,9 @@ function EditUserModal({ user, onClose, fetchUsers }) {
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Updated role of ${user.firstName} ${user.lastName} to ${user.userType}`)
+      setError(
+        `Updated role of ${user.firstName} ${user.lastName} to ${user.userType}`
+      );
       fetchUsers();
       onClose();
     } catch (error) {

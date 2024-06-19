@@ -54,7 +54,7 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Deleted Question ${selectedQuestion.question_name}`)
+      setError(`Deleted Question ${selectedQuestion.question_name}`);
       onCancel();
       fetchCategories();
     } catch (error) {
@@ -79,7 +79,7 @@ function ConfirmationModal({
       if (!response.ok) {
         throw new Error(json.message);
       }
-      setError(`Succesfully deleted User`)
+      setError(`Succesfully deleted User`);
       onCancel();
       fetchUsers();
     } catch (error) {
@@ -88,7 +88,7 @@ function ConfirmationModal({
     }
   };
 
-return (
+  return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4">
       <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-lg font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
