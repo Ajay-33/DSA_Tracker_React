@@ -58,7 +58,7 @@ function EditCategoryModal({ category, onClose, fetchCategories }) {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
-    {isLoading&&<Spinner/>}
+    <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg mt-2 w-full max-w-md">
         <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-center text-gray-900 dark:text-gray-100">
           Edit Category

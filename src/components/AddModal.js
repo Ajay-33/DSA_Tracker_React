@@ -206,7 +206,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50">
-      {isLoading&&<Spinner/>}
+      <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="bg-white dark:bg-gray-800 mt-2 p-4 rounded-lg shadow-lg w-11/12 max-w-lg ">
         <h2 className="text-lg font-semibold my-2 text-center text-gray-900 dark:text-gray-100">
           Add New
