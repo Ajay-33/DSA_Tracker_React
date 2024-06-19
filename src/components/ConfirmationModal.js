@@ -13,7 +13,7 @@ function ConfirmationModal({
 }) {
   const context = useContext(QuestionsContext);
   const { setError } = context;
-  const [isLoading,setIsLoading]=useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onDeleteCategory = async () => {
     try {
@@ -101,7 +101,8 @@ function ConfirmationModal({
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4">
-    {isLoading&&<Spinner/>}
+      <div className="w-8 h-8">{isLoading && <Spinner />}</div>
+
       <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm mt-2 w-full">
         <h2 className="text-lg font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
           Confirm Deletion

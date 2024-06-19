@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import QuestionsContext from "../context/questions/QuestionsContext";
+import Spinner from "./Spinner";
 
 function EditUserModal({ user, onClose, fetchUsers }) {
   const context = useContext(QuestionsContext);
   const { setError } = context;
   const [role, setRole] = useState("");
-
+  const[isLoading,setIsLoading]=useState(false);
   useEffect(() => {
     if (user) {
       setRole(user.userType);
@@ -14,6 +15,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_HOST}/api/v1/auth/users/update/${user._id}`,
@@ -35,15 +37,18 @@ function EditUserModal({ user, onClose, fetchUsers }) {
       setError(
         `Updated role of ${user.firstName} ${user.lastName} to ${user.userType}`
       );
+      setIsLoading(false)
       fetchUsers();
       onClose();
     } catch (error) {
       setError(error.message || "Failed to update role");
+      setIsLoading(false)
     }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
+    <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4 text-center text-gray-900 dark:text-gray-100">
           Edit Role
