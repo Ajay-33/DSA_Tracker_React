@@ -41,7 +41,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         });
         if (response.ok) {
           onClose();
-          setError(`Added Category ${categoryName}`)
+          setError(`Added Category ${categoryName}`);
           fetchCategories();
         } else {
           const json = await response.json();
@@ -74,7 +74,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         );
         if (response.ok) {
           onClose();
-          setError(`Succesfully Added Question`)
+          setError(`Succesfully Added Question`);
           fetchCategories();
         } else {
           const json = await response.json();
@@ -199,7 +199,7 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-lg w-full">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-11/12 max-w-lg ">
         <h2 className="text-lg font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
           Add New
         </h2>
@@ -240,16 +240,16 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
 
         {selectedOption === "category" && renderCategoryFields()}
         {selectedOption === "question" && renderQuestionFields()}
-        <div className="flex justify-end mt-2">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0  justify-end mt-4">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg shadow-md hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-2"
+            className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg shadow-md hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 sm:mr-2"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 "
           >
             Save
           </button>

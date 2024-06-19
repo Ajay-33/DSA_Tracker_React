@@ -191,15 +191,15 @@ function RolesTable() {
   const { globalFilter } = state;
 
   return (
-    <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
+    <div className="min-h-screen p-6 dark:bg-gray-900 transition duration-500">
       <AdminHeader
         userType={userType}
         text="User Info"
         fetchUsers={fetchUsers}
       />
-      <div className="mt-8 space-y-2 py-4 pb-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
-        <div className="search-container flex items-center justify-between mb-4 relative">
-          <div className="relative w-1/3">
+      <div className="mt-8 space-y-2 py-4 pb-6 p-6 bg-white dark:bg-gray-800 dark:border-gray-500 border border-gray-300 rounded-lg shadow-lg transition duration-500">
+        <div className="search-container flex flex-col md:flex-row items-start md:items-center justify-between mb-4 relative">
+          <div className="relative w-full md:w-1/3 mb-4 md:mb-0">
             <input
               type="text"
               value={globalFilter || ""}
@@ -228,87 +228,95 @@ function RolesTable() {
             )}
           </div>
 
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center text-gray-800 dark:text-gray-100">
+          <div className="flex flex-wrap md:flex-nowrap items-center md:space-y-0">
+            <div className="mr-2 md:mr-4">
               <input
                 type="checkbox"
                 checked={showUsers}
                 onChange={() => setShowUsers(!showUsers)}
-                className="mr-2"
+                className="mr-0.5 md:mr-2"
               />
-              Users ({userCount})
-            </label>
-            <label className="flex items-center text-gray-800 dark:text-gray-100">
+              <span className="text-gray-800 dark:text-gray-100">
+                Users ({userCount})
+              </span>
+            </div>
+            <div className="mr-2 md:mr-4">
               <input
                 type="checkbox"
                 checked={showAdmins}
                 onChange={() => setShowAdmins(!showAdmins)}
-                className="mr-2"
+                className="mr-0.5 md:mr-2"
               />
-              Admins ({adminCount})
-            </label>
-            <label className="flex items-center text-gray-800 dark:text-gray-100">
+              <span className="text-gray-800 dark:text-gray-100">
+                Admins ({adminCount})
+              </span>
+            </div>
+            <div>
               <input
                 type="checkbox"
                 checked={showSuperAdmins}
                 onChange={() => setShowSuperAdmins(!showSuperAdmins)}
-                className="mr-2"
+                className="mr-0.5 md:mr-2"
               />
-              Super Admins ({superAdminCount})
-            </label>
+              <span className="text-gray-800 dark:text-gray-100">
+                Super Admins ({superAdminCount})
+              </span>
+            </div>
           </div>
         </div>
 
-        <table
-          {...getTableProps()}
-          className="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md transition duration-500"
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="p-3 text-left text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 font-semibold text-sm tracking-wide border-b border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300"
-                  >
-                    <div className="flex items-center">
-                      {column.render("Header")}
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <FaSortDown className="ml-2" />
-                        ) : (
-                          <FaSortUp className="ml-2" />
-                        )
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className="border-b border-gray-300 dark:border-gray-700 transition duration-500 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="p-3 text-gray-800 dark:text-gray-100 text-sm transition duration-300"
+        <div className="overflow-x-auto">
+          <table
+            {...getTableProps()}
+            className="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md transition duration-500"
+          >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className="p-3 text-left text-gray-800 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 font-semibold text-sm tracking-wide border-b border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300"
                     >
-                      {cell.render("Cell")}
-                    </td>
+                      <div className="flex items-center">
+                        {column.render("Header")}
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <FaSortDown className="ml-2" />
+                          ) : (
+                            <FaSortUp className="ml-2" />
+                          )
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr
+                    {...row.getRowProps()}
+                    className="border-b border-gray-300 dark:border-gray-700 transition duration-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className="p-3 text-gray-800 dark:text-gray-100 text-sm transition duration-300"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
       {editUser && (
         <EditUserModal

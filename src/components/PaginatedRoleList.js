@@ -2,7 +2,7 @@ import React from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import RoleCard from "./RoleCard";
 
-function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPage,fetchUsers }) {
+function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPage, fetchUsers }) {
   const paginatedRoles = roles.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
@@ -21,7 +21,7 @@ function PaginatedRoleList({ roles, title, currentPage, onPageChange, itemsPerPa
   };
 
   return (
-    <div className="space-y-4 mt-5 p-3 rounded-md bg-gray-200 dark:bg-gray-700">
+    <div className="space-y-4 mt-5 p-3 rounded-md bg-gray-100 dark:bg-gray-700">
       <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100 hover:underline hover:cursor-default">
         {title} ({roles.length})
       </span>

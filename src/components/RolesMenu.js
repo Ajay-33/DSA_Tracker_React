@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import RoleCard from "./RoleCard";
 import PaginatedRoleList from "./PaginatedRoleList";
 
-function RolesMenu({ superAdmins, admins, users,fetchUsers }) {
+function RolesMenu({ superAdmins, admins, users, fetchUsers }) {
   const [userPage, setUserPage] = useState(0);
   const [adminPage, setAdminPage] = useState(0);
   const itemsPerPage = 4;
 
   return (
-    <div className="w-full h-fit lg:w-1/4 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
+    <div className="w-full h-fit lg:w-1/4 p-6 bg-white border border-gray-300 dark:border-gray-500 dark:bg-gray-800 rounded-lg shadow-lg transition duration-500">
       <div className="mb-4 flex justify-center">
         <Link
           to="/roles"
@@ -19,7 +19,7 @@ function RolesMenu({ superAdmins, admins, users,fetchUsers }) {
         </Link>
       </div>
 
-      <div className="space-y-4 p-3 rounded-md bg-gray-200 dark:bg-gray-700 mt-5">
+      <div className="space-y-4 p-3 pb-5 rounded-md bg-gray-100 dark:bg-gray-700 mt-5">
         <span className="text-xl mb-4 font-semibold text-gray-900 dark:text-gray-100 hover:underline hover:cursor-default">
           SuperAdmins ({superAdmins.length})
         </span>

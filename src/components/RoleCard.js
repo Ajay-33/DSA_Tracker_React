@@ -7,7 +7,7 @@ function RoleCard({ role, fetchUsers }) {
   return (
     <div className="flex items-center justify-between bg-white dark:bg-gray-600 p-3 rounded-lg shadow-md transition duration-500 hover:shadow-xl">
       <div className="relative group">
-        <div className="text-gray-900 dark:text-gray-100">{role.firstName}</div>
+        <div className="text-gray-900 dark:text-gray-100">{role.firstName+' '+role.lastName}</div>
       </div>
       <div className="flex space-x-2">
         <button

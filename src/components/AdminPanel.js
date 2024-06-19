@@ -74,7 +74,7 @@ function AdminPanel() {
   }, [userType, navigate, fetchCategories, fetchUsers]);
 
   return (
-    <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900 transition duration-500">
+    <div className="min-h-screen p-6 dark:bg-gray-900 transition duration-500">
       <AdminHeader
         userType={userType}
         text="Admin Panel"

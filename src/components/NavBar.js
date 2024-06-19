@@ -1,22 +1,24 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import { Menu, X, ArrowRightLeft } from "lucide-react";
 
 function NavBar() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { mode, setMode, userType } = context;
-  const location = useLocation();
+  const { mode, setMode, userType, setUserType } = context;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("mode");
     localStorage.removeItem("userType");
+    setUserType(null);
     navigate("/login");
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdminRoute, setIsAdminRoute] = useState(false);
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
@@ -27,7 +29,10 @@ function NavBar() {
     setMode(newMode);
   };
 
-  const isHome = location.pathname === "/";
+  const toggleRoute = () => {
+    setIsAdminRoute(!isAdminRoute);
+    navigate(isAdminRoute ? "/" : "/admin");
+  };
 
   return (
     <div
@@ -51,12 +56,12 @@ function NavBar() {
 
           <div className="hidden sm:flex items-center">
             {["Admin", "Super Admin"].includes(userType) && (
-              <Link
-                to={isHome ? "/admin" : "/"}
-                className="mx-2 transition-transform transform"
+              <button
+                onClick={toggleRoute}
+                className="mx-2 transition-transform transform hover:scale-110 focus:outline-none"
               >
-                <ArrowRightLeft className="dark:text-white text-gray-400"/>
-              </Link>
+                <ArrowRightLeft className="text-gray-400 dark:text-white hover:text-gray-500 dark:hover:text-gray-300" />
+              </button>
             )}
 
             {!localStorage.getItem("token") ? (
@@ -75,13 +80,12 @@ function NavBar() {
                 </Link>
               </div>
             ) : (
-              <Link
+              <button
                 onClick={handleLogout}
                 className="bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold text-sm py-1.5 px-3 rounded mx-2"
-                to="/login"
               >
                 Logout
-              </Link>
+              </button>
             )}
             <div className="dark-mode-toggler ml-auto">
               <label
@@ -159,13 +163,12 @@ function NavBar() {
               </Link>
             </>
           ) : (
-            <Link
+            <button
               onClick={handleLogout}
               className="flex justify-center py-2 px-4 rounded mx-2"
-              to="/login"
             >
               Logout
-            </Link>
+            </button>
           )}
         </div>
       )}
