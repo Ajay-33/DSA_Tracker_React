@@ -13,8 +13,8 @@ function Signup() {
   });
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError } = context;
-  const[isLoading,setIsLoading]=useState(false);
+  const { setUserType, setError,setUserName } = context;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -63,6 +63,7 @@ function Signup() {
 
       if (json.success) {
         setIsLoading(false);
+        setUserName(json.user.firstName)
         localStorage.setItem("token", json.token);
         if (
           json.user.userType === "Admin" ||
@@ -92,8 +93,8 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-9 px-4">
-    <div className="w-8 h-8">{isLoading && <Spinner />}</div>
+    <div className="flex flex-col items-center justify-center -mt-20 lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
+      <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md mt-2 p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Create an account

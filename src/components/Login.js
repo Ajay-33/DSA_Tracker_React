@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError } = context;
+  const { setUserType, setError,setUserName } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -25,25 +25,29 @@ function Login() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST}/api/v1/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
 
       const json = await response.json();
       if (!response.ok) {
         throw new Error(json.message);
       }
       if (response.ok && json.success) {
-        console.log(process.env.REACT_APP_API_KEY);
+        console.log(json);
         setIsLoading(false);
         localStorage.setItem("token", json.token);
+        setUserName(json.user.firstName)
         if (
           json.user.userType === "Admin" ||
           json.user.userType === "Super Admin"
@@ -66,9 +70,9 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-9 px-4">
+    <div className="flex flex-col items-center justify-center -mt-20 lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
       <div className="w-8 h-8">{isLoading && <Spinner />}</div>
-      <div className="w-full max-w-md p-8 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg ">
+      <div className="w-full max-w-md p-7 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Have an Account ?
         </h2>

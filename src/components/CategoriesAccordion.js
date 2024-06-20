@@ -125,7 +125,7 @@ const CategoriesAccordion = ({
           <div key={category._id} className="mb-4 outline-none">
             <div
               onClick={() => toggleSubDropdown(category._id)}
-              className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-500 transform hover:scale-105 cursor-pointer"
+              className="flex justify-between items-center 2xl:mx-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md transition-transform duration-500 transform hover:scale-x-105 cursor-pointer"
             >
               <div className="flex items-center space-x-2">
                 <button>
@@ -174,7 +174,7 @@ const CategoriesAccordion = ({
               </div>
             </div>
             {subDropdowns[category._id] && (
-              <div className="ml-6 mt-4 space-y-2 transition-all duration-500">
+              <div className="mx-3 mt-4 space-y-2 transition-all duration-500">
                 {difficultyLevels.map((level) => (
                   <div key={level}>
                     <div
@@ -197,7 +197,7 @@ const CategoriesAccordion = ({
                       </button>
                     </div>
                     {dropdowns[`${category._id}+${level}`] && (
-                      <div className="ml-6 mt-4 space-y-2 transition-all duration-500">
+                      <div className="m-4 mt-4 space-y-2 transition-all duration-500">
                         {getFilteredQuestions(category.questions)
                           .filter(
                             (question) => question.question_difficulty === level

@@ -47,6 +47,9 @@ function Question({
       } else if (prevStatus === "Completed" && (status === "Pending" || status === "Revisit")) {
         setCategoryDone(categoryDone - 1);
       }
+      else if(prevStatus==="Revisit"&&(status==="Completed")){
+        setCategoryDone(categoryDone+1);
+      }
       setPrevStatus(status);
     }
   }, [status, prevStatus, categoryDone, setCategoryDone]);
