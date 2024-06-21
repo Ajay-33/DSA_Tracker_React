@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError,setUserName } = context;
+  const { setUserType, setError, setUserName } = context;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -47,7 +47,7 @@ function Login() {
         console.log(json);
         setIsLoading(false);
         localStorage.setItem("token", json.token);
-        setUserName(json.user.firstName)
+        setUserName(json.user.firstName);
         if (
           json.user.userType === "Admin" ||
           json.user.userType === "Super Admin"
@@ -95,7 +95,7 @@ function Login() {
               required
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -111,7 +111,16 @@ function Login() {
               id="password"
               required
             />
+            <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
+              <Link
+                to="/forgot-password"
+                className="text-blue-500 dark:text-orange-400 hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </p>
           </div>
+
           <div className="flex items-center justify-between">
             <button
               type="submit"
@@ -121,6 +130,7 @@ function Login() {
             </button>
           </div>
         </form>
+
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-4">
           Don't have an account?{" "}
           <Link

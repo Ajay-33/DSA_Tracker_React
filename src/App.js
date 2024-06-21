@@ -15,6 +15,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import AdminPanel from "./components/AdminPanel";
 import RolesTable from "./components/RolesTable";
+import ForgotPassword from "./components/ForgotPassword";
 function App() {
   const context = useContext(QuestionsContext);
   const { mode, progress, error, setError } = context;
@@ -50,6 +51,7 @@ function App() {
         <Routes>
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/forgot-password" element={<ForgotPassword/>} />
           <Route exact path="/" element={<Categories />} />
           <Route exact path="/admin" element={<AdminPanel />} />
           <Route exact path="/roles" element={<RolesTable />} />

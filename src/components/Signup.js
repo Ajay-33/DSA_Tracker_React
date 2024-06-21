@@ -45,7 +45,6 @@ function Signup() {
 
   const sendOTP = async () => {
     const { email } = credentials;
-
     try {
       setOtpSending(true);
       setIsLoading(true);
@@ -246,7 +245,7 @@ function Signup() {
                     ? "Sending..."
                     : canResendOtp
                     ? "Send Code"
-                    : `Resend in ${remainingTime} sec`}
+                    : `Resend in ${remainingTime}s`}
                 </button>
               </div>
             </div>
