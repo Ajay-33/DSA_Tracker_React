@@ -8,6 +8,7 @@ const QuestionsState = (props) => {
   const [error, setError] = useState(null);
   const defaultType = localStorage.getItem("userType") || "User";
   const [userType, setUserType] = useState(defaultType);
+  const [userName,setUserName]=useState(null);
   return (
     <QuestionsContext.Provider
       value={{
@@ -18,7 +19,9 @@ const QuestionsState = (props) => {
         setError,
         error,
         userType,
-        setUserType
+        setUserType,
+        setUserName,
+        userName
       }}
     >
       {props.children}

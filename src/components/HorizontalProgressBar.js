@@ -3,11 +3,11 @@ import React from "react";
 function HorizontalProgressBar({ done, total }) {
   const percentage=((done/total)*100).toFixed(2)
   return (
-    <div className="relative h-7 bg-sky-400 dark:bg-yellow-700 rounded-full overflow-hidden">
+    <div className="relative xl:mb-4 h-7 bg-sky-400 dark:bg-yellow-700 rounded-full w-full overflow-hidden">
       <div
         className={`h-full ${
-          percentage === 100.0
-            ? "bg-green-600 dark:bg-emerald-500"
+          percentage === "100.00"
+            ? "bg-green-500 dark:bg-emerald-500"
             : percentage > 50
             ? "bg-blue-700 dark:bg-orange-600"
             : "bg-sky-700 dark:bg-amber-500"
@@ -22,7 +22,7 @@ function HorizontalProgressBar({ done, total }) {
           {done}/{total}
         </span>
         <span>
-          {percentage === 100
+          {percentage === "100.00"
             ? "Completed"
             : percentage > 50
             ? "Keep Going"

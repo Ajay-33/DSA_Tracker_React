@@ -16,7 +16,7 @@ function Questions() {
   const [catRes, setCatRes] = useState({});
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
-  const [categoryDone, setCategoryDone] = useState(" ");
+  const [categoryDone, setCategoryDone] = useState(0);
   const getCategoryData = async (id) => {
     try {
       setIsLoading(true);
@@ -101,14 +101,17 @@ function Questions() {
 
   const editNote = async (qid, notes) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/response/notes/add/${qid}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ notes }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST}/api/v1/response/notes/add/${qid}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ notes }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to update note");
       }
@@ -144,7 +147,7 @@ function Questions() {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-2">
+    <div className="max-w-full w-full relative px-4 pt-2 pb-4">
       <div
         className={`${openModal} fixed inset-0 z-50 h-screen w-screen bg-opacity-15 bg-transparent backdrop-filter backdrop-blur-sm flex justify-center items-center`}
       >
@@ -176,7 +179,7 @@ function Questions() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="px-4 py-2">
         <div className="flex justify-between items-center flex-row sm:items-center font-bold text-black  pb-4">
           <a
             href={catData.category_resources[0]}
@@ -186,7 +189,7 @@ function Questions() {
           >
             <FaYoutube className="mb-2 sm:mb-0 mr-0 sm:mr-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
-          <div className="dark:text-white text-blue-600 font-bold text-2xl sm:text-3xl lg:text-5xl mb-2">
+          <div className="dark:text-white text-blue-600 font-bold text-2xl sm:text-3xl lg:text-4xl 2xl:5xl mb-2">
             {catData.category_name}
           </div>
           <a
@@ -198,54 +201,54 @@ function Questions() {
             <FaYoutube className="mb-2 sm:mb-0 ml-0 sm:ml-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
         </div>
-        <div className="pb-4">
+        <div className="pb-6">
           <HorizontalProgressBar
             done={categoryDone}
             total={categoryQuestions}
           />
         </div>
-        <div className="overflow-auto" style={{ maxHeight: "430px" }}>
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg">
-            <thead
-              className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-200"
-              style={{ position: "sticky", top: 0, zIndex: 1 }}
-            >
-              <tr>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Problem</th>
-                <th className="px-6 py-3">Difficulty</th>
-                <th className="px-6 py-3">Links</th>
-                <th className="px-6 py-3">Solution</th>
-                <th className="px-6 py-3">Notes</th>
-              </tr>
-            </thead>
+      </div>
+      <div className="overflow-auto max-h-svh mb-10">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg">
+          <thead
+            className="text-xs text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-200"
+            style={{ position: "sticky", top: 0, zIndex: 1 }}
+          >
+            <tr>
+              <th className="px-6 py-3">Status</th>
+              <th className="px-6 py-3">Problem</th>
+              <th className="px-6 py-3">Difficulty</th>
+              <th className="px-6 py-3">Links</th>
+              <th className="px-6 py-3">Solution</th>
+              <th className="px-6 py-3">Notes</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {questions.map((element) => {
-                const ModifiedQuestion = Modified_Questions.find(
-                  (item) => item.Question_id === element._id
-                );
-                const status = ModifiedQuestion
-                  ? ModifiedQuestion.Question_Status
-                  : "Pending";
-                const notes = ModifiedQuestion;
-                return (
-                  <Question
-                    key={element._id}
-                    question={element}
-                    updateNote={updateNote}
-                    notes={notes}
-                    Status={status}
-                    cid={id}
-                    getCategoryResponses={getCategoryResponses}
-                    setCategoryDone={setCategoryDone}
-                    categoryDone={categoryDone}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+          <tbody>
+            {questions.map((element) => {
+              const ModifiedQuestion = Modified_Questions.find(
+                (item) => item.Question_id === element._id
+              );
+              const status = ModifiedQuestion
+                ? ModifiedQuestion.Question_Status
+                : "Pending";
+              const notes = ModifiedQuestion;
+              return (
+                <Question
+                  key={element._id}
+                  question={element}
+                  updateNote={updateNote}
+                  notes={notes}
+                  Status={status}
+                  cid={id}
+                  getCategoryResponses={getCategoryResponses}
+                  setCategoryDone={setCategoryDone}
+                  categoryDone={categoryDone}
+                />
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -6,13 +6,15 @@ import { Menu, X, ArrowRightLeft } from "lucide-react";
 function NavBar() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { mode, setMode, userType, setUserType } = context;
+  const { mode, setMode, userType, setUserType, userName, setUserName } =
+    context;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("mode");
     localStorage.removeItem("userType");
     setUserType(null);
+    setUserName(null);
     navigate("/login");
   };
 
@@ -39,7 +41,7 @@ function NavBar() {
       className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-10 transition duration-500`}
     >
       <nav>
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen p-4">
           <Link
             to="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -53,6 +55,11 @@ function NavBar() {
               A2Z-DSA-Tracker
             </span>
           </Link>
+          {userName && (
+            <div className="hidden md:block mx-2 self-center text-2xl font-mono font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-orange-500 dark:via-red-500 dark:to-yellow-500">
+              Welcome {userName}
+            </div>
+          )}
 
           <div className="hidden sm:flex items-center">
             {["Admin", "Super Admin"].includes(userType) && (

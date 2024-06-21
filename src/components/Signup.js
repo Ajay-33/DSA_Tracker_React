@@ -10,11 +10,17 @@ function Signup() {
     email: "",
     password: "",
     cpassword: "",
+    otp: "", // New field for OTP
   });
+
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError } = context;
-  const[isLoading,setIsLoading]=useState(false);
+  const { setUserType, setError, setUserName } = context;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [otpSending, setOtpSending] = useState(false);
+  const [canResendOtp, setCanResendOtp] = useState(true);
+  const [remainingTime, setRemainingTime] = useState(60);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -24,9 +30,58 @@ function Signup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    let timer;
+    if (!canResendOtp && remainingTime > 0) {
+      timer = setInterval(() => {
+        setRemainingTime((prev) => prev - 1);
+      }, 1000);
+    } else if (!canResendOtp && remainingTime === 0) {
+      setCanResendOtp(true);
+      setRemainingTime(60);
+    }
+    return () => clearInterval(timer);
+  }, [canResendOtp, remainingTime]);
+
+  const sendOTP = async () => {
+    const { email } = credentials;
+    try {
+      setOtpSending(true);
+      setIsLoading(true);
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST}/api/v1/otp/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        throw new Error(json.message || "Network response was not ok");
+      }
+
+      setError(json.message);
+      setIsLoading(false);
+      setCanResendOtp(false);
+    } catch (error) {
+      setError(
+        error.message || "There was an error sending the OTP. Please try again"
+      );
+      setIsLoading(false);
+    } finally {
+      setOtpSending(false);
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmission = async (e) => {
     e.preventDefault();
-    const { fname, lname, email, password, cpassword } = credentials;
+    const { fname, lname, email, password, cpassword, otp } = credentials;
 
     if (cpassword !== password) {
       setError("Passwords do not match");
@@ -51,7 +106,13 @@ function Signup() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ fname: fname, lname: lname, email, password }),
+          body: JSON.stringify({
+            fname: fname,
+            lname: lname,
+            email,
+            password,
+            otp,
+          }),
         }
       );
 
@@ -63,6 +124,7 @@ function Signup() {
 
       if (json.success) {
         setIsLoading(false);
+        setUserName(json.user.firstName);
         localStorage.setItem("token", json.token);
         if (
           json.user.userType === "Admin" ||
@@ -92,8 +154,8 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-9 px-4">
-    <div className="w-8 h-8">{isLoading && <Spinner />}</div>
+    <div className="flex flex-col items-center justify-center -mt-20 lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
+      <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md mt-2 p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
           Create an account
@@ -151,6 +213,44 @@ function Signup() {
               onChange={onChange}
             />
           </div>
+          <>
+            <div>
+              <label
+                htmlFor="otp"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Verification Code <span className="text-red-500">*</span>
+              </label>
+              <div className="flex items-center justify-center">
+                <input
+                  type="text"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  id="otp"
+                  name="otp"
+                  required
+                  onChange={onChange}
+                />
+                <button
+                  type="button"
+                  className={`ml-2 px-2 py-2 mt-1 rounded-md ${
+                    canResendOtp
+                      ? "bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600"
+                      : "bg-gray-500"
+                  } w-1/3 text-white font-bold px-4 rounded focus:outline-none focus:shadow-outline`}
+                  onClick={canResendOtp ? sendOTP : null}
+                  disabled={!canResendOtp || otpSending}
+                  style={{ minWidth: "fit-content" }}
+                >
+                  {otpSending
+                    ? "Sending..."
+                    : canResendOtp
+                    ? "Send Code"
+                    : `Resend in ${remainingTime}s`}
+                </button>
+              </div>
+            </div>
+          </>
+
           <div>
             <label
               htmlFor="password"
