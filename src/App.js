@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useContext, useEffect, useState } from "react";
-import Categories from "./components/Categories";
 import NavBar from "./components/NavBar";
 import LoadingBar from "react-top-loading-bar";
 import {
@@ -9,13 +8,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Questions from "./components/Questions";
+
 import QuestionsContext from "./context/questions/QuestionsContext";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import AdminPanel from "./components/AdminPanel";
-import RolesTable from "./components/RolesTable";
-import ForgotPassword from "./components/ForgotPassword";
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
+import ResetPassworrd from "./pages/ResetPassworrd";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import Users from "./pages/Users";
+import Category from "./pages/Category";
 function App() {
   const context = useContext(QuestionsContext);
   const { mode, progress, error, setError } = context;
@@ -49,13 +50,13 @@ function App() {
         </div>
 
         <Routes>
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/forgot-password" element={<ForgotPassword/>} />
-          <Route exact path="/" element={<Categories />} />
-          <Route exact path="/admin" element={<AdminPanel />} />
-          <Route exact path="/roles" element={<RolesTable />} />
-          <Route exact path="/:id" element={<Questions />} />
+          <Route exact path="/signup" element={<SignupPage />} />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/forgot-password" element={<ResetPassworrd />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/roles" element={<Users />} />
+          <Route exact path="/:id" element={<Category />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
