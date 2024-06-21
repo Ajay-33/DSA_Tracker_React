@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import Spinner from "./Spinner";
 
@@ -154,7 +154,7 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center -mt-20 lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
+    <div className="flex flex-col items-center justify-center  lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
       <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md mt-2 p-8 bg-white dark:bg-gray-800 rounded-lg mb-16 shadow-lg">
         <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
@@ -296,12 +296,12 @@ function Signup() {
         </form>
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-4">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-blue-500 dark:text-orange-500 hover:underline"
           >
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

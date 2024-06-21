@@ -38,7 +38,7 @@ function NavBar() {
 
   return (
     <div
-      className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-10 transition duration-500`}
+      className={`${mode} top-0 left-0 w-full bg-gray-100 border-gray-800 dark:bg-gray-800 shadow-md z-50 transition duration-500`}
     >
       <nav>
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen p-4">
@@ -135,11 +135,11 @@ function NavBar() {
                     checked={mode === "dark"}
                     onChange={updateMode}
                   />
-                  <div className="ml-1 text-white dark:text-gray-300 text-sm">
+                  <div className="dark:block hidden ml-1 text-white dark:text-gray-300 text-sm">
                     🌙
                   </div>
                   <div
-                    className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 ${
+                    className={`absolute left-1.5 top-1 w-4 h-4 rounded-full transition-transform duration-300 ${
                       mode === "light"
                         ? "translate-x-0 bg-gray-200"
                         : "translate-x-4 bg-white"
