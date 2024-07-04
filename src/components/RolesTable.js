@@ -26,7 +26,7 @@ function RolesTable() {
   const [userCount, setUserCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
   const [superAdminCount, setSuperAdminCount] = useState(0);
-  const { userType } = useContext(QuestionsContext);
+  const { userType,setError } = useContext(QuestionsContext);
   const [showUsers, setShowUsers] = useState(true);
   const [showAdmins, setShowAdmins] = useState(true);
   const [showSuperAdmins, setShowSuperAdmins] = useState(true);
@@ -73,10 +73,15 @@ function RolesTable() {
       setIsLoading(false);
       setData(users);
     } catch (error) {
-      console.error(error.message || "Error fetching users:");
+      setError(error.message || "Error fetching users:");
       setIsLoading(false);
+      if(error.message==="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("userType");
+        navigate("/login");
+      }
     }
-  }, []);
+  }, [navigate,setError]);
 
   useEffect(() => {
     if (userType === "User") {

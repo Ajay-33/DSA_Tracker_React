@@ -43,8 +43,13 @@ function AdminPanel() {
     } catch (error) {
       setError(error.message || "Error fetching users:");
       setLoadingUsers(false);
+      if(error.message==="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("userType");
+        navigate("/login");
+      }
     }
-  }, [setError]);
+  }, [setError,navigate]);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -60,14 +65,18 @@ function AdminPanel() {
       if (!response.ok) {
         throw new Error(json.message);
       }
-      console.log(json);
       setCategories(json);
       setLoadingCategories(false);
     } catch (error) {
       setError(error.message || "Error fetching categories:");
       setLoadingCategories(false);
+      if(error.message==="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("userType");
+        navigate("/login");
+      }
     }
-  }, [setError]);
+  }, [setError,navigate]);
 
   useEffect(() => {
     if (userType === "User") {
@@ -75,7 +84,6 @@ function AdminPanel() {
     } else {
       fetchCategories();
       fetchUsers();
-      console.log(userType);
     }
   }, [userType, navigate, fetchCategories, fetchUsers]);
 
