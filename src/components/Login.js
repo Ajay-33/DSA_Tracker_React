@@ -44,7 +44,6 @@ function Login() {
         throw new Error(json.message);
       }
       if (response.ok && json.success) {
-        console.log(json);
         setIsLoading(false);
         localStorage.setItem("token", json.token);
         setUserName(json.user.firstName);

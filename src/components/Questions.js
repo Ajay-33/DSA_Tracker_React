@@ -41,8 +41,14 @@ function Questions() {
       setCatData(json.c_data);
       setCatRes(json.responses);
     } catch (error) {
-      setError(error.message);
       setIsLoading(false);
+      setProgress(100);
+      setError(error.message);
+      if(error.message==="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("userType");
+        navigate("/login");
+      }
       navigate("/");
     } finally {
       setIsLoading(false);
@@ -125,7 +131,6 @@ function Questions() {
     setOpenModal("block");
     setNote({ id: qid });
     if (currentNote) {
-      console.log(currentNote);
       setNote({ id: qid, vnotes: currentNote.Question_Notes });
     }
   };

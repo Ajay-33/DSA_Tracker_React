@@ -192,7 +192,7 @@ function Signup() {
                 id="lname"
                 name="lname"
                 required
-                minLength={3}
+                minLength={1}
                 onChange={onChange}
               />
             </div>

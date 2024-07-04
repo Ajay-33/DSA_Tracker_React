@@ -31,26 +31,35 @@ function Categories() {
     try {
       setIsLoading(true);
       setProgress(25);
-      const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/data/get-all-data`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_HOST}/api/v1/data/get-all-data`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       setProgress(50);
       const json = await response.json();
       if (!response.ok) {
         throw new Error(json.message);
       }
       setProgress(75);
-      console.log(json);
       setUserResponses(json["responses"]);
       setData(json["data"]);
       setIsLoading(false);
       setProgress(100);
     } catch (error) {
-      setError(error.message || "Error fetching responses");
+      setProgress(100);
+      setIsLoading(false);
+      setError(error.message || "Error fetching data");
+      if (error.message==="Session Expired") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userType");
+        navigate("/login");
+      }
     }
   };
 

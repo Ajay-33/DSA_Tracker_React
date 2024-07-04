@@ -62,7 +62,6 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         question_difficulty: questionDifficulty,
         question_solution: solutionLink,
       };
-      console.log(questionData);
       try {
         setIsLoading(true);
         const response = await fetch(
