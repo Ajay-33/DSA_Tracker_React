@@ -10,27 +10,34 @@ function Questions() {
   const { id } = useParams();
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setError, setProgress } = context;
+  const { setError, setProgress, userType, setUserType } = context;
   const [isLoading, setIsLoading] = useState(true);
   const [catData, setCatData] = useState({});
   const [catRes, setCatRes] = useState({});
   const [openModal, setOpenModal] = useState("hidden");
   const [note, setNote] = useState({ id: "", vnotes: "" });
   const [categoryDone, setCategoryDone] = useState(0);
+
   const getCategoryData = async (id) => {
     try {
       setIsLoading(true);
       setProgress(25);
-      const response = await fetch(
-        `${process.env.REACT_APP_HOST}/api/v1/data/get-categories-data/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      let endpoint = `${process.env.REACT_APP_HOST}/api/v1/data/get-categories-data/${id}`;
+      let headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (userType !== "Guest" && userType != null) {
+        headers.Authorization = "Bearer " + localStorage.getItem("token");
+      } else {
+        setUserType("Guest");
+        endpoint = `${process.env.REACT_APP_HOST}/api/v1/data/get-categories-data-guest/${id}`;
+      }
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: headers,
+      });
       setProgress(50);
       const json = await response.json();
       if (!response.ok) {
@@ -44,7 +51,7 @@ function Questions() {
       setIsLoading(false);
       setProgress(100);
       setError(error.message);
-      if(error.message==="Session Expired"){
+      if (error.message === "Session Expired") {
         localStorage.removeItem("token");
         localStorage.removeItem("userType");
         navigate("/login");
@@ -79,12 +86,7 @@ function Questions() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      getCategoryData(id);
-    } else {
-      navigate("/login");
-    }
+    getCategoryData(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -230,28 +232,41 @@ function Questions() {
           </thead>
 
           <tbody>
-            {questions.map((element) => {
-              const ModifiedQuestion = Modified_Questions.find(
-                (item) => item.Question_id === element._id
-              );
-              const status = ModifiedQuestion
-                ? ModifiedQuestion.Question_Status
-                : "Pending";
-              const notes = ModifiedQuestion;
-              return (
-                <Question
-                  key={element._id}
-                  question={element}
-                  updateNote={updateNote}
-                  notes={notes}
-                  Status={status}
-                  cid={id}
-                  getCategoryResponses={getCategoryResponses}
-                  setCategoryDone={setCategoryDone}
-                  categoryDone={categoryDone}
-                />
-              );
-            })}
+            {userType !== "Guest"
+              ? questions.map((element) => {
+                  const ModifiedQuestion = Modified_Questions.find(
+                    (item) => item.Question_id === element._id
+                  );
+                  const status = ModifiedQuestion
+                    ? ModifiedQuestion.Question_Status
+                    : "Pending";
+                  const notes = ModifiedQuestion;
+                  return (
+                    <Question
+                      key={element._id}
+                      question={element}
+                      updateNote={updateNote}
+                      notes={notes}
+                      Status={status}
+                      cid={id}
+                      getCategoryResponses={getCategoryResponses}
+                      setCategoryDone={setCategoryDone}
+                      categoryDone={categoryDone}
+                    />
+                  );
+                })
+              : questions.map((element) => {
+                  return (
+                    <Question
+                      key={element._id}
+                      question={element}
+                      updateNote={updateNote}
+                      Status="Pending"
+                      cid={id}
+                      categoryDone="0"
+                    />
+                  );
+                })}
           </tbody>
         </table>
       </div>

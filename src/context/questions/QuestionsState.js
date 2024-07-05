@@ -6,9 +6,9 @@ const QuestionsState = (props) => {
   const [mode, setMode] = useState(defaultMode);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
-  const defaultType = localStorage.getItem("userType") || "User";
+  const defaultType = localStorage.getItem("userType") || "Guest";
   const [userType, setUserType] = useState(defaultType);
-  const [userName,setUserName]=useState(null);
+  const [userName, setUserName] = useState(null);
   return (
     <QuestionsContext.Provider
       value={{
@@ -21,7 +21,7 @@ const QuestionsState = (props) => {
         userType,
         setUserType,
         setUserName,
-        userName
+        userName,
       }}
     >
       {props.children}
