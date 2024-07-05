@@ -55,6 +55,15 @@ function NavBar() {
               A2Z-DSA-Tracker
             </span>
           </Link>
+          {userType === "Guest" || userType === null ? (
+            <Link
+              to={"/"}
+              className="hidden cursor-pointer md:block mx-2 self-center text-2xl font-mono font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-orange-500 dark:via-red-500 dark:to-yellow-500 hover:underline"
+            >
+              Guest Access
+            </Link>
+          ) : null}
+
           {userName && (
             <div className="hidden md:block mx-2 self-center text-2xl font-mono font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-orange-500 dark:via-red-500 dark:to-yellow-500">
               Welcome {userName}
@@ -194,6 +203,18 @@ function NavBar() {
               </button>
             </>
           )}
+        </div>
+      )}
+      {userType === "Guest" && (
+        <div className="overflow-hidden w-full bg-gray-100 dark:bg-gray-800 border-gray-800 border-t dark:border-white md:hidden">
+          <div className="text-center whitespace-nowrap overflow-x-scroll">
+            <Link
+              to={"/login"}
+              className="inline-block p-4 text-lg font-semibold text-gray-800 dark:text-white"
+            >
+              Login to access all features.
+            </Link>
+          </div>
         </div>
       )}
     </div>

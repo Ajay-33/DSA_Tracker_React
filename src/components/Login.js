@@ -6,6 +6,7 @@ function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
   const { setUserType, setError, setUserName } = context;
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -72,7 +73,7 @@ function Login() {
     <div className="flex flex-col items-center justify-center -mt-20 lg:justify-start lg:mt-20 2xl:mt-44 min-h-screen px-4 w-screen md:w-full lg:w-2/3 xl:w-1/2 mx-auto">
       <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="w-full max-w-md p-7 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-8">
+        <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white mb-7">
           Have an Account ?
         </h2>
         <form onSubmit={handleSubmission}>

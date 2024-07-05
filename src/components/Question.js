@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Icon } from "@iconify-icon/react";
+import QuestionsContext from "../context/questions/QuestionsContext";
 
 function Question({
   question,
@@ -11,6 +12,8 @@ function Question({
 }) {
   const [status, setStatus] = useState(Status);
   const [prevStatus, setPrevStatus] = useState(Status);
+  const context = useContext(QuestionsContext);
+  const { userType,setError } = context;
 
   const updateActions = async (qid, status) => {
     try {
@@ -29,7 +32,7 @@ function Question({
         throw new Error("Failed to update status");
       }
     } catch (error) {
-      console.error("Error updating status:", error.message);
+      setError("Error updating status:", error.message);
     }
   };
 
@@ -44,11 +47,13 @@ function Question({
     if (status !== prevStatus) {
       if (prevStatus === "Pending" && status === "Completed") {
         setCategoryDone(categoryDone + 1);
-      } else if (prevStatus === "Completed" && (status === "Pending" || status === "Revisit")) {
+      } else if (
+        prevStatus === "Completed" &&
+        (status === "Pending" || status === "Revisit")
+      ) {
         setCategoryDone(categoryDone - 1);
-      }
-      else if(prevStatus==="Revisit"&&(status==="Completed")){
-        setCategoryDone(categoryDone+1);
+      } else if (prevStatus === "Revisit" && status === "Completed") {
+        setCategoryDone(categoryDone + 1);
       }
       setPrevStatus(status);
     }
@@ -69,6 +74,9 @@ function Question({
           className="border rounded px-2 py-1 mr-2 bg-white dark:bg-gray-200 dark:text-gray-800 dark:border-gray-400"
           defaultValue={Status}
           onChange={handleStatusChange}
+          disabled={userType === "Guest"}
+          style={{ cursor: userType === "Guest" ? "not-allowed" : "pointer" }}
+          title={userType === "Guest" ? "Login to access all features" : ""}
         >
           <option value="Pending">Pending</option>
           <option value="Completed">Done</option>
@@ -113,6 +121,9 @@ function Question({
         <button
           className="dark:text-gray-100 text-gray-600 hover:text-black ml-2 sm:text-2xl text-xl"
           onClick={() => updateNote(notes, question._id)}
+          disabled={userType === "Guest"}
+          style={{ cursor: userType === "Guest" ? "not-allowed" : "pointer" }}
+          title={userType === "Guest" ? "Login to access all features" : ""}
         >
           <Icon icon="icon-park-outline:notes" />
         </button>

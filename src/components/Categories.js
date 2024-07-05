@@ -13,17 +13,13 @@ function Categories() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setProgress, setError } = context;
+  const { setProgress, setError, userType, setUserType } = context;
   const totalValues = userResponses && userResponses["Total_values"];
   const { Total_Questions, Questions_done, Total_percentage } =
     totalValues || {};
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getAllData();
-    } else {
-      navigate("/login");
-    }
+    getAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,16 +27,22 @@ function Categories() {
     try {
       setIsLoading(true);
       setProgress(25);
-      const response = await fetch(
-        `${process.env.REACT_APP_HOST}/api/v1/data/get-all-data`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      let endpoint = `${process.env.REACT_APP_HOST}/api/v1/data/get-all-data`;
+      let headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (userType !== "Guest" && userType != null) {
+        headers.Authorization = "Bearer " + localStorage.getItem("token");
+      } else {
+        setUserType("Guest");
+        endpoint = `${process.env.REACT_APP_HOST}/api/v1/data/get-all-categories`;
+      }
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: headers,
+      });
       setProgress(50);
       const json = await response.json();
       if (!response.ok) {
@@ -55,7 +57,7 @@ function Categories() {
       setProgress(100);
       setIsLoading(false);
       setError(error.message || "Error fetching data");
-      if (error.message==="Session Expired") {
+      if (error.message === "Session Expired") {
         localStorage.removeItem("token");
         localStorage.removeItem("userType");
         navigate("/login");
@@ -75,8 +77,8 @@ function Categories() {
     <div className="container max-w-full px-4 pt-7 pb-4 w-full relative">
       <div className="pb-6">
         <HorizontalProgressBar
-          percentage={Total_percentage}
-          done={Questions_done}
+          percentage={Total_percentage || 0}
+          done={Questions_done || 0}
           total={Total_Questions}
         />
       </div>
