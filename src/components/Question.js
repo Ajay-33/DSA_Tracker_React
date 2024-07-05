@@ -13,7 +13,7 @@ function Question({
   const [status, setStatus] = useState(Status);
   const [prevStatus, setPrevStatus] = useState(Status);
   const context = useContext(QuestionsContext);
-  const { userType } = context;
+  const { userType,setError } = context;
 
   const updateActions = async (qid, status) => {
     try {
@@ -32,7 +32,7 @@ function Question({
         throw new Error("Failed to update status");
       }
     } catch (error) {
-      console.error("Error updating status:", error.message);
+      setError("Error updating status:", error.message);
     }
   };
 

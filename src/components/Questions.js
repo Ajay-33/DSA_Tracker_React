@@ -81,7 +81,7 @@ function Questions() {
       }
       setCatRes(json);
     } catch (error) {
-      console.error("Error fetching responses", error.message);
+      setError("Error fetching responses", error.message);
     }
   };
 
@@ -125,7 +125,7 @@ function Questions() {
       }
       getCategoryResponses(id);
     } catch (err) {
-      console.error("Error updating status:", err.message);
+      setError("Error updating status:", err.message);
     }
   };
 
