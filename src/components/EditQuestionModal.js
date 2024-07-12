@@ -142,6 +142,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
           <div className="flex flex-col sm:flex-row items-center justify-end sm:justify-between space-y-2 sm:space-y-0 sm:space-x-4">
             <button
               type="button"
+              title="Close"
               onClick={onClose}
               className="w-full sm:w-auto px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg shadow hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
@@ -149,6 +150,7 @@ function EditQuestionModal({ question, onClose, fetchCategories }) {
             </button>
             <button
               type="submit"
+              title="Save Changes"
               className="w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Save

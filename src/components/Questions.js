@@ -193,6 +193,7 @@ function Questions() {
             target="_blank"
             className="text-red-500 dark:text-gray-100"
             rel="noopener noreferrer"
+            title="Youtube Resource"
           >
             <FaYoutube className="mb-2 sm:mb-0 mr-0 sm:mr-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>
@@ -204,6 +205,7 @@ function Questions() {
             target="_blank"
             className="text-red-500 dark:text-gray-100"
             rel="noopener noreferrer"
+            title="Youtube Resource"
           >
             <FaYoutube className="mb-2 sm:mb-0 ml-0 sm:ml-2 text-2xl sm:text-3xl lg:text-5xl" />
           </a>

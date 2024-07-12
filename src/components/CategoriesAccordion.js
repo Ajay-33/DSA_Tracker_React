@@ -89,6 +89,7 @@ const CategoriesAccordion = ({
             onChange={handleSearchChange}
             className="pl-10 p-1.5 w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-md transition duration-500 dark:focus:outline-none focus:ring-2 dark:focus:ring-gray-400"
             placeholder="Search Categories and Questions..."
+            title="Search Categories and Questions"
           />
           {searchTerm && (
             <div className="absolute right-12 ml-2 cursor-pointer text-gray-500 dark:text-gray-400">
@@ -147,6 +148,7 @@ const CategoriesAccordion = ({
                     setEditCategory(true);
                     setSelectedCategory(category);
                   }}
+                  title="Edit Category"
                   className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 focus:outline-none"
                 >
                   <FaEdit />
@@ -157,6 +159,7 @@ const CategoriesAccordion = ({
                     setSelectedCategory(category);
                     setAddModal(true);
                   }}
+                  title="Add Question"
                   className="text-green-500 hover:text-green-700 dark:text-green-300 dark:hover:text-green-500 focus:outline-none"
                 >
                   <FaPlus />
@@ -167,6 +170,7 @@ const CategoriesAccordion = ({
                     setSelectedCategory(category);
                     setDeleteCategory(true);
                   }}
+                  title="Delete Category"
                   className="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-500 focus:outline-none"
                 >
                   <FaTrash />

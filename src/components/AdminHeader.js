@@ -80,6 +80,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
             <button
               className="bg-red-500 hover:bg-red-600 text-white font-bold py-0.5 px-1.5 md:py-1 md:px-2 rounded mr-2 transition duration-300"
               onClick={handleDeleteAdmin}
+              title="Remove Admin"
             >
               Delete
             </button>
@@ -109,6 +110,7 @@ function AdminHeader({ userType, text, fetchUsers }) {
             <button
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-0.5 px-1.5 md:py-1 md:px-2 rounded mr-2 transition duration-300"
               onClick={handleAddAdmin}
+              title="Add Admin"
             >
               Add
             </button>

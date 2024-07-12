@@ -13,7 +13,7 @@ function Question({
   const [status, setStatus] = useState(Status);
   const [prevStatus, setPrevStatus] = useState(Status);
   const context = useContext(QuestionsContext);
-  const { userType,setError } = context;
+  const { userType, setError } = context;
 
   const updateActions = async (qid, status) => {
     try {
@@ -76,7 +76,11 @@ function Question({
           onChange={handleStatusChange}
           disabled={userType === "Guest"}
           style={{ cursor: userType === "Guest" ? "not-allowed" : "pointer" }}
-          title={userType === "Guest" ? "Login to access all features" : ""}
+          title={
+            userType === "Guest"
+              ? "Login to access all features"
+              : "Change Status"
+          }
         >
           <option value="Pending">Pending</option>
           <option value="Completed">Done</option>
@@ -95,6 +99,7 @@ function Question({
           href={question.question_link[0]}
           target="_blank"
           rel="noopener noreferrer"
+          title="Leetcode Link"
         >
           <Icon icon="simple-icons:leetcode" />
         </a>
@@ -103,6 +108,7 @@ function Question({
           href={question.question_link[1] || question.question_link[0]}
           target="_blank"
           rel="noopener noreferrer"
+          title="CodingNinjas Link"
         >
           <Icon icon="simple-icons:codingninjas" />
         </a>
@@ -113,6 +119,7 @@ function Question({
           href={question.question_solution}
           target="_blank"
           rel="noopener noreferrer"
+          title="Solution Link"
         >
           <Icon icon="streamline:ecology-science-erlenmeyer-flask-experiment-lab-flask-science-chemistry-solution" />
         </a>
@@ -123,7 +130,9 @@ function Question({
           onClick={() => updateNote(notes, question._id)}
           disabled={userType === "Guest"}
           style={{ cursor: userType === "Guest" ? "not-allowed" : "pointer" }}
-          title={userType === "Guest" ? "Login to access all features" : ""}
+          title={
+            userType === "Guest" ? "Login to access all features" : "Add Notes"
+          }
         >
           <Icon icon="icon-park-outline:notes" />
         </button>
