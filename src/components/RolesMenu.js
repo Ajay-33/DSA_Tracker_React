@@ -15,6 +15,7 @@ function RolesMenu({ superAdmins, admins, users, fetchUsers, loadingUsers }) {
         <Link
           to="/roles"
           className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 transition duration-300 hover:underline"
+          title="View all Users"
         >
           User & Admin Roles
         </Link>

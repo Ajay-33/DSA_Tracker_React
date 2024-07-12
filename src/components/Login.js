@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError, setUserName } = context;
+  const { setUserType, setError } = context;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,7 +47,7 @@ function Login() {
       if (response.ok && json.success) {
         setIsLoading(false);
         localStorage.setItem("token", json.token);
-        setUserName(json.user.firstName);
+        localStorage.setItem("userName",json.user.firstName);
         if (
           json.user.userType === "Admin" ||
           json.user.userType === "Super Admin"
@@ -115,6 +115,7 @@ function Login() {
               <Link
                 to="/forgot-password"
                 className="text-blue-500 dark:text-orange-400 hover:underline"
+                title="Reset Password"
               >
                 Forgot Password?
               </Link>
@@ -125,6 +126,7 @@ function Login() {
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              title="Login"
             >
               Login
             </button>
@@ -136,6 +138,7 @@ function Login() {
           <Link
             to="/signup"
             className="text-blue-500 dark:text-orange-400 hover:underline"
+            title="Signup"
           >
             Create one
           </Link>

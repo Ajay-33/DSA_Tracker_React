@@ -232,6 +232,7 @@ function Signup() {
                 />
                 <button
                   type="button"
+                  title="Email Verification Code"
                   className={`ml-2 px-2 py-2 mt-1 rounded-md ${
                     canResendOtp
                       ? "bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600"
@@ -289,6 +290,7 @@ function Signup() {
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              title="Signup"
             >
               Sign Up
             </button>
@@ -298,6 +300,7 @@ function Signup() {
           Already have an account?{" "}
           <Link
             to="/login"
+            title="Login"
             className="text-blue-500 dark:text-orange-500 hover:underline"
           >
             Login

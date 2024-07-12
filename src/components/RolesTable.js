@@ -166,6 +166,7 @@ function RolesTable() {
                 <div className="flex space-x-6">
                   <FaEdit
                     className="text-blue-600 hover:text-blue-900 cursor-pointer"
+                    title="Edit Role"
                     onClick={() => {
                       setEditUser(true);
                       setSelectedUser(row.original);
@@ -173,6 +174,7 @@ function RolesTable() {
                   />
                   <FaTrash
                     className="text-red-600 hover:text-red-900 cursor-pointer"
+                    title="Delete"
                     onClick={() => {
                       setDeleteUser(true);
                       setSelectedUser(row.original);
@@ -215,6 +217,7 @@ function RolesTable() {
               onChange={(e) => setGlobalFilter(e.target.value)}
               className="pl-9 py-1.5 w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-md transition duration-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
               placeholder="Global Search"
+              title="Search Bar"
             />
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400" />
             {globalFilter && (
