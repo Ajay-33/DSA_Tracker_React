@@ -249,12 +249,14 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0  justify-end mt-4">
           <button
             onClick={onClose}
+            title="Close"
             className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg shadow-md hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 sm:mr-2"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
+            title="Add"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 "
           >
             Save

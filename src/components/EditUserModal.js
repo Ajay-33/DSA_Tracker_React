@@ -47,7 +47,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-8">
     <div className="w-8 h-8">{isLoading && <Spinner />}</div>
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4 text-center text-gray-900 dark:text-gray-100">
@@ -105,6 +105,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
           <div className="flex justify-end space-x-2">
             <button
               type="button"
+              title="Close"
               onClick={onClose}
               className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md shadow hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
@@ -112,6 +113,7 @@ function EditUserModal({ user, onClose, fetchUsers }) {
             </button>
             <button
               type="submit"
+              title="Update Role"
               className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Save

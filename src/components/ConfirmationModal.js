@@ -116,6 +116,7 @@ function ConfirmationModal({
         <div className="flex justify-end space-x-3">
           <button
             onClick={onCancel}
+            title="Cancel"
             className="w-1/2 px-2 py-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg shadow-sm hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Cancel
@@ -128,6 +129,7 @@ function ConfirmationModal({
                 ? onDeleteUser
                 : onDeleteCategory
             }
+            title="Delete"
             className="w-1/2 px-2 py-1 bg-red-600 text-white rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             Confirm

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import QuestionsContext from "../context/questions/QuestionsContext";
 import Spinner from "./Spinner";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 function Login() {
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
@@ -17,8 +18,13 @@ function Login() {
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleSubmission = async (e) => {
@@ -47,7 +53,7 @@ function Login() {
       if (response.ok && json.success) {
         setIsLoading(false);
         localStorage.setItem("token", json.token);
-        localStorage.setItem("userName",json.user.firstName);
+        localStorage.setItem("userName", json.user.firstName);
         if (
           json.user.userType === "Admin" ||
           json.user.userType === "Super Admin"
@@ -95,32 +101,46 @@ function Login() {
               required
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          <div className="mb-4 relative">
+  <label
+    htmlFor="password"
+    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+  >
+    Password <span className="text-red-500">*</span>
+  </label>
+  <div className="relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      name="password"
+      className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400 sm:text-sm pr-10"
+      value={credentials.password}
+      onChange={onChange}
+      id="password"
+      required
+    />
+    <button
+      type="button"
+      className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+      onClick={togglePasswordVisibility}
+    >
+      {showPassword ? (
+        <EyeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 hover:text-gray-500" />
+      ) : (
+        <EyeOffIcon className="h-5 w-5 text-gray-400 dark:text-gray-300  hover:text-gray-500" />
+      )}
+    </button>
+  </div>
+</div>
+
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+            <Link
+              to="/forgot-password"
+              className="text-blue-500 dark:text-orange-400 hover:underline"
+              title="Reset Password"
             >
-              Password <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400 sm:text-sm"
-              value={credentials.password}
-              onChange={onChange}
-              id="password"
-              required
-            />
-            <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
-              <Link
-                to="/forgot-password"
-                className="text-blue-500 dark:text-orange-400 hover:underline"
-                title="Reset Password"
-              >
-                Forgot Password?
-              </Link>
-            </p>
-          </div>
+              Forgot Password?
+            </Link>
+          </p>
 
           <div className="flex items-center justify-between">
             <button
