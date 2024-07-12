@@ -207,7 +207,7 @@ function NavBar() {
             )}
           </div>
         )}
-        {(userType === "Guest" || userType === null) && (
+        {(userType === "Guest") && (
           <div className="overflow-hidden w-full bg-gray-100 dark:bg-gray-800 border-gray-800 border-t dark:border-white md:hidden">
             <div className="text-center whitespace-nowrap overflow-x-scroll">
               <Link
@@ -220,7 +220,7 @@ function NavBar() {
           </div>
         )}
       </div>
-      {(userType === "Guest" || userType === null) && (
+      {(userType === "Guest") && (
         <div className="hidden md:flex overflow-hidden w-full bg-gray-400 dark:bg-white h-4  items-center justify-center">
           <Link
             to={"/login"}
