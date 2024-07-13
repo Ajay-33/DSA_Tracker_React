@@ -21,18 +21,18 @@ Say goodbye to scattered notes and disorganized study materials! The A2Z DSA Tra
 ## 📸 Screenshots
 <!-- Add your screenshots here -->
 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-  <img src="public/Login.png" alt="Login Screen" style="width: 30%; height: auto;">
-  <img src="public/SignUp.png" alt="Sign Up Screen" style="width: 30%; height: auto;">
-  <img src="public/HomeDark.png" alt="HomePage(Dark)" style="width: 30%; height: auto;">
-  <img src="public/HomeLight.png" alt="HomePage(Light)" style="width: 30%; height: auto;">
-  <img src="public/DashBoardDark.png" alt="DashBoard(Dark)" style="width: 30%; height: auto;">
-  <img src="public/DashBoardLight.png" alt="DashBoard(Light)" style="width: 30%; height: auto;">
-  <img src="public/AddNotes.png" alt="Add Notes" style="width: 30%; height: auto;">
-  <img src="public/AdminHome.png" alt="Admin Panel" style="width: 30%; height: auto;">
-  <img src="public/CategorySearch.png" alt="Search and Filter" style="width: 30%; height: auto;">
-  <img src="public/AddCatQues.png" alt="Add Questions or Categories" style="width: 30%; height: auto;">
-  <img src="public/UsersTable.png" alt="Users Table" style="width: 30%; height: auto;">
-  <img src="public/UsersSearch.png" alt="Users Search and Filter" style="width: 30%; height: auto;">
+  <img src="public/Login.png" alt="Login Screen" style="width: 45%; height: auto;">
+  <img src="public/SignUp.png" alt="Sign Up Screen" style="width: 45%; height: auto;">
+  <img src="public/HomeDark.png" alt="HomePage(Dark)" style="width: 45%; height: auto;">
+  <img src="public/HomeLight.png" alt="HomePage(Light)" style="width: 45%; height: auto;">
+  <img src="public/DashBoardDark.png" alt="DashBoard(Dark)" style="width: 45%; height: auto;">
+  <img src="public/DashBoardLight.png" alt="DashBoard(Light)" style="width: 45%; height: auto;">
+  <img src="public/AddNotes.png" alt="Add Notes" style="width: 45%; height: auto;">
+  <img src="public/AdminHome.png" alt="Admin Panel" style="width: 45%; height: auto;">
+  <img src="public/CategorySearch.png" alt="Search and Filter" style="width: 45%; height: auto;">
+  <img src="public/AddCatQues.png" alt="Add Questions or Categories" style="width: 45%; height: auto;">
+  <img src="public/UsersTable.png" alt="Users Table" style="width: 45%; height: auto;">
+  <img src="public/UsersSearch.png" alt="Users Search and Filter" style="width: 45%; height: auto;">
 </div>
 
 
