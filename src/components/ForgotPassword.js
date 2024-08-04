@@ -56,7 +56,7 @@ function ForgotPassword() {
       if (!response.ok) {
         throw new Error(json.message || "Network response was not ok");
       }
-
+      localStorage.setItem("otpToken", json.otpToken);
       setError(json.message);
       setIsLoading(false);
       setIsTimerRunning(true);
@@ -97,6 +97,7 @@ function ForgotPassword() {
             email,
             newPassword: newPassword,
             otp: verificationCode,
+            otpToken: localStorage.getItem("otpToken"),
           }),
         }
       );
@@ -106,10 +107,10 @@ function ForgotPassword() {
       if (!response.ok) {
         throw new Error(json.message || "Network response was not ok");
       }
-
+      localStorage.removeItem("otpToken");
       setError(json.message);
       setIsLoading(false);
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
       setIsLoading(false);
       setError(error.message);
