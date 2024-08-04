@@ -15,7 +15,7 @@ function Signup() {
 
   const navigate = useNavigate();
   const context = useContext(QuestionsContext);
-  const { setUserType, setError, setUserName } = context;
+  const { setUserType, setError } = context;
   const [isLoading, setIsLoading] = useState(false);
 
   const [otpSending, setOtpSending] = useState(false);
@@ -58,13 +58,12 @@ function Signup() {
           body: JSON.stringify({ email }),
         }
       );
-
       const json = await response.json();
 
       if (!response.ok) {
         throw new Error(json.message || "Network response was not ok");
       }
-
+      localStorage.setItem("otpToken", json.otpToken);
       setError(json.message);
       setIsLoading(false);
       setCanResendOtp(false);
@@ -99,6 +98,7 @@ function Signup() {
 
     try {
       setIsLoading(true);
+
       const response = await fetch(
         `${process.env.REACT_APP_HOST}/api/v1/auth/register`,
         {
@@ -109,6 +109,7 @@ function Signup() {
           body: JSON.stringify({
             fname: fname,
             lname: lname,
+            otpToken: localStorage.getItem("otpToken"),
             email,
             password,
             otp,
@@ -123,8 +124,9 @@ function Signup() {
       }
 
       if (json.success) {
+        localStorage.removeItem("otpToken");
         setIsLoading(false);
-        setUserName(json.user.firstName);
+        localStorage.setItem("userName", json.user.firstName);
         localStorage.setItem("token", json.token);
         if (
           json.user.userType === "Admin" ||

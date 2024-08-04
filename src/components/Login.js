@@ -102,35 +102,35 @@ function Login() {
             />
           </div>
           <div className="mb-4 relative">
-  <label
-    htmlFor="password"
-    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-  >
-    Password <span className="text-red-500">*</span>
-  </label>
-  <div className="relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      name="password"
-      className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400 sm:text-sm pr-10"
-      value={credentials.password}
-      onChange={onChange}
-      id="password"
-      required
-    />
-    <button
-      type="button"
-      className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-      onClick={togglePasswordVisibility}
-    >
-      {showPassword ? (
-        <EyeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 hover:text-gray-500" />
-      ) : (
-        <EyeOffIcon className="h-5 w-5 text-gray-400 dark:text-gray-300  hover:text-gray-500" />
-      )}
-    </button>
-  </div>
-</div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-orange-400 dark:focus:border-orange-400 sm:text-sm pr-10"
+                value={credentials.password}
+                onChange={onChange}
+                id="password"
+                required
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <EyeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 hover:text-gray-500" />
+                ) : (
+                  <EyeOffIcon className="h-5 w-5 text-gray-400 dark:text-gray-300  hover:text-gray-500" />
+                )}
+              </button>
+            </div>
+          </div>
 
           <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
             <Link

@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 
 function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
   const context = useContext(QuestionsContext);
-  const {setError } = context;
+  const { setError } = context;
   const [selectedOption, setSelectedOption] = useState(
     selectedCategory ? "question" : "category"
   );
@@ -34,14 +34,17 @@ function AddModal({ onClose, categories, selectedCategory, fetchCategories }) {
       };
       try {
         setIsLoading(true);
-        const response = await fetch(`${process.env.REACT_APP_HOST}/api/v1/category/add`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify(categoryData),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_HOST}/api/v1/category/add`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify(categoryData),
+          }
+        );
         if (response.ok) {
           fetchCategories();
           onClose();
